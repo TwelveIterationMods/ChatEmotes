@@ -8,6 +8,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.blay09.mods.eiramoticons.addon.BTTVAddon;
 import net.blay09.mods.eiramoticons.addon.FileAddon;
 import net.blay09.mods.eiramoticons.addon.TwitchGlobalAddon;
 import net.blay09.mods.eiramoticons.addon.TwitchSubscriberAddon;
@@ -53,6 +54,10 @@ public class EiraMoticons {
 
 		if(EmoticonConfig.twitchSubscriberEmotes) {
 			new TwitchSubscriberAddon(EmoticonConfig.twitchSubscriberRegex);
+		}
+
+		if(EmoticonConfig.bttvEmotes) {
+			new BTTVAddon();
 		}
 
 		new FileAddon();
