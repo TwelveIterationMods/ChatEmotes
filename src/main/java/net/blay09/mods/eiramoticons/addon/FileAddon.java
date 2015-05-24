@@ -19,6 +19,11 @@ public class FileAddon implements IEmoticonLoader {
 
 	public FileAddon() {
 		File emoticonDir = new File(Minecraft.getMinecraft().mcDataDir, "emoticons");
+		if(!emoticonDir.exists()) {
+			if(!emoticonDir.mkdir()) {
+				return;
+			}
+		}
 		File[] emoticons = emoticonDir.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
