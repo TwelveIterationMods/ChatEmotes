@@ -29,6 +29,8 @@ public class EmoticonConfig {
 
 		final String ADDONS = "addons";
 		defaultEmotes = config.getBoolean("defaultEmotes", ADDONS, true, "Should the default EiraMoticons emoticons be registered?");
+
+		config.save();
 	}
 
 }
