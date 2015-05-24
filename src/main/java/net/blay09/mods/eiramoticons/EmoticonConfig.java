@@ -20,13 +20,15 @@ public class EmoticonConfig {
 	public static void load(File configFile) {
 		Configuration config = new Configuration(configFile);
 
-		final String CATEGORY = "emotes";
-		defaultEmotes = config.getBoolean("defaultEmotes", CATEGORY, true, "Should the default EiraMoticons emoticons be registered?");
-		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", CATEGORY, true, "Should the global Twitch emoticons be registered?");
-		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", CATEGORY, true, "Should Twitch subscriber emoticons be registered?");
-		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", CATEGORY, "[a-z0-9][a-z0-9]+[A-Z].*", "A regex pattern to limit the Twitch subscriber emotes that are registered.");
-		twitchSmileys = config.getBoolean("twitchSmileys", CATEGORY, false, "Should Twitch :) smileys be registered?");
-		twitchSmileySet = config.getInt("twitchSmileySet", CATEGORY, 0, 0, 2, "The Twitch smiley style to use in chat: 0 for robot, 1 for Turbo, 2 for monkeys (NYI)");
+		final String TWITCH = "twitch";
+		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", TWITCH, true, "Should the global Twitch emoticons be registered?");
+		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", TWITCH, true, "Should Twitch subscriber emoticons be registered?");
+		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", TWITCH, "[a-z0-9][a-z0-9]+[A-Z].*", "A regex pattern to limit the Twitch subscriber emotes that are registered.");
+		twitchSmileys = config.getBoolean("twitchSmileys", TWITCH, false, "Should Twitch :) smileys be registered?");
+		twitchSmileySet = config.getInt("twitchSmileySet", TWITCH, 0, 0, 2, "The Twitch smiley style to use in chat: 0 for robot, 1 for Turbo, 2 for monkeys (NYI)");
+
+		final String ADDONS = "addons";
+		defaultEmotes = config.getBoolean("defaultEmotes", ADDONS, true, "Should the default EiraMoticons emoticons be registered?");
 	}
 
 }

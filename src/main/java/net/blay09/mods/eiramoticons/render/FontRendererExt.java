@@ -23,7 +23,7 @@ public class FontRendererExt extends FontRenderer {
 
 	@Override
 	public int getStringWidth(String s) {
-		return super.getStringWidth(enableEmoticons ? killEmotes(s) : s);
+		return super.getStringWidth(killEmotes(s));
 	}
 
 	@Override
