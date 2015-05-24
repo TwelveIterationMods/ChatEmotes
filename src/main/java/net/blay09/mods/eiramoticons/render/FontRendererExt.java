@@ -59,13 +59,9 @@ public class FontRendererExt extends FontRenderer {
 			if(c == '\u00a7' && s.charAt(i + 1) == 'z') {
 				int nextWhitespace = s.indexOf(' ', i);
 				if(nextWhitespace == -1) {
-					nextWhitespace = s.length();
+					nextWhitespace = s.length() - 1;
 				}
-				int nextFormatting = s.indexOf('\u00a7', i);
-				if(nextFormatting == -1) {
-					nextFormatting = s.length();
-				}
-				String emoteId = s.substring(i + 2, Math.min(nextWhitespace, nextFormatting));
+				String emoteId = s.substring(i + 2, nextWhitespace);
 				try {
 					Emoticon emoticon = EmoticonRegistry.fromId(Integer.parseInt(emoteId));
 					if (emoticon != null) {
