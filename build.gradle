@@ -70,6 +70,7 @@ processResources
 }
 
 jar {
+    from sourceSets.api.output
     appendix "mc" + minecraft.version
 }
 
