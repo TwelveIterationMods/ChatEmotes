@@ -47,8 +47,6 @@ public class EiraMoticons {
 
 		MinecraftForge.EVENT_BUS.register(this);
 
-		new FileAddon();
-
 		if(EmoticonConfig.twitchGlobalEmotes) {
 			new TwitchGlobalAddon();
 		}
@@ -56,6 +54,8 @@ public class EiraMoticons {
 		if(EmoticonConfig.twitchSubscriberEmotes) {
 			new TwitchSubscriberAddon(EmoticonConfig.twitchSubscriberRegex);
 		}
+
+		new FileAddon();
 	}
 
 	@Mod.EventHandler
