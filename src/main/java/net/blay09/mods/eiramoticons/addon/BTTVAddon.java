@@ -30,15 +30,15 @@ public class BTTVAddon implements IEmoticonLoader {
 				if(code.equals(":trollface:|:tf:")) {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(":trollface:", this);
 					emoticon.setIdentifier(entry.get("url").getAsString());
-					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r:trollface:", "\u00a7eBetter Twitch TV\u00a7r" });
+					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r:trollface:", "\u00a7eBetter TwitchTV\u00a7r" });
 
 					emoticon = EiraMoticonsAPI.registerEmoticon(":tf:", this);
 					emoticon.setIdentifier(entry.get("url").getAsString());
-					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r:tf:", "\u00a7eBetter Twitch TV\u00a7r" });
+					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r:tf:", "\u00a7eBetter TwitchTV\u00a7r" });
 				} else {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
 					emoticon.setIdentifier(entry.get("url").getAsString());
-					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r" + code, "\u00a7eBetter Twitch TV\u00a7r" });
+					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r" + code, "\u00a7eBetter TwitchTV\u00a7r" });
 				}
 			}
 		} catch (MalformedURLException e) {
