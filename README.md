@@ -1,7 +1,7 @@
 EiraMoticons
 =======
 
-Minecraft Mod. adds emoticons to Minecraft chat. By default, it adds all Twitch global emotes and most Twitch subscriber emotes, but can be configured to limit those further or add custom emotes by putting them into the "emoticons" folder in the Minecraft directory. The mod is client-side only - the server does not need it and will currently crash if put on there.
+Minecraft Mod. Adds emoticons to Minecraft chat. By default, it adds all Twitch global emotes and most Twitch subscriber emotes, but can be configured to limit those further or add custom emotes by putting them into the "emoticons" folder in the Minecraft directory. The mod is client-side only - the server does not need it and will currently crash if put on there.
 
 ##Useful Links
 * [Latest Builds](http://jenkins.blay09.net) on my Jenkins
