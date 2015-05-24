@@ -38,15 +38,20 @@ public class TwitchSubscriberAddon implements IEmoticonLoader {
 			for(Map.Entry<String, JsonElement> channelEntry : channels.entrySet()) {
 				JsonObject channel = channelEntry.getValue().getAsJsonObject();
 				String title = channel.get("title").getAsString();
+				boolean isTwitchTurbo = title.equals("turbo");
 				JsonArray emotes = channel.getAsJsonArray("emotes");
 				for(int i = 0; i < emotes.size(); i++) {
 					JsonObject emote = emotes.get(i).getAsJsonObject();
 					String code = emote.get("code").getAsString();
 					matcher.reset(code);
-					if(matcher.matches()) {
+					if(isTwitchTurbo || matcher.matches()) {
 						IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
 						emoticon.setIdentifier(emote.get("image_id").getAsInt());
-						emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eChannel:\u00a7r " + title.toLowerCase()});
+						if(isTwitchTurbo) {
+							emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eTwitch Turbo\u00a7r"});
+						} else {
+							emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eChannel:\u00a7r " + title.toLowerCase()});
+						}
 					}
 				}
 			}

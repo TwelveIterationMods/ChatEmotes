@@ -33,7 +33,7 @@ public class TwitchGlobalAddon implements IEmoticonLoader {
 			for(Map.Entry<String, JsonElement> entry : emotes.entrySet()) {
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(entry.getKey(), this);
 				emoticon.setIdentifier(entry.getValue().getAsJsonObject().get("image_id").getAsInt());
-				emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r" + entry.getKey() });
+				emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r" + entry.getKey(), "\u00a7eTwitch\u00a7r" });
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
