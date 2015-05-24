@@ -76,6 +76,4 @@ public class EiraMoticons {
 		event.message = EmoticonHandler.adjustChatComponent(event.message);
 	}
 
-
-
 }

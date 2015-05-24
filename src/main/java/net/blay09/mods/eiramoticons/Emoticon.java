@@ -21,6 +21,7 @@ public class Emoticon implements IEmoticon {
 	private int width;
 	private int height;
 	private String[] tooltipLines;
+	private BufferedImage loadBuffer;
 
 	public Emoticon(int id, String name, IEmoticonLoader loader) {
 		this.id = id;
@@ -54,6 +55,11 @@ public class Emoticon implements IEmoticon {
 	}
 
 	@Override
+	public IEmoticonLoader getLoader() {
+		return loader;
+	}
+
+	@Override
 	public void setTooltip(String[] tooltipLines) {
 		this.tooltipLines = tooltipLines;
 	}
@@ -62,10 +68,14 @@ public class Emoticon implements IEmoticon {
 	public void setImage(BufferedImage image) {
 		width = image.getWidth();
 		height = image.getHeight();
-		textureId = TextureUtil.uploadTextureImage(TextureUtil.glGenTextures(), image);
+		loadBuffer = image;
 	}
 
 	public int getTextureId() {
+		if(loadBuffer != null) {
+			textureId = TextureUtil.uploadTextureImage(TextureUtil.glGenTextures(), loadBuffer);
+			loadBuffer = null;
+		}
 		return textureId;
 	}
 
@@ -80,7 +90,7 @@ public class Emoticon implements IEmoticon {
 	public void requestTexture() {
 		if(!loadRequested) {
 			loadRequested = true;
-			loader.loadEmoticonImage(this);
+			AsyncEmoticonLoader.instance.loadAsync(this);
 		}
 	}
 

@@ -13,4 +13,5 @@ public interface IEmoticon {
 	void setTooltip(String[] tooltipLines);
 	Object getIdentifier();
 	void setIdentifier(Object identifier);
+	IEmoticonLoader getLoader();
 }
