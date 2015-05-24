@@ -38,7 +38,7 @@ public class TwitchSubscriberAddon implements IEmoticonLoader {
 			for(Map.Entry<String, JsonElement> channelEntry : channels.entrySet()) {
 				JsonObject channel = channelEntry.getValue().getAsJsonObject();
 				String title = channel.get("title").getAsString();
-				boolean isTwitchTurbo = title.equals("turbo");
+				boolean isTwitchTurbo = channelEntry.getKey().equals("turbo");
 				JsonArray emotes = channel.getAsJsonArray("emotes");
 				for(int i = 0; i < emotes.size(); i++) {
 					JsonObject emote = emotes.get(i).getAsJsonObject();
