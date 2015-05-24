@@ -8,10 +8,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.blay09.mods.eiramoticons.addon.BTTVAddon;
-import net.blay09.mods.eiramoticons.addon.FileAddon;
-import net.blay09.mods.eiramoticons.addon.TwitchGlobalAddon;
-import net.blay09.mods.eiramoticons.addon.TwitchSubscriberAddon;
+import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.render.EmoticonRenderer;
 import net.blay09.mods.eiramoticons.render.FontRendererExt;
@@ -47,6 +44,10 @@ public class EiraMoticons {
 		MinecraftForge.EVENT_BUS.register(renderer);
 
 		MinecraftForge.EVENT_BUS.register(this);
+
+		if(EmoticonConfig.twitchSmileys) {
+			new TwitchSmileyAddon(EmoticonConfig.twitchSmileySet);
+		}
 
 		if(EmoticonConfig.twitchGlobalEmotes) {
 			new TwitchGlobalAddon();

@@ -27,7 +27,7 @@ public class BTTVAddon implements IEmoticonLoader {
 				String code = entry.get("regex").getAsString();
 				// We don't do regex emotes, so we just strip the regex stuff and add a special case for the one emote that actually needs it
 				code = code.replace("\\", "");
-				if(code.equals(":trollface:|:tf:")) {
+				if(code.equals("(:trollface:|:tf:)")) {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(":trollface:", this);
 					emoticon.setIdentifier(entry.get("url").getAsString());
 					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r:trollface:", "\u00a7eBetter TwitchTV\u00a7r" });
