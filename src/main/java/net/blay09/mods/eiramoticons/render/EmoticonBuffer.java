@@ -3,7 +3,7 @@
 
 package net.blay09.mods.eiramoticons.render;
 
-import net.blay09.mods.eiramoticons.Emoticon;
+import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 
 public class EmoticonBuffer {
 	public int[] positionX = new int[0];

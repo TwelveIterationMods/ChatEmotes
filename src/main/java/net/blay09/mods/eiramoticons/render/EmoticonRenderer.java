@@ -4,7 +4,7 @@
 package net.blay09.mods.eiramoticons.render;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.blay09.mods.eiramoticons.Emoticon;
+import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.renderer.OpenGlHelper;

@@ -3,6 +3,7 @@
 
 package net.blay09.mods.eiramoticons;
 
+import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.blay09.mods.eiramoticons.api.IInternalMethods;

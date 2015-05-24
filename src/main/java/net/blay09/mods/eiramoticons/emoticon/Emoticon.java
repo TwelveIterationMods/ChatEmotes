@@ -1,10 +1,11 @@
 // Copyright (c) 2015, Christopher "blay09" Baker
 // Some rights reserved.
 
-package net.blay09.mods.eiramoticons;
+package net.blay09.mods.eiramoticons.emoticon;
 
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
+import net.blay09.mods.eiramoticons.emoticon.AsyncEmoticonLoader;
 import net.minecraft.client.renderer.texture.TextureUtil;
 
 import java.awt.image.BufferedImage;

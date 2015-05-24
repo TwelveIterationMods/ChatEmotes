@@ -3,8 +3,8 @@
 
 package net.blay09.mods.eiramoticons.render;
 
-import net.blay09.mods.eiramoticons.Emoticon;
-import net.blay09.mods.eiramoticons.EmoticonRegistry;
+import net.blay09.mods.eiramoticons.emoticon.Emoticon;
+import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;

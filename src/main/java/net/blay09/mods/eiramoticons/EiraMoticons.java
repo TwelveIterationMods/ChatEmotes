@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
+import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.blay09.mods.eiramoticons.render.EmoticonRenderer;
 import net.blay09.mods.eiramoticons.render.FontRendererExt;
 import net.minecraft.client.Minecraft;
@@ -67,13 +68,17 @@ public class EiraMoticons {
 	@Mod.EventHandler
 	@SuppressWarnings("unused")
 	public void postInit(FMLPostInitializationEvent event) {
-		event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
+		if(EmoticonConfig.enableEiraIRCEmotes) {
+			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
+		}
 	}
 
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void clientChatReceived(ClientChatReceivedEvent event) {
-		event.message = EmoticonHandler.adjustChatComponent(event.message);
+		if(EmoticonConfig.enableMCEmotes) {
+			event.message = EmoticonHandler.adjustChatComponent(event.message);
+		}
 	}
 
 }

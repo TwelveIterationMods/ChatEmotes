@@ -9,7 +9,8 @@ import java.io.File;
 
 public class EmoticonConfig {
 
-	public static boolean defaultEmotes;
+	public static boolean enableMCEmotes;
+
 	public static boolean twitchGlobalEmotes;
 	public static boolean twitchSubscriberEmotes;
 	public static String twitchSubscriberRegex;
@@ -17,8 +18,14 @@ public class EmoticonConfig {
 	public static boolean twitchSmileys;
 	public static int twitchSmileySet;
 
+	public static boolean defaultEmotes;
+	public static boolean enableEiraIRCEmotes;
+
 	public static void load(File configFile) {
 		Configuration config = new Configuration(configFile);
+
+		final String GENERAL = "general";
+		enableMCEmotes = config.getBoolean("enableMCEmotes", GENERAL, true, "Should emotes be enabled for Vanilla Minecraft chat?");
 
 		final String TWITCH = "twitch";
 		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", TWITCH, true, "Should the global Twitch emoticons be registered?");
@@ -30,6 +37,7 @@ public class EmoticonConfig {
 
 		final String ADDONS = "addons";
 		defaultEmotes = config.getBoolean("defaultEmotes", ADDONS, true, "Should the default EiraMoticons emoticons be registered?");
+		enableEiraIRCEmotes = config.getBoolean("enableEiraIRCEmotes", ADDONS, true, "Should emotes be enabled for IRC chat, if EiraIRC is installed?");
 
 		config.save();
 	}
