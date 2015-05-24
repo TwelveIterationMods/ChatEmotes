@@ -61,7 +61,11 @@ public class FontRendererExt extends FontRenderer {
 				if(nextWhitespace == -1) {
 					nextWhitespace = s.length();
 				}
-				String emoteId = s.substring(i + 2, nextWhitespace);
+				int nextFormatting = s.indexOf('\u00a7');
+				if(nextFormatting == -1) {
+					nextFormatting = s.length();
+				}
+				String emoteId = s.substring(i + 2, Math.min(nextWhitespace, nextFormatting));
 				Emoticon emoticon = EmoticonRegistry.fromId(Integer.parseInt(emoteId));
 				if(emoticon != null) {
 					emoticonBuffer.emoticons = ArrayUtils.add(emoticonBuffer.emoticons, emoticon);
