@@ -1,0 +1,16 @@
+[
+{
+  "modid": "eiramoticons",
+  "name": "EiraMoticons",
+  "description": "Adds emoticons to the Minecraft chat. Supports Twitch and custom emotes. Compatible with EiraIRC.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["blay09"],
+  "credits": "blay09 and http://twitchemotes.com/ for providing an API",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
