@@ -61,7 +61,7 @@ public class FontRendererExt extends FontRenderer {
 				if(nextWhitespace == -1) {
 					nextWhitespace = s.length();
 				}
-				int nextFormatting = s.indexOf('\u00a7');
+				int nextFormatting = s.indexOf('\u00a7', i);
 				if(nextFormatting == -1) {
 					nextFormatting = s.length();
 				}
