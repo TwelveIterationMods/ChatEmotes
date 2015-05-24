@@ -4,10 +4,12 @@
 package net.blay09.mods.eiramoticons;
 
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.blay09.mods.eirairc.*;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
@@ -23,62 +25,25 @@ import net.minecraftforge.common.MinecraftForge;
 public class EiraMoticons {
     public static final String MOD_ID = "eiramoticons";
 
+	@SidedProxy(serverSide = "net.blay09.mods.eiramoticons.CommonProxy", clientSide = "net.blay09.mods.eiramoticons.ClientProxy")
+	public static CommonProxy proxy;
+
 	@Mod.EventHandler
 	@SuppressWarnings("unused")
 	public void preInit(FMLPreInitializationEvent event) {
-		EiraMoticonsAPI.setupAPI(new InternalMethods());
-		EmoticonConfig.load(event.getSuggestedConfigurationFile());
+		proxy.preInit(event);
 	}
 
 	@Mod.EventHandler
 	@SuppressWarnings("unused")
 	public void init(FMLInitializationEvent event) {
-		Minecraft mc = Minecraft.getMinecraft();
-		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, false);
-		fontRenderer.setUnicodeFlag(mc.func_152349_b());
-		fontRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
-		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
-		mc.fontRenderer = fontRenderer;
-
-		EmoticonRenderer renderer = new EmoticonRenderer(mc);
-		fontRenderer.setEmoticonBuffer(renderer.getBuffer());
-		MinecraftForge.EVENT_BUS.register(renderer);
-
-		MinecraftForge.EVENT_BUS.register(this);
-
-		if(EmoticonConfig.twitchSmileys) {
-			new TwitchSmileyAddon(EmoticonConfig.twitchSmileySet);
-		}
-
-		if(EmoticonConfig.twitchGlobalEmotes) {
-			new TwitchGlobalAddon();
-		}
-
-		if(EmoticonConfig.twitchSubscriberEmotes) {
-			new TwitchSubscriberAddon(EmoticonConfig.twitchSubscriberRegex);
-		}
-
-		if(EmoticonConfig.bttvEmotes) {
-			new BTTVAddon();
-		}
-
-		new FileAddon();
+		proxy.init(event);
 	}
 
 	@Mod.EventHandler
 	@SuppressWarnings("unused")
 	public void postInit(FMLPostInitializationEvent event) {
-		if(EmoticonConfig.enableEiraIRCEmotes) {
-			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
-		}
-	}
-
-	@SubscribeEvent
-	@SuppressWarnings("unused")
-	public void clientChatReceived(ClientChatReceivedEvent event) {
-		if(EmoticonConfig.enableMCEmotes) {
-			event.message = EmoticonHandler.adjustChatComponent(event.message);
-		}
+		proxy.postInit(event);
 	}
 
 }
