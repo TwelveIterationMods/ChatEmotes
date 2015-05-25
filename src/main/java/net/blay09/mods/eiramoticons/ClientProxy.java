@@ -106,6 +106,7 @@ public class ClientProxy extends CommonProxy {
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if(event.modID.equals(EiraMoticons.MOD_ID)) {
 			EmoticonConfig.lightReload();
+			EmoticonRegistry.reloadEmoticons();
 		}
 	}
 }
