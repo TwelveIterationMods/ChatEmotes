@@ -64,7 +64,7 @@ public class EmoticonRenderer {
 			GL11.glScalef(scale, scale, 1);
 			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
 			GL11.glPopMatrix();
-			if(hoverEmoticon == null && mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + buffer.emoticons[i].getWidth() && mouseY > (event.resolution.getScaledHeight() - 48) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 48) + buffer.positionY[i] + buffer.emoticons[i].getHeight()) {
+			if(hoverEmoticon == null && mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + buffer.emoticons[i].getWidth() * scale && mouseY > (event.resolution.getScaledHeight() - 48) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 48) + buffer.positionY[i] + buffer.emoticons[i].getHeight() * scale) {
 				hoverEmoticon = buffer.emoticons[i];
 			}
 		}
