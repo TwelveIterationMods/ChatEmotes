@@ -21,37 +21,26 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TwitchSubscriberAddon implements IEmoticonLoader {
+public class TwitchTurboAddon implements IEmoticonLoader {
 
 	private String template;
 
-	public TwitchSubscriberAddon(String regexFilter) {
+	public TwitchTurboAddon() {
 		try {
-			Pattern pattern = Pattern.compile(regexFilter);
-			Matcher matcher = pattern.matcher("");
 			URL apiURL = new URL("http://twitchemotes.com/api_cache/v2/subscriber.json");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
 			template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
 			JsonObject channels = root.getAsJsonObject("channels");
-			for(Map.Entry<String, JsonElement> channelEntry : channels.entrySet()) {
-				if(channelEntry.getKey().equals("turbo")) {
-					continue;
-				}
-				JsonObject channel = channelEntry.getValue().getAsJsonObject();
-				String title = channel.get("title").getAsString();
-				JsonArray emotes = channel.getAsJsonArray("emotes");
-				for(int i = 0; i < emotes.size(); i++) {
-					JsonObject emote = emotes.get(i).getAsJsonObject();
-					String code = emote.get("code").getAsString();
-					matcher.reset(code);
-					if(matcher.matches()) {
-						IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-						emoticon.setIdentifier(emote.get("image_id").getAsInt());
-						emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eChannel:\u00a7r " + title.toLowerCase()});
-					}
-				}
+			JsonObject turbo = channels.getAsJsonObject("turbo");
+			JsonArray emotes = turbo.getAsJsonArray("emotes");
+			for(int i = 0; i < emotes.size(); i++) {
+				JsonObject emote = emotes.get(i).getAsJsonObject();
+				String code = emote.get("code").getAsString();
+				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
+				emoticon.setIdentifier(emote.get("image_id").getAsInt());
+				emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eTwitch Turbo\u00a7r"});
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

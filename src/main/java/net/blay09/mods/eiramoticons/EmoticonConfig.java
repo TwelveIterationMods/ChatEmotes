@@ -12,6 +12,7 @@ public class EmoticonConfig {
 	public static boolean enableMCEmotes;
 
 	public static boolean twitchGlobalEmotes;
+	public static boolean twitchTurboEmotes;
 	public static boolean twitchSubscriberEmotes;
 	public static String twitchSubscriberRegex;
 	public static boolean bttvEmotes;
@@ -21,6 +22,8 @@ public class EmoticonConfig {
 	public static boolean defaultEmotes;
 	public static boolean enableEiraIRCEmotes;
 
+	public static boolean betterKappas;
+
 	public static void load(File configFile) {
 		Configuration config = new Configuration(configFile);
 
@@ -29,6 +32,7 @@ public class EmoticonConfig {
 
 		final String TWITCH = "twitch";
 		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", TWITCH, true, "Should the global Twitch emoticons be registered?");
+		twitchTurboEmotes = config.getBoolean("twitchTurboEmotes", TWITCH, true, "Should the Twitch Turbo emoticons be registered?");
 		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", TWITCH, true, "Should Twitch subscriber emoticons be registered?");
 		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", TWITCH, "[a-z0-9][a-z0-9]+[A-Z].*", "A regex pattern to limit the Twitch subscriber emotes that are registered.");
 		bttvEmotes = config.getBoolean("bttvEmotes", TWITCH, true, "Should Better TwitchTV emoticons be registered?");
@@ -38,6 +42,9 @@ public class EmoticonConfig {
 		final String ADDONS = "addons";
 		defaultEmotes = config.getBoolean("defaultEmotes", ADDONS, true, "Should the default EiraMoticons emoticons be registered?");
 		enableEiraIRCEmotes = config.getBoolean("enableEiraIRCEmotes", ADDONS, true, "Should emotes be enabled for IRC chat, if EiraIRC is installed?");
+
+		final String TWEAKS = "tweaks";
+		betterKappas = config.getBoolean("betterKappas", TWEAKS, false, "Should all Kappas be turned into the more beautiful KappaHDs? (requires twitchTurboEmotes to be enabled)");
 
 		config.save();
 	}
