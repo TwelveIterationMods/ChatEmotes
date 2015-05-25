@@ -24,7 +24,7 @@ public class IncludedPack implements IEmoticonLoader {
 		for(String emote : emotes) {
 			IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(emote, this);
 			emoticon.setTooltip(I18n.format("eiramoticons:group." + group));
-			emoticon.setLoadData(new ResourceLocation("eiramoticons", "/packs/" + group + "/" + emote + ".png"));
+			emoticon.setLoadData(new ResourceLocation("eiramoticons", "packs/" + group + "/" + emote + ".png"));
 		}
 	}
 
