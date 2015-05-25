@@ -1,3 +1,6 @@
+// Copyright (c) 2015, Christopher "blay09" Baker
+// Some rights reserved.
+
 package net.blay09.mods.eiramoticons;
 
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
@@ -28,6 +31,7 @@ public class CommandEmoticons extends CommandBase {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}
 		if(args[0].equals("reload")) {
+			EmoticonConfig.hardReload();
 			EmoticonRegistry.reloadEmoticons();
 		} else {
 			throw new WrongUsageException(getCommandUsage(sender));

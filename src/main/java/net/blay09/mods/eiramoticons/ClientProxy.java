@@ -1,6 +1,9 @@
+// Copyright (c) 2015, Christopher "blay09" Baker
+// Some rights reserved.
+
 package net.blay09.mods.eiramoticons;
 
-import com.google.common.eventbus.Subscribe;
+import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,7 +29,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		EiraMoticonsAPI.setupAPI(new InternalMethods());
-		EmoticonConfig.load(event.getSuggestedConfigurationFile());
+		EmoticonConfig.loadFromFile(event.getSuggestedConfigurationFile());
 	}
 
 	@Override
@@ -93,6 +96,13 @@ public class ClientProxy extends CommonProxy {
 			IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
 			kappa.setIdentifier(kappaHD.getIdentifier());
 			kappa.setTooltip(new String[]{"\u00a7eEmote:\u00a7r Kappa", "\u00a7eBetter Kappas"});
+		}
+	}
+
+	@SubscribeEvent
+	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if(event.modID.equals(EiraMoticons.MOD_ID)) {
+			EmoticonConfig.lightReload();
 		}
 	}
 }

@@ -9,6 +9,14 @@ import java.io.File;
 
 public class EmoticonConfig {
 
+	public static final String GENERAL = "general";
+	public static final String TWITCH = "twitch";
+	public static final String ADDONS = "addons";
+	public static final String TWEAKS = "tweaks";
+
+	public static Configuration config;
+	public static File configFile;
+
 	public static boolean enableMCEmotes;
 
 	public static boolean twitchGlobalEmotes;
@@ -24,13 +32,15 @@ public class EmoticonConfig {
 
 	public static boolean betterKappas;
 
-	public static void load(File configFile) {
-		Configuration config = new Configuration(configFile);
+	public static void loadFromFile(File configFile) {
+		EmoticonConfig.configFile = configFile;
+		config = new Configuration(configFile);
+		loadFromConfig();
+	}
 
-		final String GENERAL = "general";
+	private static void loadFromConfig() {
 		enableMCEmotes = config.getBoolean("enableMCEmotes", GENERAL, true, "Should emotes be enabled for Vanilla Minecraft chat?");
 
-		final String TWITCH = "twitch";
 		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", TWITCH, true, "Should the global Twitch emoticons be registered?");
 		twitchTurboEmotes = config.getBoolean("twitchTurboEmotes", TWITCH, true, "Should the Twitch Turbo emoticons be registered?");
 		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", TWITCH, true, "Should Twitch subscriber emoticons be registered?");
@@ -39,14 +49,19 @@ public class EmoticonConfig {
 		twitchSmileys = config.getBoolean("twitchSmileys", TWITCH, false, "Should Twitch :) smileys be registered?");
 		twitchSmileySet = config.getInt("twitchSmileySet", TWITCH, 0, 0, 2, "The Twitch smiley style to use in chat: 0 for robot, 1 for Turbo, 2 for monkeys (NYI)");
 
-		final String ADDONS = "addons";
 		defaultEmotes = config.getBoolean("defaultEmotes", ADDONS, true, "Should the default EiraMoticons emoticons be registered?");
 		enableEiraIRCEmotes = config.getBoolean("enableEiraIRCEmotes", ADDONS, true, "Should emotes be enabled for IRC chat, if EiraIRC is installed?");
 
-		final String TWEAKS = "tweaks";
 		betterKappas = config.getBoolean("betterKappas", TWEAKS, false, "Should all Kappas be turned into the more beautiful KappaHDs? (requires twitchTurboEmotes to be enabled)");
 
 		config.save();
 	}
 
+	public static void lightReload() {
+		loadFromConfig();
+	}
+
+	public static void hardReload() {
+		loadFromFile(configFile);
+	}
 }
