@@ -1,10 +1,10 @@
 // Copyright (c) 2015, Christopher "blay09" Baker
 // Some rights reserved.
 
-package net.blay09.mods.eiramoticons.addon;
+package net.blay09.mods.eiramoticons.addon.pack;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
@@ -17,27 +17,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
-public class TwitchTurboAddon implements IEmoticonLoader {
+public class TwitchGlobalPack implements IEmoticonLoader {
 
 	private String template;
 
-	public TwitchTurboAddon() {
+	public TwitchGlobalPack() {
 		try {
-			URL apiURL = new URL("http://twitchemotes.com/api_cache/v2/subscriber.json");
+			URL apiURL = new URL("http://twitchemotes.com/api_cache/v2/global.json");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
 			template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
-			JsonObject channels = root.getAsJsonObject("channels");
-			JsonObject turbo = channels.getAsJsonObject("turbo");
-			JsonArray emotes = turbo.getAsJsonArray("emotes");
-			for(int i = 0; i < emotes.size(); i++) {
-				JsonObject emote = emotes.get(i).getAsJsonObject();
-				String code = emote.get("code").getAsString();
-				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-				emoticon.setLoadData(emote.get("image_id").getAsInt());
-				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.turbo"));
+			JsonObject emotes = root.getAsJsonObject("emotes");
+			for(Map.Entry<String, JsonElement> entry : emotes.entrySet()) {
+				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(entry.getKey(), this);
+				emoticon.setLoadData(entry.getValue().getAsJsonObject().get("image_id").getAsInt());
+				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch"));
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

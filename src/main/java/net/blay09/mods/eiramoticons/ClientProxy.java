@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eiramoticons.addon.*;
+import net.blay09.mods.eiramoticons.addon.pack.*;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.ReloadEmoticons;
@@ -75,19 +76,23 @@ public class ClientProxy extends CommonProxy {
 	public void reloadEmoticons(ReloadEmoticons event) {
 		// Twitch Emotes
 		if(EmoticonConfig.twitchSmileys) {
-			new TwitchSmileyAddon(EmoticonConfig.twitchSmileySet);
+			new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
 		}
 		if(EmoticonConfig.twitchGlobalEmotes) {
-			new TwitchGlobalAddon();
+			new TwitchGlobalPack();
 		}
 		if(EmoticonConfig.twitchTurboEmotes) {
-			new TwitchTurboAddon();
+			new TwitchTurboPack();
 		}
 		if(EmoticonConfig.twitchSubscriberEmotes) {
-			new TwitchSubscriberAddon(EmoticonConfig.twitchSubscriberRegex);
+			new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
 		}
 		if(EmoticonConfig.bttvEmotes) {
-			new BTTVAddon();
+			new BTTVPack();
+		}
+
+		if(EmoticonConfig.animuPack) {
+			new IncludedPack("animu", new String[] {"aniRage", "aniCri", "aniLewd", "aniYui", "aniMeow", "aniNyan", "aniDrip", "aniScared", "aniWoah", "aniLove"});
 		}
 
 		// Custom Emotes

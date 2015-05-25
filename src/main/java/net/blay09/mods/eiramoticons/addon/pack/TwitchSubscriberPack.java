@@ -1,7 +1,7 @@
 // Copyright (c) 2015, Christopher "blay09" Baker
 // Some rights reserved.
 
-package net.blay09.mods.eiramoticons.addon;
+package net.blay09.mods.eiramoticons.addon.pack;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -22,11 +22,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TwitchSubscriberAddon implements IEmoticonLoader {
+public class TwitchSubscriberPack implements IEmoticonLoader {
 
 	private String template;
 
-	public TwitchSubscriberAddon(String regexFilter) {
+	public TwitchSubscriberPack(String regexFilter) {
 		try {
 			Pattern pattern = Pattern.compile(regexFilter);
 			Matcher matcher = pattern.matcher("");

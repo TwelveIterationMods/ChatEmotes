@@ -1,7 +1,7 @@
 // Copyright (c) 2015, Christopher "blay09" Baker
 // Some rights reserved.
 
-package net.blay09.mods.eiramoticons.addon;
+package net.blay09.mods.eiramoticons.addon.pack;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -18,9 +18,9 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class BTTVAddon implements IEmoticonLoader {
+public class BTTVPack implements IEmoticonLoader {
 
-	public BTTVAddon() {
+	public BTTVPack() {
 		try {
 			URL apiURL = new URL("https://cdn.betterttv.net/emotes/emotes.json");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());

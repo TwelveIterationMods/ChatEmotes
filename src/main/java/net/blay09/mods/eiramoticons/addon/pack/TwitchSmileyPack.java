@@ -1,7 +1,7 @@
 // Copyright (c) 2015, Christopher "blay09" Baker
 // Some rights reserved.
 
-package net.blay09.mods.eiramoticons.addon;
+package net.blay09.mods.eiramoticons.addon.pack;
 
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
@@ -13,13 +13,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-public class TwitchSmileyAddon implements IEmoticonLoader {
+public class TwitchSmileyPack implements IEmoticonLoader {
 
 	private static final String TEMPLATE = "http://static-cdn.jtvnw.net/emoticons/v1/{image_id}/1.0";
 
 	private final int smileySet;
 
-	public TwitchSmileyAddon(int smileySet) {
+	public TwitchSmileyPack(int smileySet) {
 		this.smileySet = smileySet;
 		switch(smileySet) {
 			case 0:
