@@ -3,6 +3,7 @@
 
 package net.blay09.mods.eiramoticons;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -28,7 +29,7 @@ public class EmoticonConfig {
 	public static int twitchSmileySet;
 
 	public static boolean defaultEmotes;
-	public static boolean enableEiraIRCEmotes;
+	public static boolean enableIRCEmotes;
 
 	public static boolean betterKappas;
 
@@ -39,20 +40,20 @@ public class EmoticonConfig {
 	}
 
 	private static void loadFromConfig() {
-		enableMCEmotes = config.getBoolean("enableMCEmotes", GENERAL, true, "Should emotes be enabled for Vanilla Minecraft chat?");
+		enableMCEmotes = config.getBoolean("enableMCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableMCEmotes.tooltip"), "eiramoticons:config.enableMCEmotes");
 
-		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", TWITCH, true, "Should the global Twitch emoticons be registered?");
-		twitchTurboEmotes = config.getBoolean("twitchTurboEmotes", TWITCH, true, "Should the Twitch Turbo emoticons be registered?");
-		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", TWITCH, true, "Should Twitch subscriber emoticons be registered?");
-		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", TWITCH, "[a-z0-9][a-z0-9]+[A-Z].*", "A regex pattern to limit the Twitch subscriber emotes that are registered.");
-		bttvEmotes = config.getBoolean("bttvEmotes", TWITCH, true, "Should Better TwitchTV emoticons be registered?");
-		twitchSmileys = config.getBoolean("twitchSmileys", TWITCH, false, "Should Twitch :) smileys be registered?");
-		twitchSmileySet = config.getInt("twitchSmileySet", TWITCH, 0, 0, 2, "The Twitch smiley style to use in chat: 0 for robot, 1 for Turbo, 2 for monkeys (NYI)");
+		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", TWITCH, true, I18n.format("eiramoticons:config.twitchGlobalEmotes.tooltip"), "eiramoticons:config.twitchGlobalEmotes");
+		twitchTurboEmotes = config.getBoolean("twitchTurboEmotes", TWITCH, true, I18n.format("eiramoticons:config.twitchTurboEmotes.tooltip"), "eiramoticons:config.twitchTurboEmotes");
+		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", TWITCH, true, I18n.format("eiramoticons:config.twitchSubscriberEmotes.tooltip"), "eiramoticons:config.twitchSubscriberEmotes");
+		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", TWITCH, "[a-z0-9][a-z0-9]+[A-Z].*", I18n.format("eiramoticons:config.twitchSubscriberRegex.tooltip"), "eiramoticons:config.twitchSubscriberRegex");
+		bttvEmotes = config.getBoolean("bttvEmotes", TWITCH, true, I18n.format("eiramoticons:config.bttvEmotes.tooltip"), "eiramoticons:config.bttvEmotes");
+		twitchSmileys = config.getBoolean("twitchSmileys", TWITCH, false, I18n.format("eiramoticons:config.twitchSmileys.tooltip"), "eiramoticons:config.twitchSmileys");
+		twitchSmileySet = config.getInt("twitchSmileySet", TWITCH, 0, 0, 2, I18n.format("eiramoticons:config.twitchSmileySet.tooltip"), "eiramoticons:config.twitchSmileySet");
 
-		defaultEmotes = config.getBoolean("defaultEmotes", ADDONS, true, "Should the default EiraMoticons emoticons be registered?");
-		enableEiraIRCEmotes = config.getBoolean("enableEiraIRCEmotes", ADDONS, true, "Should emotes be enabled for IRC chat, if EiraIRC is installed?");
+		defaultEmotes = config.getBoolean("defaultEmotes", ADDONS, true, I18n.format("eiramoticons:config.defaultEmotes.tooltip"), "eiramoticons:config.defaultEmotes");
+		enableIRCEmotes = config.getBoolean("enableIRCEmotes", ADDONS, true, I18n.format("eiramoticons:config.enableIRCEmotes.tooltip"), "eiramoticons:config.enableIRCEmotes");
 
-		betterKappas = config.getBoolean("betterKappas", TWEAKS, false, "Should all Kappas be turned into the more beautiful KappaHDs? (requires twitchTurboEmotes to be enabled)");
+		betterKappas = config.getBoolean("betterKappas", TWEAKS, false, I18n.format("eiramoticons:config.betterKappas.tooltip"), "eiramoticons:config.betterKappas");
 
 		config.save();
 	}

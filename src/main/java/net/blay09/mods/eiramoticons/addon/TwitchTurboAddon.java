@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
+import net.minecraft.client.resources.I18n;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -36,7 +37,7 @@ public class TwitchTurboAddon implements IEmoticonLoader {
 				String code = emote.get("code").getAsString();
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
 				emoticon.setLoadData(emote.get("image_id").getAsInt());
-				emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eTwitch Turbo\u00a7r"});
+				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.turbo"));
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

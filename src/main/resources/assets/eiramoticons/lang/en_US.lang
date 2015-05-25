@@ -1,0 +1,35 @@
+eiramoticons:config.enableMCEmotes=Enable Emotes in Minecraft
+eiramoticons:config.enableMCEmotes.tooltip=Should emotes be enabled for Vanilla Minecraft chat?
+eiramoticons:config.twitchGlobalEmotes=Register Twitch Global Emotes
+eiramoticons:config.twitchGlobalEmotes.tooltip=Should the global Twitch emoticons be registered?
+eiramoticons:config.twitchTurboEmotes=Register Twitch Turbo Emotes
+eiramoticons:config.twitchTurboEmotes.tooltip=Should the Twitch Turbo emoticons be registered?
+eiramoticons:config.twitchSubscriberEmotes=Register Twitch Subscriber Emotes
+eiramoticons:config.twitchSubscriberEmotes.tooltip=Should Twitch subscriber emoticons be registered?
+eiramoticons:config.twitchSubscriberRegex=Twitch Subscriber Emote Regex Pattern
+eiramoticons:config.twitchSubscriberRegex.tooltip=A regex pattern to limit the Twitch subscriber emotes that are registered.
+eiramoticons:config.bttvEmotes=Register BetterTwitchTV Emotes
+eiramoticons:config.bttvEmotes.tooltip=Should Better TwitchTV emoticons be registered?
+eiramoticons:config.twitchSmileys=Register Twitch Smileys
+eiramoticons:config.twitchSmileys.tooltip=Should Twitch :) smileys be registered?
+eiramoticons:config.twitchSmileySet=Twitch Smiley Set
+eiramoticons:config.twitchSmileySet.tooltip=The Twitch smiley style to use in chat: 0 for robot, 1 for Turbo, 2 for monkeys (NYI)
+eiramoticons:config.defaultEmotes=Register Default Emotes
+eiramoticons:config.defaultEmotes.tooltip=Should the default EiraMoticons emoticons be registered?
+eiramoticons:config.enableIRCEmotes=Enable Emotes in EiraIRC
+eiramoticons:config.enableIRCEmotes.tooltip=Should emotes be enabled for IRC chat, if EiraIRC is installed?
+eiramoticons:config.betterKappas=Enable Better Kappas
+eiramoticons:config.betterKappas.tooltip=Should all Kappas be turned into the more beautiful KappaHDs? (requires twitchTurboEmotes to be enabled)
+
+eiramoticons:tooltip.name=§eEmote: §r%s
+eiramoticons:tooltip.group=§e%s
+
+eiramoticons:group.twitch=Twitch Global
+eiramoticons:group.twitch.turbo=Twitch Turbo
+eiramoticons:group.twitch.subscriber=Channel: §r%s
+eiramoticons:group.twitch.smiley=Twitch Smiley
+eiramoticons:group.twitch.bttv=Better TwitchTV
+eiramoticons:group.custom=Custom Emote
+eiramoticons:group.betterKappas=Better Kappas
+
+eiramoticons:gui.config.title=EiraMoticons Config

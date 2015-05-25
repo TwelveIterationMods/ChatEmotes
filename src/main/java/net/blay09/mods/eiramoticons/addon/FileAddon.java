@@ -8,6 +8,7 @@ import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -35,7 +36,7 @@ public class FileAddon implements IEmoticonLoader {
 				String nameWithoutExt = Files.getNameWithoutExtension(emoticonFile.getName());
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(nameWithoutExt, this);
 				emoticon.setLoadData(emoticonFile);
-				emoticon.setTooltip(new String[] {"\u00a7eEmote: \u00a7r" + nameWithoutExt});
+				emoticon.setTooltip(I18n.format("eiramoticons:group.custom"));
 			}
 		}
 	}

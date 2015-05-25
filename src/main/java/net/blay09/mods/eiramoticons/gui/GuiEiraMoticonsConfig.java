@@ -8,6 +8,7 @@ import cpw.mods.fml.client.config.IConfigElement;
 import net.blay09.mods.eiramoticons.EiraMoticons;
 import net.blay09.mods.eiramoticons.EmoticonConfig;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.ConfigElement;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 public class GuiEiraMoticonsConfig extends GuiConfig {
 
 	public GuiEiraMoticonsConfig(GuiScreen parentScreen) {
-		super(parentScreen, getConfigElements(), EiraMoticons.MOD_ID, false, false, "EiraMoticons Config");
+		super(parentScreen, getConfigElements(), EiraMoticons.MOD_ID, false, false, I18n.format("eiramoticons:gui.config.title"));
 	}
 
 	@SuppressWarnings("unchecked")

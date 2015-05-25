@@ -7,6 +7,7 @@ import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.blay09.mods.eiramoticons.emoticon.AsyncEmoticonLoader;
 import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.I18n;
 
 import java.awt.image.BufferedImage;
 
@@ -28,6 +29,8 @@ public class Emoticon implements IEmoticon {
 		this.id = id;
 		this.name = name;
 		this.loader = loader;
+
+		tooltipLines = new String[] {I18n.format("eiramoticons:tooltip.name", name)};
 	}
 
 	@Override
@@ -61,7 +64,12 @@ public class Emoticon implements IEmoticon {
 	}
 
 	@Override
-	public void setTooltip(String[] tooltipLines) {
+	public void setTooltip(String emoticonGroup) {
+		tooltipLines = new String[] {I18n.format("eiramoticons:tooltip.name", name), I18n.format("eiramoticons:tooltip.group", emoticonGroup)};
+	}
+
+	@Override
+	public void setCustomTooltip(String[] tooltipLines) {
 		this.tooltipLines = tooltipLines;
 	}
 

@@ -17,6 +17,7 @@ import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.blay09.mods.eiramoticons.render.EmoticonRenderer;
 import net.blay09.mods.eiramoticons.render.FontRendererExt;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -25,6 +26,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
+
+	private static final String FONT_TEXTURE = "textures/font/ascii.png";
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -35,7 +38,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
-		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, false);
+		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, new ResourceLocation(FONT_TEXTURE), mc.renderEngine, false);
 		fontRenderer.setUnicodeFlag(mc.func_152349_b());
 		fontRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
 		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
@@ -54,7 +57,7 @@ public class ClientProxy extends CommonProxy {
 	public void postInit(FMLPostInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.post(new ReloadEmoticons());
 
-		if(EmoticonConfig.enableEiraIRCEmotes) {
+		if(EmoticonConfig.enableIRCEmotes) {
 			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
 		}
 	}
@@ -95,7 +98,7 @@ public class ClientProxy extends CommonProxy {
 			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
 			IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
 			kappa.setLoadData(kappaHD.getLoadData());
-			kappa.setTooltip(new String[]{"\u00a7eEmote:\u00a7r Kappa", "\u00a7eBetter Kappas"});
+			kappa.setTooltip(I18n.format("eiramoticons:group.BetterKappas"));
 		}
 	}
 

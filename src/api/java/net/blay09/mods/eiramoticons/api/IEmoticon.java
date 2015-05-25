@@ -31,10 +31,17 @@ public interface IEmoticon {
 	void setImage(BufferedImage image);
 
 	/**
+	 * Use the default tooltip for this emoticon, specifying a group as second line.
+	 * If you want to specify a fully customized tooltip, use setCustomTooltip instead.
+	 * @param emoticonGroup the group for this emoticon, will be displayed in the second line
+	 */
+	void setTooltip(String emoticonGroup);
+
+	/**
 	 * Sets the tooltip that appears when hovering over this emote
 	 * @param tooltipLines each entry in this array represents a line in this tooltip
 	 */
-	void setTooltip(String[] tooltipLines);
+	void setCustomTooltip(String[] tooltipLines);
 
 	/**
 	 * @return optional load data to identify the emoticon in the IEmoticonLoader without requiring the name
