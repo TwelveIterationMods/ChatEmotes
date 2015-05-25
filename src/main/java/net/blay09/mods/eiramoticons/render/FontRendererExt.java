@@ -36,6 +36,9 @@ public class FontRendererExt extends FontRenderer {
 	}
 
 	public String killEmotes(String s) {
+		if(s == null) {
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
@@ -53,6 +56,9 @@ public class FontRendererExt extends FontRenderer {
 	}
 
 	public String extractEmotesToBuffer(String s, int x, int y, int color) {
+		if(s == null) {
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
