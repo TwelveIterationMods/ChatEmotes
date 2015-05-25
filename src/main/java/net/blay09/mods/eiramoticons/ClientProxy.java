@@ -98,7 +98,7 @@ public class ClientProxy extends CommonProxy {
 			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
 			IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
 			kappa.setLoadData(kappaHD.getLoadData());
-			kappa.setTooltip(I18n.format("eiramoticons:group.BetterKappas"));
+			kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
 		}
 	}
 
