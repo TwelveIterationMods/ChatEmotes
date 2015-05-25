@@ -46,13 +46,13 @@ public class Emoticon implements IEmoticon {
 	}
 
 	@Override
-	public Object getIdentifier() {
+	public Object getLoadData() {
 		return identifier;
 	}
 
 	@Override
-	public void setIdentifier(Object identifier) {
-		this.identifier = identifier;
+	public void setLoadData(Object loadData) {
+		this.identifier = loadData;
 	}
 
 	@Override

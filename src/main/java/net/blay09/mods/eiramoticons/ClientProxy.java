@@ -94,7 +94,7 @@ public class ClientProxy extends CommonProxy {
 		if(EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
 			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
 			IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
-			kappa.setIdentifier(kappaHD.getIdentifier());
+			kappa.setLoadData(kappaHD.getLoadData());
 			kappa.setTooltip(new String[]{"\u00a7eEmote:\u00a7r Kappa", "\u00a7eBetter Kappas"});
 		}
 	}

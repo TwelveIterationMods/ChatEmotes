@@ -48,7 +48,7 @@ public class TwitchSubscriberAddon implements IEmoticonLoader {
 					matcher.reset(code);
 					if(matcher.matches()) {
 						IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-						emoticon.setIdentifier(emote.get("image_id").getAsInt());
+						emoticon.setLoadData(emote.get("image_id").getAsInt());
 						emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eChannel:\u00a7r " + title.toLowerCase()});
 					}
 				}
@@ -63,7 +63,7 @@ public class TwitchSubscriberAddon implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", emoticon.getIdentifier().toString())));
+			BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", emoticon.getLoadData().toString())));
 			if(image != null) {
 				emoticon.setImage(image);
 			}

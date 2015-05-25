@@ -46,14 +46,14 @@ public class TwitchSmileyAddon implements IEmoticonLoader {
 
 	private void registerSmiley(String code, int id) {
 		IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-		emoticon.setIdentifier(id);
+		emoticon.setLoadData(id);
 		emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r" + code, "\u00a7eTwitch Smiley\u00a7r" });
 	}
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read(new URL(TEMPLATE.replace("{image_id}", emoticon.getIdentifier().toString())));
+			BufferedImage image = ImageIO.read(new URL(TEMPLATE.replace("{image_id}", emoticon.getLoadData().toString())));
 			if(image != null) {
 				emoticon.setImage(image);
 			}

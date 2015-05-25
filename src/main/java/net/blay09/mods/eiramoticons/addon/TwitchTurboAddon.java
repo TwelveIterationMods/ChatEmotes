@@ -5,7 +5,6 @@ package net.blay09.mods.eiramoticons.addon;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
@@ -17,9 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TwitchTurboAddon implements IEmoticonLoader {
 
@@ -39,7 +35,7 @@ public class TwitchTurboAddon implements IEmoticonLoader {
 				JsonObject emote = emotes.get(i).getAsJsonObject();
 				String code = emote.get("code").getAsString();
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-				emoticon.setIdentifier(emote.get("image_id").getAsInt());
+				emoticon.setLoadData(emote.get("image_id").getAsInt());
 				emoticon.setTooltip(new String[]{"\u00a7eEmote:\u00a7r " + emoticon.getName(), "\u00a7eTwitch Turbo\u00a7r"});
 			}
 		} catch (MalformedURLException e) {
@@ -52,7 +48,7 @@ public class TwitchTurboAddon implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", emoticon.getIdentifier().toString())));
+			BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", emoticon.getLoadData().toString())));
 			if(image != null) {
 				emoticon.setImage(image);
 			}

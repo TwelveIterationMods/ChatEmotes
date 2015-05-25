@@ -32,15 +32,15 @@ public class BTTVAddon implements IEmoticonLoader {
 				code = code.replace("\\", "");
 				if(code.equals("(:trollface:|:tf:)")) {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(":trollface:", this);
-					emoticon.setIdentifier(entry.get("url").getAsString());
+					emoticon.setLoadData(entry.get("url").getAsString());
 					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r:trollface:", "\u00a7eBetter TwitchTV\u00a7r" });
 
 					emoticon = EiraMoticonsAPI.registerEmoticon(":tf:", this);
-					emoticon.setIdentifier(entry.get("url").getAsString());
+					emoticon.setLoadData(entry.get("url").getAsString());
 					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r:tf:", "\u00a7eBetter TwitchTV\u00a7r" });
 				} else {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-					emoticon.setIdentifier(entry.get("url").getAsString());
+					emoticon.setLoadData(entry.get("url").getAsString());
 					emoticon.setTooltip(new String[] { "\u00a7eEmote: \u00a7r" + code, "\u00a7eBetter TwitchTV\u00a7r" });
 				}
 			}
@@ -54,7 +54,7 @@ public class BTTVAddon implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read(new URL("http:" + emoticon.getIdentifier().toString()));
+			BufferedImage image = ImageIO.read(new URL("http:" + emoticon.getLoadData().toString()));
 			if(image != null) {
 				emoticon.setImage(image);
 			}

@@ -34,7 +34,7 @@ public class FileAddon implements IEmoticonLoader {
 			for(File emoticonFile : emoticons) {
 				String nameWithoutExt = Files.getNameWithoutExtension(emoticonFile.getName());
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(nameWithoutExt, this);
-				emoticon.setIdentifier(emoticonFile);
+				emoticon.setLoadData(emoticonFile);
 				emoticon.setTooltip(new String[] {"\u00a7eEmote: \u00a7r" + nameWithoutExt});
 			}
 		}
@@ -43,7 +43,7 @@ public class FileAddon implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read((File) emoticon.getIdentifier());
+			BufferedImage image = ImageIO.read((File) emoticon.getLoadData());
 			if(image != null) {
 				emoticon.setImage(image);
 			}

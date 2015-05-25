@@ -4,7 +4,5 @@
 package net.blay09.mods.eiramoticons.api;
 
 public interface IInternalMethods {
-
 	IEmoticon registerEmoticon(String name, IEmoticonLoader loader);
-
 }
