@@ -14,13 +14,7 @@ import java.io.IOException;
 
 public class IncludedPack implements IEmoticonLoader {
 
-	private String group;
-	private String[] emotes;
-
 	public IncludedPack(String group, String[] emotes) {
-		this.group = group;
-		this.emotes = emotes;
-
 		for(String emote : emotes) {
 			IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(emote, this);
 			emoticon.setTooltip(I18n.format("eiramoticons:group." + group));
