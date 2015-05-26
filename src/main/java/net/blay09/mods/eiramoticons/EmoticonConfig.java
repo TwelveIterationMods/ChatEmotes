@@ -22,8 +22,9 @@ public class EmoticonConfig {
 	public static String twitchSubscriberRegex;
 	public static int twitchSmileySet;
 
-	public static boolean defaultEmotes;
+	public static boolean defaultPack;
 	public static boolean animuPack;
+	public static boolean userPack;
 	public static boolean twitchGlobalEmotes;
 	public static boolean twitchTurboEmotes;
 	public static boolean twitchSubscriberEmotes;
@@ -45,12 +46,13 @@ public class EmoticonConfig {
 		enableIRCEmotes = config.getBoolean("enableIRCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableIRCEmotes.tooltip"), "eiramoticons:config.enableIRCEmotes");
 
 		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", PACKS, true, I18n.format("eiramoticons:config.twitchGlobalEmotes.tooltip"), "eiramoticons:config.twitchGlobalEmotes");
-		twitchTurboEmotes = config.getBoolean("twitchTurboEmotes", PACKS, true, I18n.format("eiramoticons:config.twitchTurboEmotes.tooltip"), "eiramoticons:config.twitchTurboEmotes");
+		twitchTurboEmotes = config.getBoolean("twitchTurboEmotes", PACKS, false, I18n.format("eiramoticons:config.twitchTurboEmotes.tooltip"), "eiramoticons:config.twitchTurboEmotes");
 		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", PACKS, true, I18n.format("eiramoticons:config.twitchSubscriberEmotes.tooltip"), "eiramoticons:config.twitchSubscriberEmotes");
-		bttvEmotes = config.getBoolean("bttvEmotes", PACKS, true, I18n.format("eiramoticons:config.bttvEmotes.tooltip"), "eiramoticons:config.bttvEmotes");
+		bttvEmotes = config.getBoolean("bttvEmotes", PACKS, false, I18n.format("eiramoticons:config.bttvEmotes.tooltip"), "eiramoticons:config.bttvEmotes");
 		twitchSmileys = config.getBoolean("twitchSmileys", PACKS, false, I18n.format("eiramoticons:config.twitchSmileys.tooltip"), "eiramoticons:config.twitchSmileys");
-		defaultEmotes = config.getBoolean("defaultEmotes", PACKS, true, I18n.format("eiramoticons:config.defaultEmotes.tooltip"), "eiramoticons:config.defaultEmotes");
+		defaultPack = config.getBoolean("defaultPack", PACKS, true, I18n.format("eiramoticons:config.defaultPack.tooltip"), "eiramoticons:config.defaultPack");
 		animuPack = config.getBoolean("animuPack", PACKS, true, I18n.format("eiramoticons:config.animuPack.tooltip"), "eiramoticons:config.animuPack");
+		userPack = config.getBoolean("userPack", PACKS, true, I18n.format("eiramoticons:config.userPack.tooltip"), "eiramoticons:config.userPack");
 
 		betterKappas = config.getBoolean("betterKappas", TWEAKS, false, I18n.format("eiramoticons:config.betterKappas.tooltip"), "eiramoticons:config.betterKappas");
 

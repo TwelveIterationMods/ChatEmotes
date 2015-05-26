@@ -91,8 +91,16 @@ public class ClientProxy extends CommonProxy {
 			new BTTVPack();
 		}
 
+		if(EmoticonConfig.defaultPack) {
+			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow"});
+		}
+
 		if(EmoticonConfig.animuPack) {
-			new IncludedPack("animu", new String[] {"aniRage", "aniCri", "aniLewd", "aniYui", "aniMeow", "aniNyan", "aniDrip", "aniScared", "aniWoah", "aniLove"});
+			new IncludedPack("animu", new String[] {"aniRage", "aniCri", "aniLewd", "aniYui", "aniMeow", "aniNyan", "aniPraise", "aniScared", "aniWoah", "aniLove"});
+		}
+
+		if(EmoticonConfig.userPack) {
+			new UserPack();
 		}
 
 		// Custom Emotes
