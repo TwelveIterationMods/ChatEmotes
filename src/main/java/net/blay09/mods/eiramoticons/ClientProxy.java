@@ -92,7 +92,7 @@ public class ClientProxy extends CommonProxy {
 		}
 
 		if(EmoticonConfig.defaultPack) {
-			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow"});
+			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise"});
 		}
 
 		if(EmoticonConfig.animuPack) {

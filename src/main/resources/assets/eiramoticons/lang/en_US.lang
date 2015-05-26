@@ -41,6 +41,6 @@ eiramoticons:group.custom=Custom Emote
 eiramoticons:group.betterkappas=Better Kappas
 eiramoticons:group.default=Default Pack
 eiramoticons:group.animu=Animu Pack
-eiramoticons:group.user=User Pack (%s)
+eiramoticons:group.user=User Pack (§r%s§e)
 
 eiramoticons:gui.config.title=EiraMoticons Config
