@@ -30,7 +30,7 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 		try {
 			Pattern pattern = Pattern.compile(regexFilter);
 			Matcher matcher = pattern.matcher("");
-			URL apiURL = new URL("http://twitchemotes.com/api_cache/v2/subscriber.json");
+			URL apiURL = new URL("https://twitchemotes.com/api_cache/v2/subscriber.json");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);

@@ -24,7 +24,7 @@ public class TwitchTurboPack implements IEmoticonLoader {
 
 	public TwitchTurboPack() {
 		try {
-			URL apiURL = new URL("http://twitchemotes.com/api_cache/v2/subscriber.json");
+			URL apiURL = new URL("https://twitchemotes.com/api_cache/v2/subscriber.json");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
