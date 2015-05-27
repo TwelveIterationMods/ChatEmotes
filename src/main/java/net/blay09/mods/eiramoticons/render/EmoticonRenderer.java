@@ -3,13 +3,10 @@
 
 package net.blay09.mods.eiramoticons.render;
 
-import net.blay09.mods.eiramoticons.ClientProxy;
-import net.blay09.mods.eiramoticons.EiraMoticons;
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Mouse;
@@ -46,9 +43,9 @@ public class EmoticonRenderer {
 		int mouseY = event.resolution.getScaledHeight() - Mouse.getY() * event.resolution.getScaledHeight() / mc.displayHeight - 1;
 
 		float chatScale = guiNewChat.getChatScale();
-		GL11.glPushMatrix();
-		GL11.glTranslatef(2f, (float) (event.resolution.getScaledHeight() - 48) + 20f, 0f);
-		GL11.glScalef(chatScale, chatScale, 1f);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(2f, (float) (event.resolution.getScaledHeight() - 48) + 20f, 0f);
+		GlStateManager.scale(chatScale, chatScale, 1f);
 
 		Emoticon hoverEmoticon = null;
 		for(int i = buffer.emoticons.length - 1; i >= 0; i--) {
@@ -56,22 +53,22 @@ public class EmoticonRenderer {
 				buffer.emoticons[i].requestTexture();
 				continue;
 			}
-			GL11.glPushMatrix();
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GlStateManager.func_179144_i(buffer.emoticons[i].getTextureId());
-			GL11.glColor4f(1f, 1f, 1f, buffer.alpha[i]);
+			GlStateManager.pushMatrix();
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GlStateManager.func_179144_i(buffer.emoticons[i].getTextureId()); // bindTexture
+			GlStateManager.color(1f, 1f, 1f, buffer.alpha[i]);
 			float scale = Math.min(1, EMOTICON_HEIGHT / buffer.emoticons[i].getHeight());
-			GL11.glTranslatef(buffer.positionX[i], buffer.positionY[i] - 3, 0);
-			GL11.glScalef(scale, scale, 1);
+			GlStateManager.translate(buffer.positionX[i], buffer.positionY[i] - 3, 0);
+			GlStateManager.scale(scale, scale, 1);
 			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 			if(hoverEmoticon == null && mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + buffer.emoticons[i].getWidth() * scale * chatScale && mouseY > (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] + buffer.emoticons[i].getHeight() * scale * chatScale) {
 				hoverEmoticon = buffer.emoticons[i];
 			}
 		}
 
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 
 		if(hoverEmoticon != null) {
 			drawHoveringText(hoverEmoticon.getTooltip(), mouseX, mouseY, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
