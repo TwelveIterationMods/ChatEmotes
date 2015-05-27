@@ -1,11 +1,12 @@
 EiraMoticons
 =======
 
-Minecraft Mod. Adds emoticons to Minecraft chat. By default, it adds all Twitch global emotes and most Twitch subscriber emotes, but can be configured to limit those further or add custom emotes by putting them into the "emoticons" folder in the Minecraft directory. The mod is client-side only - the server does not need it and will currently crash if put on there.
+This mod adds emoticons to Minecraft chat. By default, it adds a few of it's own emote packs as well as all Twitch global emotes and most Twitch subscriber emotes, but can be configured to include or not include any of the packs. One can also add custom emotes by putting them into the "emoticons" folder in the Minecraft directory. The mod is client-side only - the server does not need it and will simply ignore it.
 
 ##Useful Links
 * [Latest Builds](http://jenkins.blay09.net) on my Jenkins
-* [Minecraft Forum Topic]() for discussion, support and feature requests 
+* [Help Page and Emoticon List](http://blay09.net/?page_id=347)
+* [Minecraft Forum Topic](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2433229-eiramoticons-emoticons-in-minecraft-supports) for discussion, support and feature requests 
 * [EiraIRC - bring Twitch and IRC chat to Minecraft!](http://minecraft.curseforge.com/mc-mods/68420-eirairc)
 
 ##API
@@ -24,7 +25,7 @@ Then, add a dependency to either just the EiraMoticons API (api) or, if you want
 
 ```
 dependencies {
-    compile 'net.blay09.mods:eiramoticons:not.yet.available:dev' // or just api instead of dev
+    compile 'net.blay09.mods:eiramoticons:0.1.40:dev' // or just api instead of dev
 }
 ```
 
