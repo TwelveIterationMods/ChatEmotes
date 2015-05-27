@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
@@ -16,6 +17,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -30,8 +32,7 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 		try {
 			Pattern pattern = Pattern.compile(regexFilter);
 			Matcher matcher = pattern.matcher("");
-			URL apiURL = new URL("https://twitchemotes.com/api_cache/v2/subscriber.json");
-			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
+			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader();
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
 			if(root != null) {
@@ -56,6 +57,7 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 					}
 				}
 			}
+			reader.close();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

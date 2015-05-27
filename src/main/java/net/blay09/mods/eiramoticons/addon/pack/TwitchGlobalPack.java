@@ -6,6 +6,7 @@ package net.blay09.mods.eiramoticons.addon.pack;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
@@ -15,6 +16,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -25,8 +27,7 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 
 	public TwitchGlobalPack() {
 		try {
-			URL apiURL = new URL("https://twitchemotes.com/api_cache/v2/global.json");
-			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
+			Reader reader = TwitchEmotesAPI.newGlobalEmotesReader();
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
 			if(root != null) {
@@ -38,6 +39,7 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch"));
 				}
 			}
+			reader.close();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
