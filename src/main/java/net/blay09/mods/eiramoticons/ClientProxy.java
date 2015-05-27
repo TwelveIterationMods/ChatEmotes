@@ -52,6 +52,8 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForge.EVENT_BUS.register(renderer);
 
 		MinecraftForge.EVENT_BUS.register(this);
+
+		TwitchEmotesAPI.initialize(mc.mcDataDir);
 	}
 
 	@Override
