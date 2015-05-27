@@ -1,4 +1,7 @@
 def BUILD_NUMBER = System.getenv("BUILD_NUMBER") ?: "0"
+def MAVEN_REPO = System.getenv("MAVEN_REPO") ?: ""
+def MAVEN_USERNAME = System.getenv("MAVEN_USERNAME") ?: ""
+def MAVEN_PASSWORD = System.getenv("MAVEN_PASSWORD") ?: ""
 
 buildscript {
     repositories {
@@ -47,6 +50,7 @@ repositories {
 
 dependencies {
     compile 'net.blay09.mods:eirairc:2.8.218:dev'
+    deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 
 processResources
@@ -93,4 +97,23 @@ task jarDev(type: Jar) {
 artifacts {
     archives jarAPI
     archives jarDev
+}
+
+uploadArchives {
+    dependsOn 'reobf'
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            
+            repository(url: MAVEN_REPO) {
+                authentication(userName: MAVEN_USERNAME, password: MAVEN_PASSWORD)
+            }
+            
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+            }
+        }
+    }
 }
