@@ -25,7 +25,7 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 
 	public TwitchGlobalPack() {
 		try {
-			URL apiURL = new URL("http://twitchemotes.com/api_cache/v2/global.json");
+			URL apiURL = new URL("https://twitchemotes.com/api_cache/v2/global.json");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
