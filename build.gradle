@@ -21,6 +21,7 @@ buildscript {
 }
 
 apply plugin: 'forge'
+apply plugin: 'maven'
 
 version = "0.1." + BUILD_NUMBER
 group= "net.blay09.mods"
