@@ -29,12 +29,14 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
-			template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
-			JsonObject emotes = root.getAsJsonObject("emotes");
-			for(Map.Entry<String, JsonElement> entry : emotes.entrySet()) {
-				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(entry.getKey(), this);
-				emoticon.setLoadData(entry.getValue().getAsJsonObject().get("image_id").getAsInt());
-				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch"));
+			if(root != null) {
+				template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
+				JsonObject emotes = root.getAsJsonObject("emotes");
+				for(Map.Entry<String, JsonElement> entry : emotes.entrySet()) {
+					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(entry.getKey(), this);
+					emoticon.setLoadData(entry.getValue().getAsJsonObject().get("image_id").getAsInt());
+					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch"));
+				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -46,9 +48,11 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", emoticon.getLoadData().toString())));
-			if(image != null) {
-				emoticon.setImage(image);
+			if(template != null) {
+				BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", emoticon.getLoadData().toString())));
+				if (image != null) {
+					emoticon.setImage(image);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
