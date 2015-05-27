@@ -3,11 +3,6 @@
 
 package net.blay09.mods.eiramoticons;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.addon.pack.*;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
@@ -24,11 +19,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
-	private static final String FONT_TEXTURE = "textures/font/ascii.png";
+	public static final ResourceLocation FONT_TEXTURE = new ResourceLocation("textures/font/ascii.png");
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -39,11 +39,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
-		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, new ResourceLocation(FONT_TEXTURE), mc.renderEngine, false);
-		fontRenderer.setUnicodeFlag(mc.func_152349_b());
+		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, FONT_TEXTURE, mc.renderEngine, false);
+		fontRenderer.setUnicodeFlag(mc.isUnicode());
 		fontRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
 		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
-		mc.fontRenderer = fontRenderer;
+		mc.fontRendererObj = fontRenderer;
 
 		ClientCommandHandler.instance.registerCommand(new CommandEmoticons());
 

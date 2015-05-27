@@ -3,14 +3,16 @@
 
 package net.blay09.mods.eiramoticons.render;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.blay09.mods.eiramoticons.ClientProxy;
+import net.blay09.mods.eiramoticons.EiraMoticons;
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -40,10 +42,10 @@ public class EmoticonRenderer {
 		FontRendererExt.enableEmoticons = false;
 
 		GuiNewChat guiNewChat = mc.ingameGUI.getChatGUI();
-		int mouseX = event.mouseX;
-		int mouseY = event.mouseY;
+		int mouseX = Mouse.getX() * event.resolution.getScaledWidth() / mc.displayWidth;
+		int mouseY = event.resolution.getScaledHeight() - Mouse.getY() * event.resolution.getScaledHeight() / mc.displayHeight - 1;
 
-		float chatScale = guiNewChat.func_146244_h(); // mc.gameSettings.chatScale
+		float chatScale = guiNewChat.getChatScale();
 		GL11.glPushMatrix();
 		GL11.glTranslatef(2f, (float) (event.resolution.getScaledHeight() - 48) + 20f, 0f);
 		GL11.glScalef(chatScale, chatScale, 1f);
@@ -57,7 +59,7 @@ public class EmoticonRenderer {
 			GL11.glPushMatrix();
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer.emoticons[i].getTextureId());
+			GlStateManager.func_179144_i(buffer.emoticons[i].getTextureId());
 			GL11.glColor4f(1f, 1f, 1f, buffer.alpha[i]);
 			float scale = Math.min(1, EMOTICON_HEIGHT / buffer.emoticons[i].getHeight());
 			GL11.glTranslatef(buffer.positionX[i], buffer.positionY[i] - 3, 0);
@@ -72,13 +74,13 @@ public class EmoticonRenderer {
 		GL11.glPopMatrix();
 
 		if(hoverEmoticon != null) {
-			drawHoveringText(hoverEmoticon.getTooltip(), event.mouseX, event.mouseY, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
+			drawHoveringText(hoverEmoticon.getTooltip(), mouseX, mouseY, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
 		}
 
 		// Clear buffer
 		buffer.emoticons = new Emoticon[0];
-		buffer.positionX = new int[0];
-		buffer.positionY = new int[0];
+		buffer.positionX = new float[0];
+		buffer.positionY = new float[0];
 		buffer.alpha = new float[0];
 	}
 
@@ -93,33 +95,35 @@ public class EmoticonRenderer {
 		GL11.glEnd();
 	}
 
-	private static void drawGradientRect(int p_73733_1_, int p_73733_2_, int p_73733_3_, int p_73733_4_, int p_73733_5_, int p_73733_6_, float zLevel) {
-		float f = (float)(p_73733_5_ >> 24 & 255) / 255.0F;
-		float f1 = (float)(p_73733_5_ >> 16 & 255) / 255.0F;
-		float f2 = (float)(p_73733_5_ >> 8 & 255) / 255.0F;
-		float f3 = (float)(p_73733_5_ & 255) / 255.0F;
-		float f4 = (float)(p_73733_6_ >> 24 & 255) / 255.0F;
-		float f5 = (float)(p_73733_6_ >> 16 & 255) / 255.0F;
-		float f6 = (float)(p_73733_6_ >> 8 & 255) / 255.0F;
-		float f7 = (float)(p_73733_6_ & 255) / 255.0F;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA_F(f1, f2, f3, f);
-		tessellator.addVertex((double)p_73733_3_, (double)p_73733_2_, (double) zLevel);
-		tessellator.addVertex((double)p_73733_1_, (double)p_73733_2_, (double) zLevel);
-		tessellator.setColorRGBA_F(f5, f6, f7, f4);
-		tessellator.addVertex((double)p_73733_1_, (double)p_73733_4_, (double) zLevel);
-		tessellator.addVertex((double)p_73733_3_, (double)p_73733_4_, (double) zLevel);
+	protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor, double zLevel)
+	{
+		float f = (float) (startColor >> 24 & 255) / 255.0F;
+		float f1 = (float) (startColor >> 16 & 255) / 255.0F;
+		float f2 = (float) (startColor >> 8 & 255) / 255.0F;
+		float f3 = (float) (startColor & 255) / 255.0F;
+		float f4 = (float) (endColor >> 24 & 255) / 255.0F;
+		float f5 = (float) (endColor >> 16 & 255) / 255.0F;
+		float f6 = (float) (endColor >> 8 & 255) / 255.0F;
+		float f7 = (float) (endColor & 255) / 255.0F;
+		GlStateManager.func_179090_x();
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
+		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.shadeModel(7425);
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		worldrenderer.startDrawingQuads();
+		worldrenderer.func_178960_a(f1, f2, f3, f);
+		worldrenderer.addVertex((double) right, (double) top,zLevel);
+		worldrenderer.addVertex((double) left, (double) top, zLevel);
+		worldrenderer.func_178960_a(f5, f6, f7, f4);
+		worldrenderer.addVertex((double) left, (double) bottom, zLevel);
+		worldrenderer.addVertex((double) right, (double) bottom, zLevel);
 		tessellator.draw();
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GlStateManager.shadeModel(7424);
+		GlStateManager.disableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.func_179098_w();
 	}
 
 	protected void drawHoveringText(String[] lines, int mouseX, int mouseY, int width, int height) {
@@ -131,7 +135,7 @@ public class EmoticonRenderer {
 
 			int maxLineWidth = 0;
 			for(String s : lines) {
-				int lineWidth = mc.fontRenderer.getStringWidth(s);
+				int lineWidth = mc.fontRendererObj.getStringWidth(s);
 				if (lineWidth > maxLineWidth)
 				{
 					maxLineWidth = lineWidth;
@@ -155,20 +159,20 @@ public class EmoticonRenderer {
 			}
 
 			int bgColor = -267386864;
-			drawGradientRect(x - 3, y - 4, x + maxLineWidth + 3, y - 3, bgColor, bgColor, 300f);
-			drawGradientRect(x - 3, y + tooltipHeight + 3, x + maxLineWidth + 3, y + tooltipHeight + 4, bgColor, bgColor, 300f);
-			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y + tooltipHeight + 3, bgColor, bgColor, 300f);
-			drawGradientRect(x - 4, y - 3, x - 3, y + tooltipHeight + 3, bgColor, bgColor, 300f);
-			drawGradientRect(x + maxLineWidth + 3, y - 3, x + maxLineWidth + 4, y + tooltipHeight + 3, bgColor, bgColor, 300f);
+			drawGradientRect(x - 3, y - 4, x + maxLineWidth + 3, y - 3, bgColor, bgColor, 300);
+			drawGradientRect(x - 3, y + tooltipHeight + 3, x + maxLineWidth + 3, y + tooltipHeight + 4, bgColor, bgColor, 300);
+			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y + tooltipHeight + 3, bgColor, bgColor, 300);
+			drawGradientRect(x - 4, y - 3, x - 3, y + tooltipHeight + 3, bgColor, bgColor, 300);
+			drawGradientRect(x + maxLineWidth + 3, y - 3, x + maxLineWidth + 4, y + tooltipHeight + 3, bgColor, bgColor, 300);
 			int fgColor1 = 1347420415;
 			int fgColor2 = (fgColor1 & 16711422) >> 1 | fgColor1 & -16777216;
-			drawGradientRect(x - 3, y - 3 + 1, x - 3 + 1, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300f);
-			drawGradientRect(x + maxLineWidth + 2, y - 3 + 1, x + maxLineWidth + 3, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300f);
-			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y - 3 + 1, fgColor1, fgColor1, 300f);
-			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300f);
+			drawGradientRect(x - 3, y - 3 + 1, x - 3 + 1, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300);
+			drawGradientRect(x + maxLineWidth + 2, y - 3 + 1, x + maxLineWidth + 3, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300);
+			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y - 3 + 1, fgColor1, fgColor1, 300);
+			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300);
 
 			for(String line : lines) {
-				mc.fontRenderer.drawStringWithShadow(line, x, y, -1);
+				mc.fontRendererObj.func_175065_a(line, x, y, -1, true); // drawStringWithShadow
 				y += 10;
 			}
 

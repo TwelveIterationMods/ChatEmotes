@@ -23,12 +23,12 @@ buildscript {
 apply plugin: 'forge'
 apply plugin: 'maven'
 
-version = "0.1." + BUILD_NUMBER
+version = "2.0." + BUILD_NUMBER
 group= "net.blay09.mods"
 archivesBaseName = "eiramoticons"
 
 minecraft {
-    version = "1.7.10-10.13.3.1408-1.7.10"
+    version = "1.8-11.14.1.1419"
     runDir = "eclipse"
 }
 
@@ -54,7 +54,7 @@ configurations {
 }
 
 dependencies {
-    compile 'net.blay09.mods:eirairc:2.8.243:dev'
+    compile 'net.blay09.mods:eirairc:3.8.126:dev'
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 

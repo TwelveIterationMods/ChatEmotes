@@ -5,6 +5,7 @@ package net.blay09.mods.eiramoticons;
 
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
@@ -26,7 +27,7 @@ public class CommandEmoticons extends CommandBase {
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
 		if(args.length != 1) {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}

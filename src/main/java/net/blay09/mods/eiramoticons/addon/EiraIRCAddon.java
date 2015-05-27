@@ -3,11 +3,11 @@
 
 package net.blay09.mods.eiramoticons.addon;
 
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eirairc.api.event.ApplyEmoticons;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @SuppressWarnings("unused")
 public class EiraIRCAddon {
