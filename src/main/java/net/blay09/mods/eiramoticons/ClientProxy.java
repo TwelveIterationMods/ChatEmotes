@@ -40,10 +40,10 @@ public class ClientProxy extends CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, new ResourceLocation(FONT_TEXTURE), mc.renderEngine, false);
-		fontRenderer.setUnicodeFlag(mc.func_152349_b());
+		fontRenderer.setUnicodeFlag(mc.isUnicode());
 		fontRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
 		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
-		mc.fontRenderer = fontRenderer;
+		mc.fontRendererObj = fontRenderer;
 
 		ClientCommandHandler.instance.registerCommand(new CommandEmoticons());
 

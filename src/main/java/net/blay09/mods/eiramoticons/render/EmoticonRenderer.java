@@ -44,7 +44,7 @@ public class EmoticonRenderer {
 		int mouseX = event.mouseX;
 		int mouseY = event.mouseY;
 
-		float chatScale = guiNewChat.func_146244_h(); // mc.gameSettings.chatScale
+		float chatScale = guiNewChat.getChatScale();
 		GL11.glPushMatrix();
 		GL11.glTranslatef(2f, (float) (event.resolution.getScaledHeight() - 48) + 20f, 0f);
 		GL11.glScalef(chatScale, chatScale, 1f);
@@ -147,7 +147,7 @@ public class EmoticonRenderer {
 
 			int maxLineWidth = 0;
 			for(String s : lines) {
-				int lineWidth = mc.fontRenderer.getStringWidth(s);
+				int lineWidth = mc.fontRendererObj.getStringWidth(s);
 				if (lineWidth > maxLineWidth)
 				{
 					maxLineWidth = lineWidth;
@@ -184,7 +184,7 @@ public class EmoticonRenderer {
 			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300f);
 
 			for(String line : lines) {
-				mc.fontRenderer.drawStringWithShadow(line, x, y, -1);
+				mc.fontRendererObj.drawStringWithShadow(line, x, y, -1);
 				y += 10;
 			}
 

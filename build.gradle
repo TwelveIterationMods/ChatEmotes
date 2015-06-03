@@ -31,7 +31,7 @@ minecraft {
     version = "1.7.10-10.13.3.1408-1.7.10"
     runDir = "eclipse"
 
-    mappings = "stable_16"
+    mappings = "stable_12"
 }
 
 idea {
