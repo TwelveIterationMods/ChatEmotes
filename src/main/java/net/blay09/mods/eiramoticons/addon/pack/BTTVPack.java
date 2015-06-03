@@ -11,6 +11,8 @@ import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -56,6 +58,7 @@ public class BTTVPack implements IEmoticonLoader {
 		}
 		IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.list.clickHere");
 		linkComponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://nightdev.com/betterttv/faces.php"));
+		linkComponent.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("https://nightdev.com/betterttv/faces.php")));
 		linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
 		linkComponent.getChatStyle().setBold(true);
 		linkComponent.getChatStyle().setUnderlined(true);

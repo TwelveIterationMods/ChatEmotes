@@ -21,7 +21,7 @@ public class IncludedPack implements IEmoticonLoader {
 			IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(emote, this);
 			emoticon.setTooltip(I18n.format("eiramoticons:group." + group));
 			emoticon.setLoadData(new ResourceLocation("eiramoticons", "packs/" + group + "/" + emote + ".png"));
-			sb.append(" ").append(emote);
+			sb.append("  ").append(emote);
 		}
 		EiraMoticonsAPI.registerEmoticonGroup(group, EiraMoticonsAPI.replaceEmoticons(new ChatComponentTranslation("eiramoticons:command.list." + group, sb.toString())));
 	}
