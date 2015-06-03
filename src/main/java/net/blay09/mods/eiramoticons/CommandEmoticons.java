@@ -13,10 +13,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.event.ClickEvent;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +62,7 @@ public class CommandEmoticons extends CommandBase {
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args) {
+	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		if(args.length == 0) {
 			List<String> list = new ArrayList<String>();
 			list.add("reload");
@@ -76,4 +73,5 @@ public class CommandEmoticons extends CommandBase {
 		}
 		return null;
 	}
+
 }
