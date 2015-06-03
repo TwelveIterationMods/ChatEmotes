@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL12;
 
 public class EmoticonRenderer {
 
+	private static final float EMOTICON_WIDTH = 16;
 	private static final float EMOTICON_HEIGHT = 14;
 
 	private final Minecraft mc;
@@ -59,12 +60,27 @@ public class EmoticonRenderer {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer.emoticons[i].getTextureId());
 			GL11.glColor4f(1f, 1f, 1f, buffer.alpha[i]);
-			float scale = Math.min(1, EMOTICON_HEIGHT / buffer.emoticons[i].getHeight());
-			GL11.glTranslatef(buffer.positionX[i], buffer.positionY[i] - 3, 0);
-			GL11.glScalef(scale, scale, 1);
+
+			float renderWidth = buffer.emoticons[i].getWidth();
+			float renderHeight = buffer.emoticons[i].getHeight();
+			if(renderWidth > EMOTICON_WIDTH) {
+				float factor = EMOTICON_WIDTH / renderWidth;
+				renderWidth *= factor;
+				renderHeight *= factor;
+			}
+			if(renderHeight > EMOTICON_HEIGHT) {
+				float factor = EMOTICON_HEIGHT / renderHeight;
+				renderWidth *= factor;
+				renderHeight *= factor;
+			}
+			float scaleX = renderWidth / buffer.emoticons[i].getWidth();
+			float scaleY = renderHeight / buffer.emoticons[i].getHeight();
+
+			GL11.glTranslatef(buffer.positionX[i] + (EMOTICON_WIDTH / 2 - renderWidth / 2), buffer.positionY[i] - 3 + (EMOTICON_HEIGHT / 2 - renderHeight / 2), 0);
+			GL11.glScalef(scaleX, scaleY, 1);
 			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
 			GL11.glPopMatrix();
-			if(hoverEmoticon == null && mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + buffer.emoticons[i].getWidth() * scale * chatScale && mouseY > (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] + buffer.emoticons[i].getHeight() * scale * chatScale) {
+			if(hoverEmoticon == null && mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + buffer.emoticons[i].getWidth() * scaleX * chatScale && mouseY > (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] + buffer.emoticons[i].getHeight() * scaleY * chatScale) {
 				hoverEmoticon = buffer.emoticons[i];
 			}
 		}
