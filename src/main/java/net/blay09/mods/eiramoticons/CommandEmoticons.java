@@ -3,6 +3,8 @@
 
 package net.blay09.mods.eiramoticons;
 
+import net.blay09.mods.eiramoticons.emoticon.EmoticonGroup;
+import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -45,6 +47,10 @@ public class CommandEmoticons extends CommandBase {
 			linkComponent.getChatStyle().setBold(true);
 			linkComponent.getChatStyle().setUnderlined(true);
 			sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.help", linkComponent));
+		} else if(args[0].equals("list")) {
+			for(EmoticonGroup group : EmoticonRegistry.getGroups()) {
+				sender.addChatMessage(group.listComponent);
+			}
 		} else {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}

@@ -12,6 +12,10 @@ import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -63,6 +67,12 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.list.clickHere");
+		linkComponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://twitchemotes.com/"));
+		linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
+		linkComponent.getChatStyle().setBold(true);
+		linkComponent.getChatStyle().setUnderlined(true);
+		EiraMoticonsAPI.registerEmoticonGroup("Twitch Subscriber", new ChatComponentTranslation("eiramoticons:command.list.twitch.subscriber", linkComponent));
 	}
 
 	@Override

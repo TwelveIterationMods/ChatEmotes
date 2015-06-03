@@ -3,6 +3,8 @@
 
 package net.blay09.mods.eiramoticons.api;
 
+import net.minecraft.util.IChatComponent;
+
 public class EiraMoticonsAPI {
 
 	private static IInternalMethods internalMethods;
@@ -23,6 +25,32 @@ public class EiraMoticonsAPI {
 	 */
 	public static IEmoticon registerEmoticon(String name, IEmoticonLoader loader) {
 		return internalMethods.registerEmoticon(name, loader);
+	}
+
+	/**
+	 * Registers an emoticon group to be displayed in the /emoticons list command.
+	 * @param groupName the name of this group
+	 * @param listComponent the chat component that should be displayed when the /emoticons list command is run
+	 */
+	public static void registerEmoticonGroup(String groupName, IChatComponent listComponent) {
+		internalMethods.registerEmoticonGroup(groupName, listComponent);
+	}
+
+	/**
+	 * Replaces emoticon names in the string with the respective emoticon formatting codes.
+	 * @param s the string to be searched for emoticons
+	 */
+	public static String replaceEmoticons(String s) {
+		return internalMethods.replaceEmoticons(s);
+	}
+
+	/**
+	 * Creates a complete copy of this chat component, replacing all emoticon names with the actual emoticons.
+	 * @param component the component to be searched for emoticons
+	 * @return a copy of the given chat component with emoticons
+	 */
+	public static IChatComponent replaceEmoticons(IChatComponent component) {
+		return internalMethods.replaceEmoticons(component);
 	}
 
 }

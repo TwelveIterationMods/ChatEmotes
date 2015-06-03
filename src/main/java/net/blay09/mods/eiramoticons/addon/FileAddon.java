@@ -4,11 +4,14 @@
 package net.blay09.mods.eiramoticons.addon;
 
 import com.google.common.io.Files;
+import net.blay09.mods.eiramoticons.EiraMoticons;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
+import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ChatComponentTranslation;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -31,13 +34,18 @@ public class FileAddon implements IEmoticonLoader {
 				return name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".bmp");
 			}
 		});
+		StringBuilder sb = new StringBuilder();
 		if(emoticons != null) {
 			for(File emoticonFile : emoticons) {
 				String nameWithoutExt = Files.getNameWithoutExtension(emoticonFile.getName());
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(nameWithoutExt, this);
+				sb.append(" ").append(nameWithoutExt);
 				emoticon.setLoadData(emoticonFile);
 				emoticon.setTooltip(I18n.format("eiramoticons:group.custom"));
 			}
+		}
+		if(sb.length() > 0) {
+			EiraMoticonsAPI.registerEmoticonGroup("File Addon", EiraMoticonsAPI.replaceEmoticons(new ChatComponentTranslation("eiramoticons:command.list.file", sb.toString())));
 		}
 	}
 

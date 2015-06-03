@@ -45,5 +45,14 @@ eiramoticons:group.user=User Pack (§r%s§e)
 
 eiramoticons:gui.config.title=EiraMoticons Config
 
-eiramoticons:command.help=* Click %s to get to the Official §iEiraMoticons$r help page.
+eiramoticons:command.help=* Click %s to get to the Official §oEiraMoticons§r help page.
 eiramoticons:command.help.clickHere=here
+eiramoticons:command.list.default=Default Pack: %s
+eiramoticons:command.list.animu=Animu Pack: %s
+eiramoticons:command.list.file=Custom Pack: %s
+eiramoticons:command.list.twitch.global=Twitch Global Pack: click %s
+eiramoticons:command.list.twitch.turbo=Twitch Turbo Pack: click %s
+eiramoticons:command.list.twitch.bttv=BetterTwitchTV Pack: click %s
+eiramoticons:command.list.twitch.subscriber=Twitch Subscriber Pack: click %s
+eiramoticons:command.list.twitch.smiley=Twitch Smiley Pack: click %s
+eiramoticons:command.list.clickHere=here
