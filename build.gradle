@@ -56,7 +56,7 @@ configurations {
 }
 
 dependencies {
-    compile 'net.blay09.mods:eirairc:2.8.243:dev'
+    compile 'net.blay09.mods:eirairc:2.8.250:dev'
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 
