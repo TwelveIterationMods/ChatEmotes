@@ -65,15 +65,11 @@ public class TwitchTurboPack implements IEmoticonLoader {
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
-		try {
-			if(template != null) {
-				BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", emoticon.getLoadData().toString())));
-				if (image != null) {
-					emoticon.setImage(image);
-				}
+		if(template != null) {
+			BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(template, (Integer) emoticon.getLoadData(), "turbo");
+			if (image != null) {
+				emoticon.setImage(image);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 

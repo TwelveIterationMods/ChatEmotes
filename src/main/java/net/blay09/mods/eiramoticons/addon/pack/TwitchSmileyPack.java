@@ -3,6 +3,7 @@
 
 package net.blay09.mods.eiramoticons.addon.pack;
 
+import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
@@ -66,13 +67,9 @@ public class TwitchSmileyPack implements IEmoticonLoader {
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
-		try {
-			BufferedImage image = ImageIO.read(new URL(TEMPLATE.replace("{image_id}", emoticon.getLoadData().toString())));
-			if(image != null) {
-				emoticon.setImage(image);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(TEMPLATE, (Integer) emoticon.getLoadData(), "smiley");
+		if(image != null) {
+			emoticon.setImage(image);
 		}
 	}
 

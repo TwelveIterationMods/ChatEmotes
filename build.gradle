@@ -30,6 +30,8 @@ archivesBaseName = "eiramoticons"
 minecraft {
     version = "1.8-11.14.1.1419"
     runDir = "eclipse"
+
+    mappings = "stable_16"
 }
 
 idea {

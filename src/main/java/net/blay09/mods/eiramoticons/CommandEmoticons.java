@@ -3,6 +3,7 @@
 
 package net.blay09.mods.eiramoticons;
 
+import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonGroup;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
@@ -27,7 +28,7 @@ public class CommandEmoticons extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/emoticons reload|help|list|config";
+		return "/emoticons reload|help|list|config|clearcache";
 	}
 
 	@Override
@@ -56,6 +57,9 @@ public class CommandEmoticons extends CommandBase {
 			}
 		} else if(args[0].equals("config")) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiEiraMoticonsConfig(null));
+		} else if(args[0].equals("clearcache")) {
+			TwitchEmotesAPI.clearCache();
+			sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.clearcache"));
 		} else {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}
