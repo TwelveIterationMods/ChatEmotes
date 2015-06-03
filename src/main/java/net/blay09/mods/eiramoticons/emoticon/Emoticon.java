@@ -5,7 +5,6 @@ package net.blay09.mods.eiramoticons.emoticon;
 
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
-import net.blay09.mods.eiramoticons.emoticon.AsyncEmoticonLoader;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.I18n;
 
@@ -17,12 +16,14 @@ public class Emoticon implements IEmoticon {
 	public final int id;
 	public final String name;
 
+	private Object identifier;
+	private String[] tooltipLines;
+	private boolean manualOnly;
+
 	private boolean loadRequested;
 	private int textureId = -1;
-	private Object identifier;
 	private int width;
 	private int height;
-	private String[] tooltipLines;
 	private BufferedImage loadBuffer;
 
 	public Emoticon(int id, String name, IEmoticonLoader loader) {
@@ -64,6 +65,16 @@ public class Emoticon implements IEmoticon {
 	}
 
 	@Override
+	public boolean isManualOnly() {
+		return manualOnly;
+	}
+
+	@Override
+	public void setManualOnly(boolean manualOnly) {
+		this.manualOnly = manualOnly;
+	}
+
+	@Override
 	public void setTooltip(String emoticonGroup) {
 		tooltipLines = new String[] {I18n.format("eiramoticons:tooltip.name", name), I18n.format("eiramoticons:tooltip.group", emoticonGroup)};
 	}
@@ -100,6 +111,12 @@ public class Emoticon implements IEmoticon {
 		if(!loadRequested) {
 			loadRequested = true;
 			AsyncEmoticonLoader.instance.loadAsync(this);
+		}
+	}
+
+	public void disposeTexture() {
+		if(textureId != -1) {
+			TextureUtil.deleteTexture(textureId);
 		}
 	}
 

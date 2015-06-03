@@ -24,7 +24,7 @@ public class EmoticonHandler {
 			}
 			String word = matcher.group();
 			Emoticon emoticon = EmoticonRegistry.fromName(word);
-			if(emoticon != null) {
+			if(emoticon != null && !emoticon.isManualOnly()) {
 				sb.append("\u00a7z").append(emoticon.id).append("    ");
 			} else {
 				sb.append(word);

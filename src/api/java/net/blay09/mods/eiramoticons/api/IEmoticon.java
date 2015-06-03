@@ -58,4 +58,15 @@ public interface IEmoticon {
 	 * @return the loader that supplies the BufferedImage for this emoticon
 	 */
 	IEmoticonLoader getLoader();
+
+	/**
+	 * @return true if this emoticon can not be used with an emoticon code, only by a direct formatting code
+	 */
+	boolean isManualOnly();
+
+	/**
+	 * Set this emoticon to not be parsed from it's emoticon code and instead only appear when the formatting code was used directly
+	 * @param manualOnly true if this emoticon can not be used by players
+	 */
+	void setManualOnly(boolean manualOnly);
 }
