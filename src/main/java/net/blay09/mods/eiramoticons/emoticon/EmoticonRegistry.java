@@ -35,6 +35,9 @@ public class EmoticonRegistry {
 	}
 
 	public static void reloadEmoticons() {
+		for(Emoticon emoticon : namedMap.values()) {
+			emoticon.disposeTexture();
+		}
 		idCounter.set(0);
 		emoticonMap.clearMap();
 		namedMap.clear();

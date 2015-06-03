@@ -114,6 +114,12 @@ public class Emoticon implements IEmoticon {
 		}
 	}
 
+	public void disposeTexture() {
+		if(textureId != -1) {
+			TextureUtil.deleteTexture(textureId);
+		}
+	}
+
 	public String[] getTooltip() {
 		return tooltipLines;
 	}
