@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class TwitchEmotesAPI {
 
@@ -15,15 +16,16 @@ public class TwitchEmotesAPI {
 	private static final String URL_GLOBAL = "https://twitchemotes.com/api_cache/v2/global.json";
 	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v2/subscriber.json";
 
+	private static File cacheDir;
 	private static File cachedEmotes;
 	private static File cachedGlobal;
 	private static File cachedSubscriber;
 
 	public static void initialize(File mcDataDir) {
-		cachedEmotes = new File(mcDataDir, "emoticons/cache/images/");
-		cachedEmotes.mkdirs();
-		cachedGlobal = new File(mcDataDir, "emoticons/cache/global.json");
-		cachedSubscriber = new File(mcDataDir, "emoticons/cache/subscriber.json");
+		cacheDir = new File(mcDataDir, "emoticons/cache");
+		cachedEmotes = new File(cacheDir, "images/");
+		cachedGlobal = new File(cacheDir, "global.json");
+		cachedSubscriber = new File(cacheDir, "subscriber.json");
 	}
 
 	private static boolean shouldUseCacheFileJson(File file) {
@@ -64,7 +66,9 @@ public class TwitchEmotesAPI {
 			BufferedImage image = ImageIO.read(new URL(template.replace("{image_id}", String.valueOf(imageId))));
 			if(image != null) {
 				try {
-					ImageIO.write(image, "PNG", cachedImageFile);
+					if(cachedImageFile.mkdirs()) {
+						ImageIO.write(image, "PNG", cachedImageFile);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -74,5 +78,13 @@ public class TwitchEmotesAPI {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void clearCache() {
+		try {
+			FileUtils.deleteDirectory(cacheDir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
