@@ -44,3 +44,6 @@ eiramoticons:group.animu=Animu Pack
 eiramoticons:group.user=User Pack (§r%s§e)
 
 eiramoticons:gui.config.title=EiraMoticons Config
+
+eiramoticons:command.help=* Click %s to get to the Official §iEiraMoticons$r help page.
+eiramoticons:command.help.clickHere=here

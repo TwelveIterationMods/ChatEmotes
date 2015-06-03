@@ -7,6 +7,11 @@ import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 public class CommandEmoticons extends CommandBase {
 
@@ -33,6 +38,13 @@ public class CommandEmoticons extends CommandBase {
 		if(args[0].equals("reload")) {
 			EmoticonConfig.hardReload();
 			EmoticonRegistry.reloadEmoticons();
+		} else if(args[0].equals("help")) {
+			IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.help.clickHere");
+			linkComponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://blay09.net/?page_id=347"));
+			linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
+			linkComponent.getChatStyle().setBold(true);
+			linkComponent.getChatStyle().setUnderlined(true);
+			sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.help", linkComponent));
 		} else {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}
