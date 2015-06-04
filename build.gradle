@@ -122,7 +122,9 @@ uploadArchives {
                 artifactId = project.archivesBaseName
             }
 
-            pom.dependencies.removeAll { it.scope == "compile" }
+            pom.whenConfigured {
+                pom.dependencies.removeAll { it.scope == "compile" }
+            }
         }
     }
 }
