@@ -120,8 +120,9 @@ uploadArchives {
                 groupId = project.group
                 version = project.version
                 artifactId = project.archivesBaseName
-                dependencies.removeAll { it.scope == "compile" }
             }
+
+            pom.dependencies.removeAll { it.scope == "compile" }
         }
     }
 }
