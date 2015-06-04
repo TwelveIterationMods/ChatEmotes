@@ -120,6 +120,7 @@ uploadArchives {
                 groupId = project.group
                 version = project.version
                 artifactId = project.archivesBaseName
+                dependencies = []
             }
         }
     }
