@@ -42,10 +42,6 @@ idea {
 
 repositories {
     maven {
-        name = "dynmap"
-        url = "http://repo.mikeprimm.com/"
-    }
-    maven {
         name = "eiramods"
         url ="http://repo.blay09.net"
     }
