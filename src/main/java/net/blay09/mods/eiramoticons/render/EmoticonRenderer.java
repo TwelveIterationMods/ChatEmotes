@@ -49,7 +49,7 @@ public class EmoticonRenderer {
 		GlStateManager.scale(chatScale, chatScale, 1f);
 
 		Emoticon hoverEmoticon = null;
-		for(int i = buffer.emoticons.length - 1; i >= 0; i--) {
+		for(int i = buffer.count - 1; i >= 0; i--) {
 			if(buffer.emoticons[i].getTextureId() == -1) {
 				buffer.emoticons[i].requestTexture();
 				continue;
@@ -90,10 +90,7 @@ public class EmoticonRenderer {
 		}
 
 		// Clear buffer
-		buffer.emoticons = new Emoticon[0];
-		buffer.positionX = new float[0];
-		buffer.positionY = new float[0];
-		buffer.alpha = new float[0];
+		buffer.freeMemory();
 	}
 
 	private static void drawTexturedRect(float x, float y, float width, float height) {

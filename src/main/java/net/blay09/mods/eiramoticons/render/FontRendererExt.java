@@ -71,10 +71,7 @@ public class FontRendererExt extends FontRenderer {
 				try {
 					Emoticon emoticon = EmoticonRegistry.fromId(Integer.parseInt(emoteId));
 					if (emoticon != null) {
-						emoticonBuffer.emoticons = ArrayUtils.add(emoticonBuffer.emoticons, emoticon);
-						emoticonBuffer.positionX = ArrayUtils.add(emoticonBuffer.positionX, x + super.getStringWidth(sb.toString()));
-						emoticonBuffer.positionY = ArrayUtils.add(emoticonBuffer.positionY, y);
-						emoticonBuffer.alpha = ArrayUtils.add(emoticonBuffer.alpha, (float) (color >> 24 & 255) / 255.0f);
+						emoticonBuffer.addEmoticon(emoticon, x + super.getStringWidth(sb.toString()), y, (float) (color >> 24 & 255) / 255.0f);
 					}
 				} catch (NumberFormatException ignored) {}
 				i = nextWhitespace;
