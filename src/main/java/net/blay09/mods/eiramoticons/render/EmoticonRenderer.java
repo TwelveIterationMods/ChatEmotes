@@ -76,7 +76,7 @@ public class EmoticonRenderer {
 			float scaleX = renderWidth / buffer.emoticons[i].getWidth();
 			float scaleY = renderHeight / buffer.emoticons[i].getHeight();
 
-			GL11.glTranslatef(buffer.positionX[i] + (EMOTICON_WIDTH / 2 - renderWidth / 2), buffer.positionY[i] - 3 + (EMOTICON_HEIGHT / 2 - renderHeight / 2), 0);
+			GL11.glTranslatef(buffer.positionX[i] + (EMOTICON_WIDTH / 2 - renderWidth / 2), buffer.positionY[i] - 4 + (EMOTICON_HEIGHT / 2 - renderHeight / 2), 0);
 			GL11.glScalef(scaleX, scaleY, 1);
 			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
 			GL11.glPopMatrix();
