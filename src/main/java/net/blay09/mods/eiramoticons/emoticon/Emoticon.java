@@ -5,6 +5,7 @@ package net.blay09.mods.eiramoticons.emoticon;
 
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
+import net.blay09.mods.eiramoticons.render.EmoticonRenderer;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.I18n;
 
@@ -24,6 +25,8 @@ public class Emoticon implements IEmoticon {
 	private int textureId = -1;
 	private int width;
 	private int height;
+	private float scaleX;
+	private float scaleY;
 	private BufferedImage loadBuffer;
 
 	public Emoticon(int id, String name, IEmoticonLoader loader) {
@@ -88,6 +91,20 @@ public class Emoticon implements IEmoticon {
 	public void setImage(BufferedImage image) {
 		width = image.getWidth();
 		height = image.getHeight();
+		float renderWidth = width;
+		float renderHeight = height;
+		if(renderWidth > EmoticonRenderer.EMOTICON_WIDTH) {
+			float factor = EmoticonRenderer.EMOTICON_WIDTH / renderWidth;
+			renderWidth *= factor;
+			renderHeight *= factor;
+		}
+		if(renderHeight > EmoticonRenderer.EMOTICON_HEIGHT) {
+			float factor = EmoticonRenderer.EMOTICON_HEIGHT / renderHeight;
+			renderWidth *= factor;
+			renderHeight *= factor;
+		}
+		scaleX = renderWidth / width;
+		scaleY = renderHeight / height;
 		loadBuffer = image;
 	}
 
@@ -122,5 +139,21 @@ public class Emoticon implements IEmoticon {
 
 	public String[] getTooltip() {
 		return tooltipLines;
+	}
+
+	@Override
+	public void setScale(float scaleX, float scaleY) {
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+	}
+
+	@Override
+	public float getScaleX() {
+		return scaleX;
+	}
+
+	@Override
+	public float getScaleY() {
+		return scaleY;
 	}
 }

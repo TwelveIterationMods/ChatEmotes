@@ -10,6 +10,8 @@ import java.nio.file.Files;
 
 public class TwitchEmotesAPI {
 
+	public static final int TWITCH_BASE_SIZE = 28;
+
 	private static final int CACHE_LIFETIME_JSON = 86400000;
 	private static final int CACHE_LIFETIME_IMAGE = 604800000;
 	private static final int TIMEOUT_TIME = 10000;

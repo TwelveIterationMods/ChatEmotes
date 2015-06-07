@@ -40,7 +40,7 @@ public class EmoticonConfig {
 
 	private static void loadFromConfig() {
 		enableMCEmotes = config.getBoolean("enableMCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableMCEmotes.tooltip"), "eiramoticons:config.enableMCEmotes");
-		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", GENERAL, "[a-z0-9][a-z0-9]+[A-Z].*", I18n.format("eiramoticons:config.twitchSubscriberRegex.tooltip"), "eiramoticons:config.twitchSubscriberRegex");
+		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", GENERAL, "[a-z0-9][a-z0-9]+[A-Z0-9].*", I18n.format("eiramoticons:config.twitchSubscriberRegex.tooltip"), "eiramoticons:config.twitchSubscriberRegex");
 		twitchSmileySet = config.getInt("twitchSmileySet", GENERAL, 0, 0, 2, I18n.format("eiramoticons:config.twitchSmileySet.tooltip"), "eiramoticons:config.twitchSmileySet");
 		enableIRCEmotes = config.getBoolean("enableIRCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableIRCEmotes.tooltip"), "eiramoticons:config.enableIRCEmotes");
 

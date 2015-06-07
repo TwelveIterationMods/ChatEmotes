@@ -31,6 +31,23 @@ public interface IEmoticon {
 	void setImage(BufferedImage image);
 
 	/**
+	 * Sets the scale factor for this emote. By default, EiraMoticons will scale emotes down to a maximum  size of 16x14.
+	 * @param scaleX
+	 * @param scaleY
+	 */
+	void setScale(float scaleX, float scaleY);
+
+	/**
+	 * @return The x scaling for this emoticon.  By default, EiraMoticons will scale emotes down to a maximum  size of 16x14.
+	 */
+	float getScaleX();
+
+	/**
+	 * @return The y scaling for this emoticon.  By default, EiraMoticons will scale emotes down to a maximum  size of 16x14.
+	 */
+	float getScaleY();
+
+	/**
 	 * Use the default tooltip for this emoticon, specifying a group as second line.
 	 * If you want to specify a fully customized tooltip, use setCustomTooltip instead.
 	 * @param emoticonGroup the group for this emoticon, will be displayed in the second line

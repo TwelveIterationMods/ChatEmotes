@@ -70,6 +70,9 @@ public class TwitchSmileyPack implements IEmoticonLoader {
 		BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(TEMPLATE, (Integer) emoticon.getLoadData(), "smiley");
 		if(image != null) {
 			emoticon.setImage(image);
+			if(image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
+				emoticon.setScale(0.5f, 0.5f);
+			}
 		}
 	}
 
