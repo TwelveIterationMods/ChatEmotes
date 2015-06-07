@@ -101,10 +101,6 @@ public class ClientProxy extends CommonProxy {
 			new IncludedPack("animu", new String[] {"aniRage", "aniCri", "aniLewd", "aniYui", "aniMeow", "aniNyan", "aniPraise", "aniScared", "aniWoah", "aniLove"});
 		}
 
-		if(EmoticonConfig.userPack) {
-			new UserPack();
-		}
-
 		// Custom Emotes
 		new FileAddon();
 
