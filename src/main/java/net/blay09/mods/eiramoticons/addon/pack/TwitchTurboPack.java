@@ -69,6 +69,9 @@ public class TwitchTurboPack implements IEmoticonLoader {
 			BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(template, (Integer) emoticon.getLoadData(), "turbo");
 			if (image != null) {
 				emoticon.setImage(image);
+				if(image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
+					emoticon.setScale(0.5f, 0.5f);
+				}
 			}
 		}
 	}
