@@ -63,12 +63,18 @@ public class EmoticonRenderer {
 
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
-			GL11.glTranslatef(buffer.positionX[i] + (EMOTICON_WIDTH / 2 - renderWidth / 2), buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2), 0);
+			float renderX = buffer.positionX[i] + (EMOTICON_WIDTH / 2 - renderWidth / 2);
+			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
+			GL11.glTranslatef(renderX, renderY, 0);
 			GL11.glScalef(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
 			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
 			GL11.glPopMatrix();
-			if(hoverEmoticon == null && mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX() * chatScale && mouseY > (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] + buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY() * chatScale) {
-				hoverEmoticon = buffer.emoticons[i];
+			if(hoverEmoticon == null) {
+				if(mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + renderWidth * chatScale) {
+					if(mouseY > (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] + renderHeight * chatScale) {
+						hoverEmoticon = buffer.emoticons[i];
+					}
+				}
 			}
 		}
 
