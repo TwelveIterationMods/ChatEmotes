@@ -5,6 +5,7 @@ package net.blay09.mods.eiramoticons.render;
 
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.renderer.*;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -19,10 +20,12 @@ public class EmoticonRenderer {
 	public static final float EMOTICON_HEIGHT = 14;
 
 	private final Minecraft mc;
+	private final int spaceWidth;
 	private final EmoticonBuffer buffer = new EmoticonBuffer();
 
 	public EmoticonRenderer(Minecraft mc) {
 		this.mc = mc;
+		spaceWidth = mc.fontRendererObj.getStringWidth("    ");
 	}
 
 	@SubscribeEvent
@@ -62,15 +65,15 @@ public class EmoticonRenderer {
 
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
-			float renderX = buffer.positionX[i] + (EMOTICON_WIDTH / 2 - renderWidth / 2);
+			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
 			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
 			GlStateManager.translate(renderX, renderY, 0);
 			GlStateManager.scale(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
 			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
 			GlStateManager.popMatrix();
 			if(hoverEmoticon == null) {
-				if(mouseX > buffer.positionX[i] && mouseX <= buffer.positionX[i] + renderWidth * chatScale) {
-					if(mouseY > (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] && mouseY <= (event.resolution.getScaledHeight() - 32) + buffer.positionY[i] + renderHeight * chatScale) {
+				if(mouseX > renderX && mouseX <= renderX + renderWidth * chatScale) {
+					if(mouseY > (event.resolution.getScaledHeight() - 32) + renderY && mouseY <= (event.resolution.getScaledHeight() - 32) + renderY + renderHeight * chatScale) {
 						hoverEmoticon = buffer.emoticons[i];
 					}
 				}
@@ -79,7 +82,7 @@ public class EmoticonRenderer {
 
 		GlStateManager.popMatrix();
 
-		if(hoverEmoticon != null) {
+		if(hoverEmoticon != null && mc.currentScreen instanceof GuiChat) {
 			drawHoveringText(hoverEmoticon.getTooltip(), mouseX, mouseY, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
 		}
 
