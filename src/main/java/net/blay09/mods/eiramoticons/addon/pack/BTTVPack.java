@@ -68,7 +68,7 @@ public class BTTVPack implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read(new URL("http:" + emoticon.getLoadData().toString()));
+			BufferedImage image = ImageIO.read(new URL("https:" + emoticon.getLoadData().toString()));
 			if(image != null) {
 				emoticon.setImage(image);
 			}
