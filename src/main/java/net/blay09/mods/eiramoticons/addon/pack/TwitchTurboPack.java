@@ -6,6 +6,7 @@ package net.blay09.mods.eiramoticons.addon.pack;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
@@ -32,9 +33,20 @@ public class TwitchTurboPack implements IEmoticonLoader {
 
 	public TwitchTurboPack() {
 		try {
-			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader();
+			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root = gson.fromJson(reader, JsonObject.class);
+			JsonObject root = null;
+			try {
+				root = gson.fromJson(reader, JsonObject.class);
+			} catch (JsonParseException e) {
+				reader = TwitchEmotesAPI.newSubscriberEmotesReader(true);
+				try {
+					root = gson.fromJson(reader, JsonObject.class);
+				} catch (JsonParseException e2) {
+					System.out.println("Failed to load turbo emoticon pack: " + e2.getMessage());
+					e2.printStackTrace();
+				}
+			}
 			if(root != null) {
 				template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
 				JsonObject channels = root.getAsJsonObject("channels");

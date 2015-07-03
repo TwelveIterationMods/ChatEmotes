@@ -3,15 +3,13 @@
 
 package net.blay09.mods.eiramoticons.addon.pack;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.JsonException;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
@@ -38,9 +36,20 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 		try {
 			Pattern pattern = Pattern.compile(regexFilter);
 			Matcher matcher = pattern.matcher("");
-			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader();
+			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root = gson.fromJson(reader, JsonObject.class);
+			JsonObject root = null;
+			try {
+				root = gson.fromJson(reader, JsonObject.class);
+			} catch (JsonParseException e) {
+				reader = TwitchEmotesAPI.newSubscriberEmotesReader(true);
+				try {
+					root = gson.fromJson(reader, JsonObject.class);
+				} catch (JsonParseException e2) {
+					System.out.println("Failed to load subscriber emoticon pack: " + e2.getMessage());
+					e2.printStackTrace();
+				}
+			}
 			if(root != null) {
 				template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
 				JsonObject channels = root.getAsJsonObject("channels");
