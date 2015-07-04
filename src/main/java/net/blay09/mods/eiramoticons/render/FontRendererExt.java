@@ -42,7 +42,7 @@ public class FontRendererExt extends FontRenderer {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
-			if(c == '\u00a7' && s.charAt(i + 1) == 'z') {
+			if(c == '\u00a7' && s.length() > i + 1 && s.charAt(i + 1) == 'z') {
 				int nextWhitespace = s.indexOf(' ', i);
 				if(nextWhitespace == -1) {
 					nextWhitespace = s.length();
@@ -62,7 +62,7 @@ public class FontRendererExt extends FontRenderer {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
-			if(c == '\u00a7' && s.charAt(i + 1) == 'z') {
+			if(c == '\u00a7' && s.length() > i + 1 && s.charAt(i + 1) == 'z') {
 				int nextWhitespace = s.indexOf(' ', i);
 				if(nextWhitespace == -1) {
 					nextWhitespace = s.length() - 1;
