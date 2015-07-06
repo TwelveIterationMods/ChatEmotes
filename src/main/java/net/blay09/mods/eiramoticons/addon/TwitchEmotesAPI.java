@@ -38,15 +38,15 @@ public class TwitchEmotesAPI {
 		return file.exists() && (System.currentTimeMillis() - file.lastModified()) <= CACHE_LIFETIME_IMAGE;
 	}
 
-	public static Reader newGlobalEmotesReader() throws IOException {
-		if(!shouldUseCacheFileJson(cachedGlobal)) {
+	public static Reader newGlobalEmotesReader(boolean ignoreCache) throws IOException {
+		if(ignoreCache || !shouldUseCacheFileJson(cachedGlobal)) {
 			FileUtils.copyURLToFile(new URL(URL_GLOBAL), cachedGlobal, TIMEOUT_TIME, TIMEOUT_TIME);
 		}
 		return new FileReader(cachedGlobal);
 	}
 
-	public static Reader newSubscriberEmotesReader() throws IOException {
-		if(!shouldUseCacheFileJson(cachedSubscriber)) {
+	public static Reader newSubscriberEmotesReader(boolean ignoreCache) throws IOException {
+		if(ignoreCache || !shouldUseCacheFileJson(cachedSubscriber)) {
 			FileUtils.copyURLToFile(new URL(URL_SUBSCRIBER), cachedSubscriber, TIMEOUT_TIME, TIMEOUT_TIME);
 		}
 		return new FileReader(cachedSubscriber);

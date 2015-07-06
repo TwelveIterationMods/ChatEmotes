@@ -6,6 +6,7 @@ package net.blay09.mods.eiramoticons.addon.pack;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
@@ -33,9 +34,20 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 
 	public TwitchGlobalPack() {
 		try {
-			Reader reader = TwitchEmotesAPI.newGlobalEmotesReader();
+			Reader reader = TwitchEmotesAPI.newGlobalEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root = gson.fromJson(reader, JsonObject.class);
+			JsonObject root = null;
+			try {
+				root = gson.fromJson(reader, JsonObject.class);
+			} catch (JsonParseException e) {
+				reader = TwitchEmotesAPI.newGlobalEmotesReader(true);
+				try {
+					root = gson.fromJson(reader, JsonObject.class);
+				} catch (JsonParseException e2) {
+					System.out.println("Failed to load global emoticon pack: " + e2.getMessage());
+					e2.printStackTrace();
+				}
+			}
 			if(root != null) {
 				template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
 				JsonObject emotes = root.getAsJsonObject("emotes");
