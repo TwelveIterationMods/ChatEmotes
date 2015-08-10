@@ -27,7 +27,7 @@ public class EmoticonRenderer {
 
 	public EmoticonRenderer(Minecraft mc) {
 		this.mc = mc;
-		spaceWidth = mc.fontRendererObj.getStringWidth("    ");
+		spaceWidth = mc.fontRendererObj.getStringWidth("   ");
 	}
 
 	@SubscribeEvent
