@@ -72,7 +72,6 @@ public class CommandEmoticons extends CommandBase {
 			list.add("reload");
 			list.add("help");
 			list.add("list");
-			list.add("config");
 			return list;
 		}
 		return null;
