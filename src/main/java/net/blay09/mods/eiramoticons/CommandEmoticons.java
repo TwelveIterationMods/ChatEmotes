@@ -55,8 +55,6 @@ public class CommandEmoticons extends CommandBase {
 			for (EmoticonGroup group : EmoticonRegistry.getGroups()) {
 				sender.addChatMessage(group.listComponent);
 			}
-		} else if(args[0].equals("config")) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiEiraMoticonsConfig(null));
 		} else if(args[0].equals("clearcache")) {
 			TwitchEmotesAPI.clearCache();
 			sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.clearcache"));
@@ -72,7 +70,6 @@ public class CommandEmoticons extends CommandBase {
 			list.add("reload");
 			list.add("help");
 			list.add("list");
-			list.add("config");
 			return list;
 		}
 		return null;
