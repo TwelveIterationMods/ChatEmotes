@@ -18,11 +18,11 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class BTTVPack implements IEmoticonLoader {
@@ -71,11 +71,8 @@ public class BTTVPack implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			BufferedImage image = ImageIO.read(new URL("https:" + emoticon.getLoadData().toString()));
-			if(image != null) {
-				emoticon.setImage(image);
-			}
-		} catch (IOException e) {
+			EiraMoticonsAPI.loadImage(emoticon, new URI("https:" + emoticon.getLoadData().toString()));
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 	}

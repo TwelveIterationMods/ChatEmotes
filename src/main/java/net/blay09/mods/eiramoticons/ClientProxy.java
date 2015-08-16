@@ -24,11 +24,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
 	private static final String FONT_TEXTURE = "textures/font/ascii.png";
+	public static int MAX_TEXTURE_SIZE;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -63,6 +65,7 @@ public class ClientProxy extends CommonProxy {
 		if(EmoticonConfig.enableIRCEmotes) {
 			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
 		}
+		MAX_TEXTURE_SIZE = GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
 	}
 
 	@SubscribeEvent

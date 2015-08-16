@@ -31,10 +31,7 @@ public class IncludedPack implements IEmoticonLoader {
 		try {
 			IResource resource = Minecraft.getMinecraft().getResourceManager().getResource((ResourceLocation) emoticon.getLoadData());
 			if(resource != null) {
-				BufferedImage image = ImageIO.read(resource.getInputStream());
-				if(image != null) {
-					emoticon.setImage(image);
-				}
+				EiraMoticonsAPI.loadImage(emoticon, resource.getInputStream());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -71,7 +71,14 @@ public class EmoticonRenderer {
 			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
 			GL11.glTranslatef(renderX, renderY, 0);
 			GL11.glScalef(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
-			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
+
+			if(buffer.emoticons[i].isAnimated()) {
+				buffer.emoticons[i].updateAnimation();
+				drawTexturedRect(0, 0, buffer.emoticons[i].getCurrentFrameTexCoordX(), buffer.emoticons[i].getCurrentFrameTexCoordY(), buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight(), buffer.emoticons[i].getSheetWidth(), buffer.emoticons[i].getSheetHeight());
+			} else {
+				drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
+			}
+
 			GL11.glPopMatrix();
 			if(hoverEmoticon == null) {
 				if(mouseX > renderX && mouseX <= renderX + renderWidth * chatScale) {
@@ -90,6 +97,23 @@ public class EmoticonRenderer {
 
 		// Clear buffer
 		buffer.freeMemory();
+	}
+
+	private static void drawTexturedRect(float x, float y, float textureX, float textureY, float width, float height, float sheetWidth, float sheetHeight) {
+		GL11.glBegin(GL11.GL_TRIANGLES);
+//		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, y + sheetHeight);
+//		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + sheetWidth, y);
+//		GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, y);
+//		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, y + sheetHeight);
+//		GL11.glTexCoord2f(1, 1); GL11.glVertex2f(x + sheetWidth, y + sheetHeight);
+//		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + sheetWidth, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x + width, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x + width, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x + width, y);
+		GL11.glEnd();
 	}
 
 	private static void drawTexturedRect(float x, float y, float width, float height) {

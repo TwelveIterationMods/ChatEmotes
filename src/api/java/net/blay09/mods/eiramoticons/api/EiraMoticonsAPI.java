@@ -5,6 +5,10 @@ package net.blay09.mods.eiramoticons.api;
 
 import net.minecraft.util.IChatComponent;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+
 public class EiraMoticonsAPI {
 
 	private static IInternalMethods internalMethods;
@@ -53,4 +57,32 @@ public class EiraMoticonsAPI {
 		return internalMethods.replaceEmoticons(component);
 	}
 
+	/**
+	 * @param emoticon
+	 * @param uri
+	 * @return
+	 */
+	public static boolean loadImage(IEmoticon emoticon, URI uri) {
+		return internalMethods.loadImage(emoticon, uri);
+	}
+
+	/**
+	 *
+	 * @param emoticon
+	 * @param in
+	 * @return
+	 */
+	public static boolean loadImage(IEmoticon emoticon, InputStream in) {
+		return internalMethods.loadImage(emoticon, in);
+	}
+
+	/**
+	 *
+	 * @param emoticon
+	 * @param file
+	 * @return
+	 */
+	public static boolean loadImage(IEmoticon emoticon, File file) {
+		return internalMethods.loadImage(emoticon, file);
+	}
 }
