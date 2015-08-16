@@ -55,13 +55,14 @@ public class Emoticon implements IEmoticon {
 	private float scaleY;
 	private BufferedImage loadBuffer;
 
-	private int animationSpeed;
+	private int[] frameTimes;
 	private boolean cumulativeRendering;
 	private int animationFrames;
 	private int spriteSheetWidth;
 	private int spriteSheetHeight;
 
 	private int animationTime;
+	private int currentFrameTime;
 	private int currentFrame;
 	private int currentFrameTexCoordX;
 	private int currentFrameTexCoordY;
@@ -151,8 +152,8 @@ public class Emoticon implements IEmoticon {
 	}
 
 	@Override
-	public void setImages(BufferedImage[] images) {
-		// TODO find biggest size instead
+	public void setImages(BufferedImage[] images, int[] frameTime, int[] offsetX, int[] offsetY) {
+		this.frameTimes = frameTime;
 		width = images[0].getWidth();
 		height = images[0].getHeight();
 		animationFrames = images.length;
@@ -187,7 +188,7 @@ public class Emoticon implements IEmoticon {
 					}
 				}
 				callback.prepare();
-				if(!g.drawImage(images[frameIdx], x * width, y * height, callback)) {
+				if(!g.drawImage(images[frameIdx], x * width + offsetX[frameIdx], y * height + offsetY[frameIdx], callback)) {
 					while (!callback.isReady()) ;
 				}
 			}
@@ -245,22 +246,25 @@ public class Emoticon implements IEmoticon {
 
 	@Override
 	public boolean isAnimated() {
-		return animationSpeed != 0;
-	}
-
-	@Override
-	public void setAnimationSpeed(int animationSpeed) {
-		this.animationSpeed = animationSpeed;
+		return frameTimes != null;
 	}
 
 	public void updateAnimation() {
 		long now = System.currentTimeMillis();
 		if(lastRenderTime == 0) {
 			lastRenderTime = now;
+			currentFrameTime = frameTimes[0];
 		}
 		animationTime += now - lastRenderTime;
 		int lastFrame = currentFrame;
-		currentFrame = (animationTime / animationSpeed) % animationFrames;
+		while(animationTime > currentFrameTime) {
+			animationTime -= currentFrameTime;
+			currentFrame++;
+			if(currentFrame >= animationFrames) {
+				currentFrame = 0;
+			}
+			currentFrameTime = frameTimes[currentFrame];
+		}
 		if(currentFrame != lastFrame) {
 			currentFrameTexCoordX = currentFrame * width;
 			// TODO turn this into math when you got a brain

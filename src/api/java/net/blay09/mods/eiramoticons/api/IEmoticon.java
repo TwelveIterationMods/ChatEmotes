@@ -35,8 +35,11 @@ public interface IEmoticon {
 	 * Sets the BufferedImages for this emote, will create a spritesheet for it and will trigger a texture upload on the next frame it's rendered.
 	 * It also sets a default scaling based on the image dimensions.
 	 * @param images
+	 * @param frameTime
+	 * @param offsetX
+	 * @param offsetY
 	 */
-	void setImages(BufferedImage[] images);
+	void setImages(BufferedImage[] images, int[] frameTime, int[] offsetX, int[] offsetY);
 
 	/**
 	 * Sets the scale factor for this emote. By default, EiraMoticons will scale emotes down to a maximum  size of 16x14.
@@ -102,10 +105,13 @@ public interface IEmoticon {
 
 	/**
 	 *
+	 * @param cumulativeRendering
 	 */
-	void setAnimationSpeed(int animationSpeed);
-
 	void setCumulativeRendering(boolean cumulativeRendering);
 
+	/**
+	 *
+	 * @return
+	 */
 	boolean isCumulativeRendering();
 }

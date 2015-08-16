@@ -20,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Iterator;
 
@@ -48,9 +47,9 @@ public class InternalMethods implements IInternalMethods {
 
 	@Override
 	public boolean loadImage(IEmoticon emoticon, URI uri) {
-		try {
-			return loadImageInternal(emoticon, uri.toURL());
-		} catch (MalformedURLException e) {
+		try(InputStream in = uri.toURL().openStream()) {
+			return loadImageInternal(emoticon, in);
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -75,9 +74,29 @@ public class InternalMethods implements IInternalMethods {
 				reader.setInput(in);
 				int numImages = reader.getNumImages(true);
 				if(numImages > 1) {
+					int[] frameTime = new int[numImages];
+					int[] offsetX = new int[numImages];
+					int[] offsetY = new int[numImages];
 					BufferedImage[] images = new BufferedImage[numImages];
 					for(int i = 0; i < images.length; i++) {
 						images[i] = reader.read(reader.getMinIndex() + i);
+						IIOMetadata metadata = reader.getImageMetadata(i);
+						String metaFormatName = metadata.getNativeMetadataFormatName();
+						IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(metaFormatName);
+						NodeList childNodes = root.getChildNodes();
+						for(int j = 0; j < childNodes.getLength(); j++) {
+							if(childNodes.item(j).getNodeName().equalsIgnoreCase("GraphicControlExtension")) {
+								frameTime[i] = Integer.parseInt(((IIOMetadataNode) childNodes.item(j)).getAttribute("delayTime")) * 10;
+							}
+							if(childNodes.item(j).getNodeName().equalsIgnoreCase("ImageDescriptor")) {
+								try {
+									offsetX[i] = Integer.parseInt(((IIOMetadataNode) childNodes.item(j)).getAttribute("imageLeftPosition"));
+								} catch (NumberFormatException e) {}
+								try {
+									offsetY[i] = Integer.parseInt(((IIOMetadataNode) childNodes.item(j)).getAttribute("imageTopPosition"));
+								} catch (NumberFormatException e) {}
+							}
+						}
 					}
 					IIOMetadata metadata = reader.getImageMetadata(0);
 					String metaFormatName = metadata.getNativeMetadataFormatName();
@@ -85,12 +104,11 @@ public class InternalMethods implements IInternalMethods {
 					NodeList childNodes = root.getChildNodes();
 					for(int i = 0; i < childNodes.getLength(); i++) {
 						if(childNodes.item(i).getNodeName().equalsIgnoreCase("GraphicControlExtension")) {
-							emoticon.setAnimationSpeed(Integer.parseInt(((IIOMetadataNode) childNodes.item(i)).getAttribute("delayTime")) * 10);
 							emoticon.setCumulativeRendering(((IIOMetadataNode) childNodes.item(i)).getAttribute("disposalMethod").equals("doNotDispose"));
 							break;
 						}
 					}
-					emoticon.setImages(images);
+					emoticon.setImages(images, frameTime, offsetX, offsetY);
 				} else {
 					emoticon.setImage(reader.read(0));
 				}
