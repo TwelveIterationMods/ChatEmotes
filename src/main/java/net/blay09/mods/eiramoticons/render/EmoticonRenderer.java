@@ -26,7 +26,7 @@ public class EmoticonRenderer {
 
 	public EmoticonRenderer(Minecraft mc) {
 		this.mc = mc;
-		spaceWidth = mc.fontRendererObj.getStringWidth("   ");
+		spaceWidth = mc.fontRenderer.getStringWidth("   ");
 	}
 
 	@SubscribeEvent
@@ -47,7 +47,7 @@ public class EmoticonRenderer {
 		int mouseX = event.mouseX;
 		int mouseY = event.mouseY;
 
-		float chatScale = guiNewChat.getChatScale();
+		float chatScale = guiNewChat.func_146244_h(); // getChatScale
 		GL11.glPushMatrix();
 		GL11.glTranslatef(2f, (float) (event.resolution.getScaledHeight() - 48) + 20f, 0f);
 		GL11.glScalef(chatScale, chatScale, 1f);
@@ -67,7 +67,7 @@ public class EmoticonRenderer {
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
 			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
-			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
+			float renderY = buffer.positionY[i] + (mc.fontRenderer.FONT_HEIGHT / 2 - renderHeight / 2);
 			GL11.glTranslatef(renderX, renderY, 0);
 			GL11.glScalef(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
 
@@ -164,7 +164,7 @@ public class EmoticonRenderer {
 
 			int maxLineWidth = 0;
 			for(String s : lines) {
-				int lineWidth = mc.fontRendererObj.getStringWidth(s);
+				int lineWidth = mc.fontRenderer.getStringWidth(s);
 				if (lineWidth > maxLineWidth)
 				{
 					maxLineWidth = lineWidth;
@@ -201,7 +201,7 @@ public class EmoticonRenderer {
 			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300f);
 
 			for(String line : lines) {
-				mc.fontRendererObj.drawStringWithShadow(line, x, y, -1);
+				mc.fontRenderer.drawStringWithShadow(line, x, y, -1);
 				y += 10;
 			}
 
