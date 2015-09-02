@@ -28,10 +28,8 @@ group= "net.blay09.mods"
 archivesBaseName = "eiramoticons"
 
 minecraft {
-    version = "1.8-11.14.1.1419"
+    version = "1.8-11.14.3.1502"
     runDir = "eclipse"
-
-    mappings = "stable_16"
 }
 
 idea {
@@ -52,7 +50,7 @@ configurations {
 }
 
 dependencies {
-    compile 'net.blay09.mods:eirairc:3.8.151:dev'
+    compile 'net.blay09.mods:eirairc:3.8.218:dev'
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 

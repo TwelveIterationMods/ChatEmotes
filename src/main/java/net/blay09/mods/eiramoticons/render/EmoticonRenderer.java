@@ -60,7 +60,7 @@ public class EmoticonRenderer {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GlStateManager.bindTexture(buffer.emoticons[i].getTextureId());
+			GlStateManager.func_179144_i(buffer.emoticons[i].getTextureId()); // bindTexture
 			GlStateManager.color(1f, 1f, 1f, buffer.alpha[i]);
 
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
@@ -111,7 +111,7 @@ public class EmoticonRenderer {
 		float f5 = (float)(endColor >> 16 & 255) / 255.0F;
 		float f6 = (float)(endColor >> 8 & 255) / 255.0F;
 		float f7 = (float)(endColor & 255) / 255.0F;
-		GlStateManager.disableTexture2D();
+		GlStateManager.func_179090_x(); // disableTexture2D
 		GlStateManager.enableBlend();
 		GlStateManager.disableAlpha();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
@@ -119,17 +119,17 @@ public class EmoticonRenderer {
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		worldrenderer.startDrawingQuads();
-		worldrenderer.setColorRGBA_F(f1, f2, f3, f);
-		worldrenderer.addVertex((double)right, (double)top, zLevel);
-		worldrenderer.addVertex((double)left, (double)top, zLevel);
-		worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
-		worldrenderer.addVertex((double)left, (double)bottom, zLevel);
-		worldrenderer.addVertex((double)right, (double)bottom, zLevel);
+		worldrenderer.func_178960_a(f1, f2, f3, f); // setColorRGBA_F
+		worldrenderer.addVertex((double) right, (double) top, zLevel);
+		worldrenderer.addVertex((double) left, (double)top, zLevel);
+		worldrenderer.func_178960_a(f5, f6, f7, f4); // setColorRGBA_F
+		worldrenderer.addVertex((double) left, (double) bottom, zLevel);
+		worldrenderer.addVertex((double) right, (double) bottom, zLevel);
 		tessellator.draw();
 		GlStateManager.shadeModel(7424);
 		GlStateManager.disableBlend();
 		GlStateManager.enableAlpha();
-		GlStateManager.enableTexture2D();
+		GlStateManager.func_179098_w(); // enableTexture2D
 	}
 
 	protected void drawHoveringText(String[] lines, int mouseX, int mouseY, int width, int height) {
@@ -178,7 +178,7 @@ public class EmoticonRenderer {
 			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300);
 
 			for(String line : lines) {
-				mc.fontRendererObj.drawStringWithShadow(line, x, y, -1);
+				mc.fontRendererObj.func_175065_a(line, x, y, -1, true);
 				y += 10;
 			}
 

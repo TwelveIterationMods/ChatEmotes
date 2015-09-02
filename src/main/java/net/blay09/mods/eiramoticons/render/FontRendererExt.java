@@ -9,7 +9,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class FontRendererExt extends FontRenderer {
 
@@ -27,8 +26,8 @@ public class FontRendererExt extends FontRenderer {
 	}
 
 	@Override
-	public int drawString(String text, float x, float y, int color, boolean dropShadow) {
-		return super.drawString(enableEmoticons ? extractEmotesToBuffer(text, x, y, color) : text, x, y, color, dropShadow);
+	public int func_175065_a(String text, float x, float y, int color, boolean dropShadow) { // drawString
+		return super.func_175065_a(enableEmoticons ? extractEmotesToBuffer(text, x, y, color) : text, x, y, color, dropShadow); // drawString
 	}
 
 	public void setEmoticonBuffer(EmoticonBuffer emoticonBuffer) {
