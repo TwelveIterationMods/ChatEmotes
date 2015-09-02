@@ -3,6 +3,8 @@
 
 package net.blay09.mods.eiramoticons.render;
 
+import net.blay09.mods.eiramoticons.addon.VanillaChatContainer;
+import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -22,6 +24,7 @@ public class EmoticonRenderer {
 	private final Minecraft mc;
 	private final int spaceWidth;
 	private final EmoticonBuffer buffer = new EmoticonBuffer();
+	private ChatContainer chatContainer = new VanillaChatContainer();
 
 	public EmoticonRenderer(Minecraft mc) {
 		this.mc = mc;
@@ -42,14 +45,20 @@ public class EmoticonRenderer {
 		}
 		FontRendererExt.enableEmoticons = false;
 
-		GuiNewChat guiNewChat = mc.ingameGUI.getChatGUI();
 		int mouseX = Mouse.getX() * event.resolution.getScaledWidth() / mc.displayWidth;
 		int mouseY = event.resolution.getScaledHeight() - Mouse.getY() * event.resolution.getScaledHeight() / mc.displayHeight - 1;
 
-		float chatScale = guiNewChat.getChatScale();
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(2f, (float) (event.resolution.getScaledHeight() - 48) + 20f, 0f);
-		GlStateManager.scale(chatScale, chatScale, 1f);
+		float chatScale = chatContainer.getChatScale(event.resolution);
+		if(chatContainer.isCustomTransform()) {
+			chatContainer.pushTransform(event.resolution);
+		} else {
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(chatContainer.getOffsetX(event.resolution), chatContainer.getOffsetY(event.resolution), 0f);
+			GlStateManager.scale(chatScale, chatScale, 1f);
+		}
+
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		Emoticon hoverEmoticon = null;
 		for(int i = buffer.count - 1; i >= 0; i--) {
@@ -57,30 +66,42 @@ public class EmoticonRenderer {
 				buffer.emoticons[i].requestTexture();
 				continue;
 			}
-			GlStateManager.pushMatrix();
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GlStateManager.func_179144_i(buffer.emoticons[i].getTextureId()); // bindTexture
-			GlStateManager.color(1f, 1f, 1f, buffer.alpha[i]);
 
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
 			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
 			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
+			GlStateManager.pushMatrix();
 			GlStateManager.translate(renderX, renderY, 0);
 			GlStateManager.scale(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
-			drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
+			GlStateManager.func_179144_i(buffer.emoticons[i].getTextureId()); // bindTexture
+			GlStateManager.color(1f, 1f, 1f, buffer.alpha[i]);
+			if(buffer.emoticons[i].isAnimated()) {
+				buffer.emoticons[i].updateAnimation();
+				drawTexturedRect(0, 0, buffer.emoticons[i].getCurrentFrameTexCoordX(), buffer.emoticons[i].getCurrentFrameTexCoordY(), buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight(), buffer.emoticons[i].getSheetWidth(), buffer.emoticons[i].getSheetHeight());
+			} else {
+				drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
+			}
 			GlStateManager.popMatrix();
+
 			if(hoverEmoticon == null) {
-				if(mouseX > renderX && mouseX <= renderX + renderWidth * chatScale) {
-					if(mouseY > (event.resolution.getScaledHeight() - 32) + renderY && mouseY <= (event.resolution.getScaledHeight() - 32) + renderY + renderHeight * chatScale) {
+				float offsetX = chatContainer.getOffsetX(event.resolution);
+				float offsetY = chatContainer.getOffsetY(event.resolution);
+				if(mouseX > offsetX + renderX && mouseX <= offsetX + renderX + renderWidth * chatScale) {
+					if(mouseY > offsetY + renderY && mouseY <= offsetY + renderY + renderHeight * chatScale) {
 						hoverEmoticon = buffer.emoticons[i];
 					}
 				}
 			}
 		}
 
-		GlStateManager.popMatrix();
+		GlStateManager.disableBlend();
+
+		if(chatContainer.isCustomTransform()) {
+			chatContainer.popTransform(event.resolution);
+		} else {
+			GlStateManager.popMatrix();
+		}
 
 		if(hoverEmoticon != null && mc.currentScreen instanceof GuiChat) {
 			drawHoveringText(hoverEmoticon.getTooltip(), mouseX, mouseY, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
@@ -88,6 +109,17 @@ public class EmoticonRenderer {
 
 		// Clear buffer
 		buffer.freeMemory();
+	}
+
+	private static void drawTexturedRect(float x, float y, float textureX, float textureY, float width, float height, float sheetWidth, float sheetHeight) {
+		GL11.glBegin(GL11.GL_TRIANGLES);
+		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x + width, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x + width, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x + width, y);
+		GL11.glEnd();
 	}
 
 	private static void drawTexturedRect(float x, float y, float width, float height) {
@@ -191,5 +223,9 @@ public class EmoticonRenderer {
 
 	public EmoticonBuffer getBuffer() {
 		return buffer;
+	}
+
+	public void setChatContainer(ChatContainer chatContainer) {
+		this.chatContainer = chatContainer;
 	}
 }

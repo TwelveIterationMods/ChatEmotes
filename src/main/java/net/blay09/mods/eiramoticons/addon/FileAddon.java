@@ -31,7 +31,7 @@ public class FileAddon implements IEmoticonLoader {
 		File[] emoticons = emoticonDir.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".bmp");
+				return name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".bmp") || name.endsWith(".gif");
 			}
 		});
 		StringBuilder sb = new StringBuilder();
@@ -51,14 +51,7 @@ public class FileAddon implements IEmoticonLoader {
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
-		try {
-			BufferedImage image = ImageIO.read((File) emoticon.getLoadData());
-			if(image != null) {
-				emoticon.setImage(image);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		EiraMoticonsAPI.loadImage(emoticon, (File) emoticon.getLoadData());
 	}
 
 }

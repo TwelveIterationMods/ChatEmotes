@@ -5,6 +5,7 @@ package net.blay09.mods.eiramoticons;
 
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.addon.pack.*;
+import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.ReloadEmoticons;
@@ -24,16 +25,21 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
 	public static final ResourceLocation FONT_TEXTURE = new ResourceLocation("textures/font/ascii.png");
+	public static int MAX_TEXTURE_SIZE;
+	public static EmoticonRenderer renderer;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		EiraMoticonsAPI.setupAPI(new InternalMethods());
 		EmoticonConfig.loadFromFile(event.getSuggestedConfigurationFile());
+
+		MAX_TEXTURE_SIZE = GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
 	}
 
 	@Override
@@ -47,7 +53,7 @@ public class ClientProxy extends CommonProxy {
 
 		ClientCommandHandler.instance.registerCommand(new CommandEmoticons());
 
-		EmoticonRenderer renderer = new EmoticonRenderer(mc);
+		renderer = new EmoticonRenderer(mc);
 		fontRenderer.setEmoticonBuffer(renderer.getBuffer());
 		MinecraftForge.EVENT_BUS.register(renderer);
 
@@ -62,6 +68,11 @@ public class ClientProxy extends CommonProxy {
 
 		if(EmoticonConfig.enableIRCEmotes) {
 			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
+		}
+
+		ChatContainer customContainer = (ChatContainer) event.buildSoftDependProxy("TabbyChat2", "net.blay09.mods.eiramoticons.addon.TabbyChat2Container");
+		if(customContainer != null) {
+			renderer.setChatContainer(customContainer);
 		}
 	}
 

@@ -9,8 +9,6 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class IncludedPack implements IEmoticonLoader {
@@ -31,10 +29,7 @@ public class IncludedPack implements IEmoticonLoader {
 		try {
 			IResource resource = Minecraft.getMinecraft().getResourceManager().getResource((ResourceLocation) emoticon.getLoadData());
 			if(resource != null) {
-				BufferedImage image = ImageIO.read(resource.getInputStream());
-				if(image != null) {
-					emoticon.setImage(image);
-				}
+				EiraMoticonsAPI.loadImage(emoticon, resource.getInputStream());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
