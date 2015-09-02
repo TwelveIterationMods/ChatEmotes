@@ -4,12 +4,14 @@
 package net.blay09.mods.eiramoticons;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.addon.pack.*;
+import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.ReloadEmoticons;
@@ -31,6 +33,7 @@ public class ClientProxy extends CommonProxy {
 
 	private static final String FONT_TEXTURE = "textures/font/ascii.png";
 	public static int MAX_TEXTURE_SIZE;
+	public static EmoticonRenderer renderer;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -49,7 +52,7 @@ public class ClientProxy extends CommonProxy {
 
 		ClientCommandHandler.instance.registerCommand(new CommandEmoticons());
 
-		EmoticonRenderer renderer = new EmoticonRenderer(mc);
+		renderer = new EmoticonRenderer(mc);
 		fontRenderer.setEmoticonBuffer(renderer.getBuffer());
 		MinecraftForge.EVENT_BUS.register(renderer);
 
@@ -66,6 +69,11 @@ public class ClientProxy extends CommonProxy {
 			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
 		}
 		MAX_TEXTURE_SIZE = GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
+
+		ChatContainer customContainer = (ChatContainer) event.buildSoftDependProxy("tabbychat", "net.blay09.mods.eiramoticons.addon.TabbyChatContainer");
+		if(customContainer != null) {
+			renderer.setChatContainer(customContainer);
+		}
 	}
 
 	@SubscribeEvent

@@ -3,6 +3,7 @@
 
 package net.blay09.mods.eiramoticons;
 
+import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
@@ -58,6 +59,11 @@ public class InternalMethods implements IInternalMethods {
 	@Override
 	public boolean loadImage(IEmoticon emoticon, File file) {
 		return loadImageInternal(emoticon, file);
+	}
+
+	@Override
+	public void setChatContainer(ChatContainer chatContainer) {
+		ClientProxy.renderer.setChatContainer(chatContainer);
 	}
 
 	@Override

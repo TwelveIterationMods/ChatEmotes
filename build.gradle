@@ -53,7 +53,9 @@ configurations {
 }
 
 dependencies {
-    compile 'net.blay09.mods:eirairc:2.8.333:dev'
+    compile files('lib/TabbyChat-1.7.10-1.11.2.2-dev.jar')
+    compile files('lib/jazzy0-2-1.jar')
+    compile 'net.blay09.mods:eirairc:2.8.335:dev'
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 

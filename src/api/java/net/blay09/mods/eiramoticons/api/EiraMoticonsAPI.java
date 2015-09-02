@@ -85,4 +85,8 @@ public class EiraMoticonsAPI {
 	public static boolean loadImage(IEmoticon emoticon, File file) {
 		return internalMethods.loadImage(emoticon, file);
 	}
+
+	public static void setChatContainer(ChatContainer chatContainer) {
+		internalMethods.setChatContainer(chatContainer);
+	}
 }

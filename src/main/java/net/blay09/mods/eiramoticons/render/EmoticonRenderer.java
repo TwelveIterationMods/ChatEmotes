@@ -4,6 +4,8 @@
 package net.blay09.mods.eiramoticons.render;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.blay09.mods.eiramoticons.addon.VanillaChatContainer;
+import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -23,6 +25,7 @@ public class EmoticonRenderer {
 	private final Minecraft mc;
 	private final int spaceWidth;
 	private final EmoticonBuffer buffer = new EmoticonBuffer();
+	private ChatContainer chatContainer = new VanillaChatContainer();
 
 	public EmoticonRenderer(Minecraft mc) {
 		this.mc = mc;
@@ -47,10 +50,17 @@ public class EmoticonRenderer {
 		int mouseX = event.mouseX;
 		int mouseY = event.mouseY;
 
-		float chatScale = guiNewChat.func_146244_h(); // getChatScale
-		GL11.glPushMatrix();
-		GL11.glTranslatef(2f, (float) (event.resolution.getScaledHeight() - 48) + 20f, 0f);
-		GL11.glScalef(chatScale, chatScale, 1f);
+		float chatScale = chatContainer.getChatScale(event.resolution);
+		if(chatContainer.isCustomTransform()) {
+			chatContainer.pushTransform(event.resolution);
+		} else {
+			GL11.glPushMatrix();
+			GL11.glTranslatef(chatContainer.getOffsetX(event.resolution), chatContainer.getOffsetY(event.resolution), 0f);
+			GL11.glScalef(chatScale, chatScale, 1f);
+		}
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		Emoticon hoverEmoticon = null;
 		for(int i = buffer.count - 1; i >= 0; i--) {
@@ -58,37 +68,42 @@ public class EmoticonRenderer {
 				buffer.emoticons[i].requestTexture();
 				continue;
 			}
-			GL11.glPushMatrix();
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer.emoticons[i].getTextureId());
-			GL11.glColor4f(1f, 1f, 1f, buffer.alpha[i]);
 
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
 			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
 			float renderY = buffer.positionY[i] + (mc.fontRenderer.FONT_HEIGHT / 2 - renderHeight / 2);
+			GL11.glPushMatrix();
 			GL11.glTranslatef(renderX, renderY, 0);
 			GL11.glScalef(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
-
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer.emoticons[i].getTextureId());
+			GL11.glColor4f(1f, 1f, 1f, buffer.alpha[i]);
 			if(buffer.emoticons[i].isAnimated()) {
 				buffer.emoticons[i].updateAnimation();
 				drawTexturedRect(0, 0, buffer.emoticons[i].getCurrentFrameTexCoordX(), buffer.emoticons[i].getCurrentFrameTexCoordY(), buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight(), buffer.emoticons[i].getSheetWidth(), buffer.emoticons[i].getSheetHeight());
 			} else {
 				drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
 			}
-
 			GL11.glPopMatrix();
+
 			if(hoverEmoticon == null) {
-				if(mouseX > renderX && mouseX <= renderX + renderWidth * chatScale) {
-					if(mouseY > (event.resolution.getScaledHeight() - 32) + renderY && mouseY <= (event.resolution.getScaledHeight() - 32) + renderY + renderHeight * chatScale) {
+				float offsetX = chatContainer.getOffsetX(event.resolution);
+				float offsetY = chatContainer.getOffsetY(event.resolution);
+				if(mouseX > offsetX + renderX && mouseX <= offsetX + renderX + renderWidth * chatScale) {
+					if(mouseY > offsetY + renderY && mouseY <= offsetY + renderY + renderHeight * chatScale) {
 						hoverEmoticon = buffer.emoticons[i];
 					}
 				}
 			}
 		}
 
-		GL11.glPopMatrix();
+		GL11.glDisable(GL11.GL_BLEND);
+
+		if(chatContainer.isCustomTransform()) {
+			chatContainer.popTransform(event.resolution);
+		} else {
+			GL11.glPopMatrix();
+		}
 
 		if(hoverEmoticon != null && mc.currentScreen instanceof GuiChat) {
 			drawHoveringText(hoverEmoticon.getTooltip(), event.mouseX, event.mouseY, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
@@ -98,14 +113,12 @@ public class EmoticonRenderer {
 		buffer.freeMemory();
 	}
 
+	public void setChatContainer(ChatContainer chatContainer) {
+		this.chatContainer = chatContainer;
+	}
+
 	private static void drawTexturedRect(float x, float y, float textureX, float textureY, float width, float height, float sheetWidth, float sheetHeight) {
 		GL11.glBegin(GL11.GL_TRIANGLES);
-//		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, y + sheetHeight);
-//		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + sheetWidth, y);
-//		GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, y);
-//		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, y + sheetHeight);
-//		GL11.glTexCoord2f(1, 1); GL11.glVertex2f(x + sheetWidth, y + sheetHeight);
-//		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + sheetWidth, y);
 		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x, y + height);
 		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x + width, y);
 		GL11.glTexCoord2f(textureX / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x, y);

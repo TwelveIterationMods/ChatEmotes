@@ -17,4 +17,5 @@ public interface IInternalMethods {
 	boolean loadImage(IEmoticon emoticon, URI uri);
 	boolean loadImage(IEmoticon emoticon, InputStream in);
 	boolean loadImage(IEmoticon emoticon, File file);
+	void setChatContainer(ChatContainer chatContainer);
 }
