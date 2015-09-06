@@ -104,14 +104,13 @@ public interface IEmoticon {
 	boolean isAnimated();
 
 	/**
-	 *
-	 * @param cumulativeRendering
+	 * For animated emoticons. Should cumulative rendering be used (last animation frame is not cleared)?
+	 * @param cumulativeRendering true if cumulative rendering mode should be activated
 	 */
 	void setCumulativeRendering(boolean cumulativeRendering);
 
 	/**
-	 *
-	 * @return
+	 * @return true if this animated emoticon is using cumulative rendering (last animation frame is not cleared)
 	 */
 	boolean isCumulativeRendering();
 }
