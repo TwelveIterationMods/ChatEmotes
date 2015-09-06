@@ -50,7 +50,7 @@ repositories {
 }
 
 dependencies {
-    deobfCompile 'net.blay09.mods:eirairc:3.9.238:sources'
+    deobfCompile 'net.blay09.mods:eirairc:3.9.239:sources'
     compile 'mnm.mods:MnM-Utils:0.3.1-SNAPSHOT-14:dev'
     compile 'mnm.mods:TabbyChat:2.0.0-beta3.1-SNAPSHOT-14:dev'
 }
