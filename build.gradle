@@ -43,7 +43,7 @@ idea {
 
 repositories {
     maven {
-        name = "eiramods"
+        name = "eiranet"
         url ="http://repo.blay09.net"
     }
 }
@@ -53,6 +53,7 @@ configurations {
 }
 
 dependencies {
+    compile files('MnM-Utils-0.3.1-SNAPSHOT-69-dev.jar', 'TabbyChat-2.0.0-beta3.1-SNAPSHOT-69-dev.jar')
     compile 'net.blay09.mods:eirairc:3.8.219:dev'
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }

@@ -70,7 +70,11 @@ public class ClientProxy extends CommonProxy {
 			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
 		}
 
-		ChatContainer customContainer = (ChatContainer) event.buildSoftDependProxy("TabbyChat2", "net.blay09.mods.eiramoticons.addon.TabbyChat2Container");
+		ChatContainer customContainer = null;
+		try {
+			Class.forName("mnm.mods.tabbychat.api.gui.ChatGui");
+			customContainer = (ChatContainer) event.buildSoftDependProxy("TabbyChat2", "net.blay09.mods.eiramoticons.addon.TabbyChat2Container");
+		} catch (ClassNotFoundException ignored) {}
 		if(customContainer != null) {
 			renderer.setChatContainer(customContainer);
 		}
