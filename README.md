@@ -15,7 +15,7 @@ The easiest way to add EiraMoticons to your development environment is to do som
 ```
 repositories {
     maven {
-        name = "eiramods"
+        name = "eiranet"
         url ="http://repo.blay09.net"
     }
 }
@@ -25,7 +25,9 @@ Then, add a dependency to either just the EiraMoticons API (api) or, if you want
 
 ```
 dependencies {
-    compile 'net.blay09.mods:eiramoticons:0.1.40:dev' // or just api instead of dev
+    deobfCompile 'net.blay09.mods:eiramoticons:major.minor.build:sources' // replace major.minor.build with version number
+    // OR
+    // compile 'net.blay09.mods:eiramoticons:major.minor.build:api' // replace major.minor.build with version number
 }
 ```
 
