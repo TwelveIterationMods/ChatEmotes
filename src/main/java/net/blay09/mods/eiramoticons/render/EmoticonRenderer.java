@@ -8,7 +8,6 @@ import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.renderer.*;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -74,7 +73,7 @@ public class EmoticonRenderer {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(renderX, renderY, 0);
 			GlStateManager.scale(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
-			GlStateManager.func_179144_i(buffer.emoticons[i].getTextureId()); // bindTexture
+			GlStateManager.bindTexture(buffer.emoticons[i].getTextureId());
 			GlStateManager.color(1f, 1f, 1f, buffer.alpha[i]);
 			if(buffer.emoticons[i].isAnimated()) {
 				buffer.emoticons[i].updateAnimation();
@@ -143,7 +142,7 @@ public class EmoticonRenderer {
 		float f5 = (float)(endColor >> 16 & 255) / 255.0F;
 		float f6 = (float)(endColor >> 8 & 255) / 255.0F;
 		float f7 = (float)(endColor & 255) / 255.0F;
-		GlStateManager.func_179090_x(); // disableTexture2D
+		GlStateManager.disableTexture2D();
 		GlStateManager.enableBlend();
 		GlStateManager.disableAlpha();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
@@ -151,17 +150,17 @@ public class EmoticonRenderer {
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		worldrenderer.startDrawingQuads();
-		worldrenderer.func_178960_a(f1, f2, f3, f); // setColorRGBA_F
+		worldrenderer.setColorRGBA_F(f1, f2, f3, f);
 		worldrenderer.addVertex((double) right, (double) top, zLevel);
 		worldrenderer.addVertex((double) left, (double)top, zLevel);
-		worldrenderer.func_178960_a(f5, f6, f7, f4); // setColorRGBA_F
+		worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
 		worldrenderer.addVertex((double) left, (double) bottom, zLevel);
 		worldrenderer.addVertex((double) right, (double) bottom, zLevel);
 		tessellator.draw();
 		GlStateManager.shadeModel(7424);
 		GlStateManager.disableBlend();
 		GlStateManager.enableAlpha();
-		GlStateManager.func_179098_w(); // enableTexture2D
+		GlStateManager.enableTexture2D();
 	}
 
 	protected void drawHoveringText(String[] lines, int mouseX, int mouseY, int width, int height) {
@@ -210,7 +209,7 @@ public class EmoticonRenderer {
 			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300);
 
 			for(String line : lines) {
-				mc.fontRendererObj.func_175065_a(line, x, y, -1, true);
+				mc.fontRendererObj.drawString(line, x, y, -1, true);
 				y += 10;
 			}
 
