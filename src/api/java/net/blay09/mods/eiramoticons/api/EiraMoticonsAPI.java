@@ -58,34 +58,39 @@ public class EiraMoticonsAPI {
 	}
 
 	/**
-	 * @param emoticon
-	 * @param uri
-	 * @return
+	 * Loads the image at that uri into the given emoticon; takes care of .gif animations and all that stuff.
+	 * @param emoticon the emoticon to have the image loaded in
+	 * @param uri the uri of the image
+	 * @return true if success, false if error
 	 */
 	public static boolean loadImage(IEmoticon emoticon, URI uri) {
 		return internalMethods.loadImage(emoticon, uri);
 	}
 
 	/**
-	 *
-	 * @param emoticon
-	 * @param in
-	 * @return
+	 * Loads the input stream into the given emoticon; takes care of .gif animations and all that stuff.
+	 * @param emoticon the emoticon to have the image loaded in
+	 * @param in the input stream of the image
+	 * @return true if success, false if error
 	 */
 	public static boolean loadImage(IEmoticon emoticon, InputStream in) {
 		return internalMethods.loadImage(emoticon, in);
 	}
 
 	/**
-	 *
-	 * @param emoticon
-	 * @param file
-	 * @return
+	 * Loads the input file into the given emoticon; takes care of .gif animations and all that stuff.
+	 * @param emoticon the emoticon to have the image loaded in
+	 * @param file the input file of the image
+	 * @return true if success, false if error
 	 */
 	public static boolean loadImage(IEmoticon emoticon, File file) {
 		return internalMethods.loadImage(emoticon, file);
 	}
 
+	/**
+	 * Set a custom chat container to determine the correct positioning of emoticons, for mods that completely override the Vanilla chat box.
+	 * @param chatContainer chat container to be used for rendering
+	 */
 	public static void setChatContainer(ChatContainer chatContainer) {
 		internalMethods.setChatContainer(chatContainer);
 	}
