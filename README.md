@@ -25,7 +25,10 @@ Then, add a dependency to either just the EiraMoticons API (api) or, if you want
 
 ```
 dependencies {
+    // for Minecraft 1.8:
     deobfCompile 'net.blay09.mods:eiramoticons:major.minor.build' // replace major.minor.build with version number
+    // for Minecraft 1.7.10:
+    compile 'net.blay09.mods:eiramoticons:major.minor.build:dev' // replace major.minor.build with version number
     // OR
     // compile 'net.blay09.mods:eiramoticons:major.minor.build:api' // replace major.minor.build with version number
 }
