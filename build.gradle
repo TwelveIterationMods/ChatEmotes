@@ -67,13 +67,22 @@ task jarAPI(type: Jar) {
     appendix "mc" + minecraft.version
 }
 
+task jarDev(type: Jar) {
+    from sourceSets.main.output
+    from sourceSets.api.output
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    classifier "dev"
+    appendix "mc" + minecraft.version
+}
+
 artifacts {
     archives jarAPI
     archives jarDev
 }
 
 uploadArchives {
-    dependsOn 'reobf'
+    dependsOn 'build'
     repositories {
         mavenDeployer {         
             repository(url: MAVEN_REPO) {
