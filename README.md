@@ -25,7 +25,7 @@ Then, add a dependency to either just the EiraMoticons API (api) or, if you want
 
 ```
 dependencies {
-    deobfCompile 'net.blay09.mods:eiramoticons:major.minor.build:sources' // replace major.minor.build with version number
+    deobfCompile 'net.blay09.mods:eiramoticons:major.minor.build' // replace major.minor.build with version number
     // OR
     // compile 'net.blay09.mods:eiramoticons:major.minor.build:api' // replace major.minor.build with version number
 }
