@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.addon.pack.*;
 import net.blay09.mods.eiramoticons.api.ChatContainer;
@@ -58,6 +59,7 @@ public class ClientProxy extends CommonProxy {
 
 		MinecraftForge.EVENT_BUS.register(this);
 
+
 		TwitchEmotesAPI.initialize(mc.mcDataDir);
 	}
 
@@ -102,6 +104,12 @@ public class ClientProxy extends CommonProxy {
 		}
 		if(EmoticonConfig.bttvEmotes) {
 			new BTTVPack();
+		}
+		if(EmoticonConfig.bttvChannelEmotes) {
+			BTTVChannelPack.createGroup();
+			for(String channel : EmoticonConfig.bttvEmoteChannels) {
+				new BTTVChannelPack(channel);
+			}
 		}
 
 		if(EmoticonConfig.defaultPack) {

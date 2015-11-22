@@ -97,10 +97,10 @@ public class InternalMethods implements IInternalMethods {
 							if(childNodes.item(j).getNodeName().equalsIgnoreCase("ImageDescriptor")) {
 								try {
 									offsetX[i] = Integer.parseInt(((IIOMetadataNode) childNodes.item(j)).getAttribute("imageLeftPosition"));
-								} catch (NumberFormatException e) {}
+								} catch (NumberFormatException ignored) {}
 								try {
 									offsetY[i] = Integer.parseInt(((IIOMetadataNode) childNodes.item(j)).getAttribute("imageTopPosition"));
-								} catch (NumberFormatException e) {}
+								} catch (NumberFormatException ignored) {}
 							}
 						}
 					}
@@ -120,9 +120,8 @@ public class InternalMethods implements IInternalMethods {
 				}
 			}
 			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
+			return true;
+		} catch (IOException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		return false;

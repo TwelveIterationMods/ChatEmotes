@@ -73,8 +73,6 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 				}
 			}
 			reader.close();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

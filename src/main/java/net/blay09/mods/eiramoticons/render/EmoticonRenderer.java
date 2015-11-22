@@ -7,6 +7,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eiramoticons.addon.VanillaChatContainer;
 import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
+import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiNewChat;
@@ -35,6 +36,7 @@ public class EmoticonRenderer {
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void startRenderChat(RenderGameOverlayEvent.Chat event) {
+		EmoticonRegistry.runDisposal();
 		FontRendererExt.enableEmoticons = true;
 	}
 

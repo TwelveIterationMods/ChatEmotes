@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.blay09.mods.eiramoticons.EiraMoticons;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
@@ -21,18 +20,27 @@ import net.minecraft.util.IChatComponent;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class BTTVPack implements IEmoticonLoader {
+public class BTTVChannelPack implements IEmoticonLoader {
 
 	private String urlTemplate;
 
-	public BTTVPack() {
+	public static void createGroup() {
+		IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.list.clickHere");
+		linkComponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://manage.betterttv.net/"));
+		linkComponent.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("https://manage.betterttv.net/")));
+		linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
+		linkComponent.getChatStyle().setBold(true);
+		linkComponent.getChatStyle().setUnderlined(true);
+		EiraMoticonsAPI.registerEmoticonGroup("Better TwitchTV Channels", new ChatComponentTranslation("eiramoticons:command.list.twitch.bttvChannels", linkComponent));
+	}
+
+	public BTTVChannelPack(String channelName) {
 		try {
-			URL apiURL = new URL("https://api.betterttv.net/2/emotes");
+			URL apiURL = new URL("https://api.betterttv.net/2/channels/" + channelName);
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
@@ -47,18 +55,11 @@ public class BTTVPack implements IEmoticonLoader {
 				String code = entry.get("code").getAsString();
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
 				emoticon.setLoadData(new String[] { entry.get("id").getAsString(), entry.get("imageType").getAsString() });
-				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttv"));
+				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttvChannels", entry.get("channel").getAsString()));
 			}
 		} catch (IOException | JsonParseException e) {
 			e.printStackTrace();
 		}
-		IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.list.clickHere");
-		linkComponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://nightdev.com/betterttv/faces.php"));
-		linkComponent.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("https://nightdev.com/betterttv/faces.php")));
-		linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
-		linkComponent.getChatStyle().setBold(true);
-		linkComponent.getChatStyle().setUnderlined(true);
-		EiraMoticonsAPI.registerEmoticonGroup("Better TwitchTV", new ChatComponentTranslation("eiramoticons:command.list.twitch.bttv", linkComponent));
 	}
 
 	@Override
