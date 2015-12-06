@@ -30,7 +30,7 @@ public class EmoticonRenderer {
 
 	public EmoticonRenderer(Minecraft mc) {
 		this.mc = mc;
-		spaceWidth = mc.fontRenderer.getStringWidth("   ");
+		spaceWidth = mc.fontRendererObj.getStringWidth("   ");
 	}
 
 	@SubscribeEvent
@@ -74,7 +74,7 @@ public class EmoticonRenderer {
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
 			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
-			float renderY = buffer.positionY[i] + (mc.fontRenderer.FONT_HEIGHT / 2 - renderHeight / 2);
+			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
 			GL11.glPushMatrix();
 			GL11.glTranslatef(renderX, renderY, 0);
 			GL11.glScalef(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
@@ -179,7 +179,7 @@ public class EmoticonRenderer {
 
 			int maxLineWidth = 0;
 			for(String s : lines) {
-				int lineWidth = mc.fontRenderer.getStringWidth(s);
+				int lineWidth = mc.fontRendererObj.getStringWidth(s);
 				if (lineWidth > maxLineWidth)
 				{
 					maxLineWidth = lineWidth;
@@ -216,7 +216,7 @@ public class EmoticonRenderer {
 			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300f);
 
 			for(String line : lines) {
-				mc.fontRenderer.drawStringWithShadow(line, x, y, -1);
+				mc.fontRendererObj.drawStringWithShadow(line, x, y, -1);
 				y += 10;
 			}
 

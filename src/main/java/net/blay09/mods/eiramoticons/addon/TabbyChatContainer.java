@@ -20,7 +20,7 @@ public class TabbyChatContainer implements ChatContainer {
 
     @Override
     public float getChatScale(ScaledResolution resolution) {
-        return Minecraft.getMinecraft().ingameGUI.getChatGUI().func_146244_h(); // getChatScale
+        return Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatScale();
     }
 
     @Override
