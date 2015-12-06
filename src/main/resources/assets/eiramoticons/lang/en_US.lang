@@ -22,8 +22,8 @@ eiramoticons:config.twitchSmileySet=Twitch Smiley Set
 eiramoticons:config.twitchSmileySet.tooltip=The Twitch smiley style to use in chat: 0 for robot, 1 for Turbo, 2 for monkeys (NYI)
 eiramoticons:config.defaultPack=Register Default Emotes
 eiramoticons:config.defaultPack.tooltip=Should the default EiraMoticons emoticons be registered?
-eiramoticons:config.animuPack=Register Animu Pack
-eiramoticons:config.animuPack.tooltip=Should the anime emoticons be registered?
+eiramoticons:config.eiranetPack=Register EiraNet Pack
+eiramoticons:config.eiranetPack.tooltip=Should the user-submitted emotes from the EiraNet be registered?
 eiramoticons:config.enableIRCEmotes=Enable Emotes in EiraIRC
 eiramoticons:config.enableIRCEmotes.tooltip=Should emotes be enabled for IRC chat, if EiraIRC is installed?
 eiramoticons:config.betterKappas=Enable Better Kappas
@@ -41,14 +41,14 @@ eiramoticons:group.twitch.bttvChannels=Channel: §r%s (BTTV)
 eiramoticons:group.custom=Custom Emote
 eiramoticons:group.betterkappas=Better Kappas
 eiramoticons:group.default=Default Pack
-eiramoticons:group.animu=Animu Pack
+eiramoticons:group.eiranet=User: §r%s
 
 eiramoticons:gui.config.title=EiraMoticons Config
 
 eiramoticons:command.help=* Click %s to get to the Official §oEiraMoticons§r help page.
 eiramoticons:command.help.clickHere=here
 eiramoticons:command.list.default=Default Pack: %s
-eiramoticons:command.list.animu=Animu Pack: %s
+eiramoticons:command.list.eiranet=EiraNet Pack: %s
 eiramoticons:command.list.file=Custom Pack: %s
 eiramoticons:command.list.twitch.global=Twitch Global Pack: click %s
 eiramoticons:command.list.twitch.turbo=Twitch Turbo Pack: click %s
