@@ -31,8 +31,10 @@ group= "net.blay09.mods"
 archivesBaseName = "eiramoticons"
 
 minecraft {
-    version = "1.7.10-10.13.3.1408-1.7.10"
+    version = "1.7.10-10.13.4.1566-1.7.10"
     runDir = "eclipse"
+	
+	mappings = "stable_12"
 }
 
 idea {
@@ -48,15 +50,10 @@ repositories {
     }
 }
 
-configurations {
-    deployerJars 
-}
-
 dependencies {
     compile files('lib/TabbyChat-1.7.10-1.11.2.2-dev.jar')
     compile files('lib/jazzy0-2-1.jar')
-    compile 'net.blay09.mods:eirairc:2.8.335:dev'
-    deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
+    compile 'net.blay09.mods:eirairc:2.9.394:dev'
 }
 
 processResources
@@ -109,7 +106,6 @@ uploadArchives {
     dependsOn 'reobf'
     repositories {
         mavenDeployer {
-            configuration = configurations.deployerJars
             
             repository(url: MAVEN_REPO) {
                 authentication(userName: MAVEN_USERNAME, password: MAVEN_PASSWORD)
