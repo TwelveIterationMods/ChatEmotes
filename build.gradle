@@ -1,5 +1,5 @@
 plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.1"
+    id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 
 apply plugin: 'maven'
@@ -9,19 +9,17 @@ def MAVEN_REPO = System.getenv("MAVEN_REPO") ?: ""
 def MAVEN_USERNAME = System.getenv("MAVEN_USERNAME") ?: ""
 def MAVEN_PASSWORD = System.getenv("MAVEN_PASSWORD") ?: ""
 
-version = "2.1." + BUILD_NUMBER
+version = "2.2." + BUILD_NUMBER
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-group= "net.blay09.mods"
+group = "net.blay09.mods"
 archivesBaseName = "eiramoticons"
 
 minecraft {
-    version = "1.8-11.14.3.1512"
+    version = "1.8-11.14.4.1577"
     runDir = "run"
 
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    mappings = "snapshot_20141130"
+    mappings = "stable_18"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
@@ -50,9 +48,16 @@ repositories {
 }
 
 dependencies {
-    compile 'net.blay09.mods:eirairc:3.9.247:dev'
+    compile 'net.blay09.mods:eirairc:3.9.272:dev'
     provided 'mnm.mods:MnM-Utils:0.3.1-SNAPSHOT-14:dev'
     provided 'mnm.mods:TabbyChat:2.0.0-beta3.1-SNAPSHOT-14:dev'
+}
+
+// It would seem the provided configuration ForgeGradle gives us doesn't work correctly in IDEA without these lines.
+idea {
+    module {
+        scopes.PROVIDED.plus += [configurations.provided];
+    }
 }
 
 jar {

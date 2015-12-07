@@ -107,13 +107,19 @@ public class ClientProxy extends CommonProxy {
 		if(EmoticonConfig.bttvEmotes) {
 			new BTTVPack();
 		}
+		if(EmoticonConfig.bttvChannelEmotes) {
+			BTTVChannelPack.createGroup();
+			for (String channel : EmoticonConfig.bttvEmoteChannels) {
+				new BTTVChannelPack(channel);
+			}
+		}
+
+		if(EmoticonConfig.eiranetPack) {
+			new EiraNetPack();
+		}
 
 		if(EmoticonConfig.defaultPack) {
 			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
-		}
-
-		if(EmoticonConfig.animuPack) {
-			new IncludedPack("animu", new String[] {"aniRage", "aniCri", "aniLewd", "aniYui", "aniMeow", "aniNyan", "aniPraise", "aniScared", "aniWoah", "aniLove"});
 		}
 
 		// Custom Emotes

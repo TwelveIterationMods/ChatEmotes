@@ -5,10 +5,7 @@ package net.blay09.mods.eiramoticons;
 
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonGroup;
-import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
-import net.blay09.mods.eiramoticons.gui.GuiEiraMoticonsConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -22,13 +19,13 @@ import java.util.List;
 public class CommandEmoticons extends CommandBase {
 
 	@Override
-	public String getName() {
+	public String getCommandName() {
 		return "emoticons";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/emoticons reload|help|list|config|clearcache";
+		return "/emoticons reload|help|list|clearcache";
 	}
 
 	@Override
@@ -37,36 +34,41 @@ public class CommandEmoticons extends CommandBase {
 	}
 
 	@Override
-	public void execute(ICommandSender sender, String[] args) throws CommandException {
+	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
 		if(args.length != 1) {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}
-		if(args[0].equals("reload")) {
-			EmoticonConfig.hardReload();
-			EmoticonRegistry.reloadEmoticons();
-		} else if(args[0].equals("help")) {
-			IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.help.clickHere");
-			linkComponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://blay09.net/?page_id=347"));
-			linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
-			linkComponent.getChatStyle().setBold(true);
-			linkComponent.getChatStyle().setUnderlined(true);
-			sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.help", linkComponent));
-		} else if(args[0].equals("list")) {
-			for (EmoticonGroup group : EmoticonRegistry.getGroups()) {
-				sender.addChatMessage(group.listComponent);
-			}
-		} else if(args[0].equals("clearcache")) {
-			TwitchEmotesAPI.clearCache();
-			sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.clearcache"));
-		} else {
-			throw new WrongUsageException(getCommandUsage(sender));
+		switch (args[0]) {
+			case "reload":
+				EmoticonConfig.hardReload();
+				EmoticonRegistry.reloadEmoticons();
+				break;
+			case "help":
+				IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.help.clickHere");
+				linkComponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://blay09.net/?page_id=347"));
+				linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
+				linkComponent.getChatStyle().setBold(true);
+				linkComponent.getChatStyle().setUnderlined(true);
+				sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.help", linkComponent));
+				break;
+			case "list":
+				for (EmoticonGroup group : EmoticonRegistry.getGroups()) {
+					sender.addChatMessage(group.listComponent);
+				}
+				break;
+			case "clearcache":
+				TwitchEmotesAPI.clearCache();
+				sender.addChatMessage(new ChatComponentTranslation("eiramoticons:command.clearcache"));
+				break;
+			default:
+				throw new WrongUsageException(getCommandUsage(sender));
 		}
 	}
 
 	@Override
 	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		if(args.length == 0) {
-			List<String> list = new ArrayList<String>();
+			List<String> list = new ArrayList<>();
 			list.add("reload");
 			list.add("help");
 			list.add("list");

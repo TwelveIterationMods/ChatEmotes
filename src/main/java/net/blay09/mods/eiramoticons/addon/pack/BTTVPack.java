@@ -3,7 +3,10 @@
 
 package net.blay09.mods.eiramoticons.addon.pack;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
@@ -15,47 +18,36 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 public class BTTVPack implements IEmoticonLoader {
 
+	private String urlTemplate;
+
 	public BTTVPack() {
 		try {
-			URL apiURL = new URL("https://cdn.betterttv.net/emotes/emotes.json");
+			URL apiURL = new URL("https://api.betterttv.net/2/emotes");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
-			JsonArray root = gson.fromJson(reader, JsonArray.class);
-			for(int i = 0; i < root.size(); i++) {
-				JsonObject entry = root.get(i).getAsJsonObject();
-				String code = entry.get("regex").getAsString();
-				// We don't do regex emotes, so we just strip the regex stuff and add a special case for the one emote that actually needs it
-				code = code.replace("\\", "");
-				if(code.equals("(:trollface:|:tf:)")) {
-					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(":trollface:", this);
-					emoticon.setLoadData(entry.get("url").getAsString());
-					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttv"));
-
-					emoticon = EiraMoticonsAPI.registerEmoticon(":tf:", this);
-					emoticon.setLoadData(entry.get("url").getAsString());
-					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttv"));
-				} else {
-					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-					emoticon.setLoadData(entry.get("url").getAsString());
-					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttv"));
-				}
+			JsonObject root = gson.fromJson(reader, JsonObject.class);
+			if(!root.has("status") && root.get("status").getAsInt() != 200) {
+				System.out.println("Failed to grab BTTV emotes.");
+				return;
 			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JsonParseException e) {
+			urlTemplate = root.get("urlTemplate").getAsString();
+			JsonArray emotes = root.getAsJsonArray("emotes");
+			for(int i = 0; i < emotes.size(); i++) {
+				JsonObject entry = emotes.get(i).getAsJsonObject();
+				String code = entry.get("code").getAsString();
+				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
+				emoticon.setLoadData(new String[] { entry.get("id").getAsString(), entry.get("imageType").getAsString() });
+				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttv"));
+			}
+		} catch (IOException | JsonParseException e) {
 			e.printStackTrace();
 		}
 		IChatComponent linkComponent = new ChatComponentTranslation("eiramoticons:command.list.clickHere");
@@ -70,7 +62,8 @@ public class BTTVPack implements IEmoticonLoader {
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
-			EiraMoticonsAPI.loadImage(emoticon, new URI("https:" + emoticon.getLoadData().toString()));
+			String[] data = (String[]) emoticon.getLoadData();
+			EiraMoticonsAPI.loadImage(emoticon, new URI("https:" + urlTemplate.replace("{{id}}", data[0]).replace("{{image}}", "1x")));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
