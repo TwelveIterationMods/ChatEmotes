@@ -4,20 +4,15 @@
 package net.blay09.mods.eiramoticons.addon;
 
 import com.google.common.io.Files;
-import net.blay09.mods.eiramoticons.EiraMoticons;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
-import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 
 public class FileAddon implements IEmoticonLoader {
 

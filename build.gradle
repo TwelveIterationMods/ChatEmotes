@@ -1,6 +1,25 @@
+
+// For those who want the bleeding edge
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+/*
+// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
 plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
+*/
 
 apply plugin: 'maven'
 
@@ -9,14 +28,14 @@ def MAVEN_REPO = System.getenv("MAVEN_REPO") ?: ""
 def MAVEN_USERNAME = System.getenv("MAVEN_USERNAME") ?: ""
 def MAVEN_PASSWORD = System.getenv("MAVEN_PASSWORD") ?: ""
 
-version = "2.2." + BUILD_NUMBER
+version = "3.2." + BUILD_NUMBER
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 group = "net.blay09.mods"
 archivesBaseName = "eiramoticons"
 
 minecraft {
-    version = "1.8-11.14.4.1577"
+    version = "1.8.8-11.15.0.1609-1.8.8"
     runDir = "run"
 
     mappings = "stable_18"
@@ -48,7 +67,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.blay09.mods:eirairc:3.9.272:dev'
+    compile 'net.blay09.mods:eirairc:4.9.2:dev'
     provided 'mnm.mods:MnM-Utils:0.3.1-SNAPSHOT-14:dev'
     provided 'mnm.mods:TabbyChat:2.0.0-beta3.1-SNAPSHOT-14:dev'
 }
