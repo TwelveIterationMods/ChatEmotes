@@ -19,13 +19,9 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
 
 public class TwitchGlobalPack implements IEmoticonLoader {
@@ -58,8 +54,6 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 				}
 			}
 			reader.close();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

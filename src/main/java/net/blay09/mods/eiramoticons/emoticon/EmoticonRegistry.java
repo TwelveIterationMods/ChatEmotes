@@ -3,6 +3,8 @@
 
 package net.blay09.mods.eiramoticons.emoticon;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.blay09.mods.eiramoticons.api.ReloadEmoticons;
@@ -16,10 +18,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EmoticonRegistry {
 
     private static final AtomicInteger idCounter = new AtomicInteger();
-    private static final IntHashMap emoticonMap = new IntHashMap();
-    private static final Map<String, Emoticon> namedMap = new HashMap<String, Emoticon>();
-    private static final Map<String, EmoticonGroup> groupMap = new HashMap<String, EmoticonGroup>();
-    private static final List<Emoticon> disposalList = new ArrayList<>();
+    private static final IntHashMap<Emoticon> emoticonMap = new IntHashMap<>();
+    private static final Map<String, Emoticon> namedMap = Maps.newHashMap();
+    private static final Map<String, EmoticonGroup> groupMap = Maps.newHashMap();
+    private static final List<Emoticon> disposalList = Lists.newArrayList();
 
     public static IEmoticon registerEmoticon(String name, IEmoticonLoader loader) {
         Emoticon emoticon = new Emoticon(idCounter.incrementAndGet(), name, loader);
@@ -43,13 +45,11 @@ public class EmoticonRegistry {
     }
 
     public static Emoticon fromId(int id) {
-        return (Emoticon) emoticonMap.lookup(id);
+        return emoticonMap.lookup(id);
     }
 
     public static void reloadEmoticons() {
-        for (Emoticon emoticon : namedMap.values()) {
-            emoticon.disposeTexture();
-        }
+        namedMap.values().forEach(Emoticon::disposeTexture);
         synchronized (disposalList) {
             disposalList.addAll(namedMap.values());
         }
@@ -63,9 +63,7 @@ public class EmoticonRegistry {
     public static void runDisposal() {
         synchronized (disposalList) {
             if (!disposalList.isEmpty()) {
-                for (Emoticon emoticon : disposalList) {
-                    emoticon.disposeTexture();
-                }
+                disposalList.forEach(Emoticon::disposeTexture);
                 disposalList.clear();
             }
         }

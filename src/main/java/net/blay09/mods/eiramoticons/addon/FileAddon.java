@@ -12,7 +12,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 
 import java.io.File;
-import java.io.FilenameFilter;
 
 public class FileAddon implements IEmoticonLoader {
 
@@ -23,12 +22,7 @@ public class FileAddon implements IEmoticonLoader {
 				return;
 			}
 		}
-		File[] emoticons = emoticonDir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".bmp") || name.endsWith(".gif");
-			}
-		});
+		File[] emoticons = emoticonDir.listFiles((dir, name) -> name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".bmp") || name.endsWith(".gif"));
 		StringBuilder sb = new StringBuilder();
 		if(emoticons != null) {
 			for(File emoticonFile : emoticons) {

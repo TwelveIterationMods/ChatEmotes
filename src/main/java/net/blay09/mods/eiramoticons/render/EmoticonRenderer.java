@@ -163,11 +163,11 @@ public class EmoticonRenderer {
         GlStateManager.shadeModel(7425);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-        worldrenderer.func_181662_b((double) right, (double) top, (double) zLevel).func_181666_a(f1, f2, f3, f).func_181675_d();
-        worldrenderer.func_181662_b((double) left, (double) top, (double) zLevel).func_181666_a(f1, f2, f3, f).func_181675_d();
-        worldrenderer.func_181662_b((double) left, (double) bottom, (double) zLevel).func_181666_a(f5, f6, f7, f4).func_181675_d();
-        worldrenderer.func_181662_b((double) right, (double) bottom, (double) zLevel).func_181666_a(f5, f6, f7, f4).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos((double) right, (double) top, (double) zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos((double) left, (double) top, (double) zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos((double) left, (double) bottom, (double) zLevel).color(f5, f6, f7, f4).endVertex();
+        worldrenderer.pos((double) right, (double) bottom, (double) zLevel).color(f5, f6, f7, f4).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();

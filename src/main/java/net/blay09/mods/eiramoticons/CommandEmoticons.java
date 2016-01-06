@@ -13,7 +13,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommandEmoticons extends CommandBase {
@@ -68,11 +67,7 @@ public class CommandEmoticons extends CommandBase {
 	@Override
 	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		if(args.length == 0) {
-			List<String> list = new ArrayList<>();
-			list.add("reload");
-			list.add("help");
-			list.add("list");
-			return list;
+			return getListOfStringsMatchingLastWord(args, "reload", "help", "list", "clearcache");
 		}
 		return null;
 	}

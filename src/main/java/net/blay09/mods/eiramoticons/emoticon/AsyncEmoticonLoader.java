@@ -3,6 +3,7 @@
 
 package net.blay09.mods.eiramoticons.emoticon;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 
 import java.util.LinkedList;
@@ -12,7 +13,7 @@ public class AsyncEmoticonLoader implements Runnable {
 	public static final AsyncEmoticonLoader instance = new AsyncEmoticonLoader();
 
 	private boolean running;
-	private final LinkedList<IEmoticon> loadQueue = new LinkedList<IEmoticon>();
+	private final LinkedList<IEmoticon> loadQueue = Lists.newLinkedList();
 
 	public AsyncEmoticonLoader() {
 		running = true;

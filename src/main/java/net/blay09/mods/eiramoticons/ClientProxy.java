@@ -73,7 +73,7 @@ public class ClientProxy extends CommonProxy {
 		ChatContainer customContainer = null;
 		try {
 			Class.forName("mnm.mods.tabbychat.api.gui.ChatGui");
-			customContainer = (ChatContainer) event.buildSoftDependProxy("TabbyChat2", "net.blay09.mods.eiramoticons.addon.TabbyChat2Container");
+			customContainer = (ChatContainer) event.buildSoftDependProxy("TabbyChat2", "net.blay09.mods.eiramoticons.addon.TabbyChat2Container").orNull();
 		} catch (ClassNotFoundException ignored) {}
 		if(customContainer != null) {
 			renderer.setChatContainer(customContainer);

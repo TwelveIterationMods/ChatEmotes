@@ -26,8 +26,8 @@ public class FontRendererExt extends FontRenderer {
 	}
 
 	@Override
-	public int drawString(String text, float x, float y, int color, boolean dropShadow) { // drawString
-		return super.drawString(enableEmoticons ? extractEmotesToBuffer(text, x, y, color) : text, x, y, color, dropShadow); // drawString
+	public int drawString(String text, float x, float y, int color, boolean dropShadow) {
+		return super.drawString(enableEmoticons ? extractEmotesToBuffer(text, x, y, color) : text, x, y, color, dropShadow);
 	}
 
 	public void setEmoticonBuffer(EmoticonBuffer emoticonBuffer) {
