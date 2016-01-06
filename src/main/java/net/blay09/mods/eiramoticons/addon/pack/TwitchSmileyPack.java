@@ -28,18 +28,18 @@ public class TwitchSmileyPack implements IEmoticonLoader {
 		switch(smileySet) {
 			case 0:
 				registerSmiley(":)", 1); registerSmiley(":-)", 1);
-				registerSmiley(":(", 2); registerSmiley(":-(", 2);
+				registerSmiley(":(", 2); registerSmiley(":-(", 2); registerSmiley(":'(", 2);
 				registerSmiley(":D", 3); registerSmiley(":-D", 3);
 				registerSmiley(">(", 4);
-				registerSmiley(":z", 5); registerSmiley(":Z", 5);
-				registerSmiley("o_o", 6); registerSmiley("O_O", 6); registerSmiley("o_O", 6); registerSmiley("O_o", 6);
+				registerSmiley(":z", 5); registerSmiley(":Z", 5); registerSmiley(":-z", 5); registerSmiley(":-Z", 5); registerSmiley(":|", 5); registerSmiley(":-|", 5);
+				registerSmiley("o_o", 6); registerSmiley("O_O", 6); registerSmiley("o_O", 6); registerSmiley("O_o", 6); registerSmiley("o.o", 6); registerSmiley("O.O", 6); registerSmiley("o.O", 6); registerSmiley("O.o", 6);
 				registerSmiley("B)", 7); registerSmiley("B-)", 7);
 				registerSmiley(":o", 8); registerSmiley(":O", 8); registerSmiley(":-o", 8); registerSmiley(":-O", 8);
 				registerSmiley("<3", 9);
-				registerSmiley(":\\", 10); registerSmiley(":-\\", 10);
+				registerSmiley(":\\", 10); registerSmiley(":-\\", 10); registerSmiley(":/", 10); registerSmiley(":-/", 10);
 				registerSmiley(";)", 11); registerSmiley(";-)", 11);
 				registerSmiley(":p", 12); registerSmiley(":P", 12); registerSmiley(":-p", 12); registerSmiley(":-P", 12);
-				registerSmiley(";p", 13); registerSmiley(";P", 13);
+				registerSmiley(";p", 13); registerSmiley(";P", 13); registerSmiley(";-p", 13); registerSmiley(";-P", 13);
 				registerSmiley("R)", 14); registerSmiley("R-)", 14);
 				break;
 			case 1:

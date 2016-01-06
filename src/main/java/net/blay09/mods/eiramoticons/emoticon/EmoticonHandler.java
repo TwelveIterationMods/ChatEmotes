@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class EmoticonHandler {
 
-	private static final Pattern EMOTICON_PATTERN = Pattern.compile("[A-Za-z0-9#:;<>_/\\|\\(\\)\\.\\\\\\]\\[]+");
+	private static final Pattern EMOTICON_PATTERN = Pattern.compile("[A-Za-z0-9&'#:;<>_/\\-\\|\\(\\)\\.\\\\\\]\\[]+");
 
 	public static String replaceEmoticons(String text) {
 		int currentIdx = 0;
