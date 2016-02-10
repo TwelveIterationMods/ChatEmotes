@@ -44,7 +44,7 @@ public class TwitchTurboPack implements IEmoticonLoader {
 				}
 			}
 			if(root != null) {
-				template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
+				template = root.getAsJsonObject("template").get("small").getAsString();
 				JsonObject channels = root.getAsJsonObject("channels");
 				JsonObject turbo = channels.getAsJsonObject("turbo");
 				JsonArray emotes = turbo.getAsJsonArray("emotes");
