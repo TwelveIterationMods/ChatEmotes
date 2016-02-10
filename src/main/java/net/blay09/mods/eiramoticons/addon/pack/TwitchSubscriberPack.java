@@ -51,7 +51,7 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 				}
 			}
 			if(root != null) {
-				template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
+				template = root.getAsJsonObject("template").get("small").getAsString();
 				JsonObject channels = root.getAsJsonObject("channels");
 				for (Map.Entry<String, JsonElement> channelEntry : channels.entrySet()) {
 					if (channelEntry.getKey().equals("turbo")) {

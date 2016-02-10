@@ -49,7 +49,7 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 				}
 			}
 			if(root != null) {
-				template = "http:" + root.getAsJsonObject("template").get("small").getAsString();
+				template = root.getAsJsonObject("template").get("small").getAsString();
 				JsonObject emotes = root.getAsJsonObject("emotes");
 				for(Map.Entry<String, JsonElement> entry : emotes.entrySet()) {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(entry.getKey(), this);
