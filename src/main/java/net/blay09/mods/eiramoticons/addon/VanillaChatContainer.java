@@ -18,7 +18,7 @@ public class VanillaChatContainer implements ChatContainer {
 
     @Override
     public float getChatScale(ScaledResolution resolution) {
-        return Minecraft.getMinecraft().ingameGUI.getChatGUI().func_146244_h();
+        return Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatScale();
     }
 
     @Override

@@ -24,7 +24,7 @@ public class EmoticonConfig {
 	public static int twitchSmileySet;
 
 	public static boolean defaultPack;
-	public static boolean animuPack;
+	public static boolean eiranetPack;
 	public static boolean twitchGlobalEmotes;
 	public static boolean twitchTurboEmotes;
 	public static boolean twitchSubscriberEmotes;
@@ -54,7 +54,7 @@ public class EmoticonConfig {
 		bttvChannelEmotes = config.getBoolean("bttvChannelEmotes", PACKS, true, I18n.format("eiramoticons:config.bttvChannelEmotes.tooltip"), "eiramoticons:config.bttvChannelEmotes");
 		twitchSmileys = config.getBoolean("twitchSmileys", PACKS, false, I18n.format("eiramoticons:config.twitchSmileys.tooltip"), "eiramoticons:config.twitchSmileys");
 		defaultPack = config.getBoolean("defaultPack", PACKS, true, I18n.format("eiramoticons:config.defaultPack.tooltip"), "eiramoticons:config.defaultPack");
-		animuPack = config.getBoolean("animuPack", PACKS, true, I18n.format("eiramoticons:config.animuPack.tooltip"), "eiramoticons:config.animuPack");
+		eiranetPack = config.getBoolean("eiranetPack", PACKS, true, I18n.format("eiramoticons:config.eiranetPack.tooltip"), "eiramoticons:config.eiranetPack");
 
 		betterKappas = config.getBoolean("betterKappas", TWEAKS, false, I18n.format("eiramoticons:config.betterKappas.tooltip"), "eiramoticons:config.betterKappas");
 

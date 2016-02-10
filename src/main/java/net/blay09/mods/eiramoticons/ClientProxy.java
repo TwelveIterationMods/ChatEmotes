@@ -4,12 +4,10 @@
 package net.blay09.mods.eiramoticons;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.addon.pack.*;
 import net.blay09.mods.eiramoticons.api.ChatContainer;
@@ -46,10 +44,10 @@ public class ClientProxy extends CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, new ResourceLocation(FONT_TEXTURE), mc.renderEngine, false);
-		fontRenderer.setUnicodeFlag(mc.func_152349_b()); // isUnicode
+		fontRenderer.setUnicodeFlag(mc.isUnicode());
 		fontRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
 		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
-		mc.fontRenderer = fontRenderer;
+		mc.fontRendererObj = fontRenderer;
 
 		ClientCommandHandler.instance.registerCommand(new CommandEmoticons());
 
@@ -112,12 +110,12 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 
-		if(EmoticonConfig.defaultPack) {
-			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
+		if(EmoticonConfig.eiranetPack) {
+			new EiraNetPack();
 		}
 
-		if(EmoticonConfig.animuPack) {
-			new IncludedPack("animu", new String[] {"aniRage", "aniCri", "aniLewd", "aniYui", "aniMeow", "aniNyan", "aniPraise", "aniScared", "aniWoah", "aniLove"});
+		if(EmoticonConfig.defaultPack) {
+			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
 		}
 
 		// Custom Emotes
