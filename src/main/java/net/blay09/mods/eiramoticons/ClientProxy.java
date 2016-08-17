@@ -1,16 +1,7 @@
-// Copyright (c) 2015, Christopher "blay09" Baker
-// Some rights reserved.
-
 package net.blay09.mods.eiramoticons;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.addon.pack.*;
-import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.ReloadEmoticons;
@@ -25,6 +16,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings("unused")
@@ -65,22 +61,14 @@ public class ClientProxy extends CommonProxy {
 	public void postInit(FMLPostInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.post(new ReloadEmoticons());
 
-		if(EmoticonConfig.enableIRCEmotes) {
-			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
-		}
 		MAX_TEXTURE_SIZE = GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
-
-		ChatContainer customContainer = (ChatContainer) event.buildSoftDependProxy("tabbychat", "net.blay09.mods.eiramoticons.addon.TabbyChatContainer");
-		if(customContainer != null) {
-			renderer.setChatContainer(customContainer);
-		}
 	}
 
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void clientChatReceived(ClientChatReceivedEvent event) {
 		if(EmoticonConfig.enableMCEmotes) {
-			event.message = EmoticonHandler.adjustChatComponent(event.message);
+			event.setMessage(EmoticonHandler.adjustChatComponent(event.getMessage()));
 		}
 	}
 
@@ -132,7 +120,7 @@ public class ClientProxy extends CommonProxy {
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.modID.equals(EiraMoticons.MOD_ID)) {
+		if(event.getModID().equals(EiraMoticons.MOD_ID)) {
 			EmoticonConfig.lightReload();
 			EmoticonRegistry.reloadEmoticons();
 		}

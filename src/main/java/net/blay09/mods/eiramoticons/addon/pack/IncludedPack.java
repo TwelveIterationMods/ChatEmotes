@@ -6,11 +6,9 @@ import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResource;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class IncludedPack implements IEmoticonLoader {
@@ -23,7 +21,7 @@ public class IncludedPack implements IEmoticonLoader {
 			emoticon.setLoadData(new ResourceLocation("eiramoticons", "packs/" + group + "/" + emote + ".png"));
 			sb.append("  ").append(emote);
 		}
-		EiraMoticonsAPI.registerEmoticonGroup(group, EiraMoticonsAPI.replaceEmoticons(new ChatComponentTranslation("eiramoticons:command.list." + group, sb.toString())));
+		EiraMoticonsAPI.registerEmoticonGroup(group, EiraMoticonsAPI.replaceEmoticons(new TextComponentTranslation("eiramoticons:command.list." + group, sb.toString())));
 	}
 
 	@Override

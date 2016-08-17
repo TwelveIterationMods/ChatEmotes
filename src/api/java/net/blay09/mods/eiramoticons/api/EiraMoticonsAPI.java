@@ -1,9 +1,6 @@
-// Copyright (c) 2015, Christopher "blay09" Baker
-// Some rights reserved.
-
 package net.blay09.mods.eiramoticons.api;
 
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 import java.io.File;
 import java.io.InputStream;
@@ -36,7 +33,7 @@ public class EiraMoticonsAPI {
 	 * @param groupName the name of this group
 	 * @param listComponent the chat component that should be displayed when the /emoticons list command is run
 	 */
-	public static void registerEmoticonGroup(String groupName, IChatComponent listComponent) {
+	public static void registerEmoticonGroup(String groupName, ITextComponent listComponent) {
 		internalMethods.registerEmoticonGroup(groupName, listComponent);
 	}
 
@@ -53,7 +50,7 @@ public class EiraMoticonsAPI {
 	 * @param component the component to be searched for emoticons
 	 * @return a copy of the given chat component with emoticons
 	 */
-	public static IChatComponent replaceEmoticons(IChatComponent component) {
+	public static ITextComponent replaceEmoticons(ITextComponent component) {
 		return internalMethods.replaceEmoticons(component);
 	}
 

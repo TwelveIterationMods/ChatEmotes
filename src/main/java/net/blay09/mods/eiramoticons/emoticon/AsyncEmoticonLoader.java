@@ -1,6 +1,3 @@
-// Copyright (c) 2015, Christopher "blay09" Baker
-// Some rights reserved.
-
 package net.blay09.mods.eiramoticons.emoticon;
 
 import net.blay09.mods.eiramoticons.api.IEmoticon;
@@ -12,7 +9,7 @@ public class AsyncEmoticonLoader implements Runnable {
 	public static final AsyncEmoticonLoader instance = new AsyncEmoticonLoader();
 
 	private boolean running;
-	private final LinkedList<IEmoticon> loadQueue = new LinkedList<IEmoticon>();
+	private final LinkedList<IEmoticon> loadQueue = new LinkedList<>();
 
 	public AsyncEmoticonLoader() {
 		running = true;

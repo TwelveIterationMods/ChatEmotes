@@ -1,20 +1,16 @@
-// Copyright (c) 2015, Christopher "blay09" Baker
-// Some rights reserved.
-
 package net.blay09.mods.eiramoticons.render;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.eiramoticons.addon.VanillaChatContainer;
 import net.blay09.mods.eiramoticons.api.ChatContainer;
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiNewChat;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -43,30 +39,29 @@ public class EmoticonRenderer {
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void renderOverlay(RenderGameOverlayEvent.Post event) {
-		if(event.type != RenderGameOverlayEvent.ElementType.CHAT) {
+		if (event.getType() != RenderGameOverlayEvent.ElementType.CHAT) {
 			return;
 		}
 		FontRendererExt.enableEmoticons = false;
 
-		GuiNewChat guiNewChat = mc.ingameGUI.getChatGUI();
-		int mouseX = event.mouseX;
-		int mouseY = event.mouseY;
+		int mouseX = Mouse.getX() * event.getResolution().getScaledWidth() / mc.displayWidth;
+		int mouseY = event.getResolution().getScaledHeight() - Mouse.getY() * event.getResolution().getScaledHeight() / mc.displayHeight - 1;
 
-		float chatScale = chatContainer.getChatScale(event.resolution);
-		if(chatContainer.isCustomTransform()) {
-			chatContainer.pushTransform(event.resolution);
+		float chatScale = chatContainer.getChatScale(event.getResolution());
+		if (chatContainer.isCustomTransform()) {
+			chatContainer.pushTransform(event.getResolution());
 		} else {
-			GL11.glPushMatrix();
-			GL11.glTranslatef(chatContainer.getOffsetX(event.resolution), chatContainer.getOffsetY(event.resolution), 0f);
-			GL11.glScalef(chatScale, chatScale, 1f);
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(chatContainer.getOffsetX(event.getResolution()), chatContainer.getOffsetY(event.getResolution()), 0f);
+			GlStateManager.scale(chatScale, chatScale, 1f);
 		}
 
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		Emoticon hoverEmoticon = null;
-		for(int i = buffer.count - 1; i >= 0; i--) {
-			if(buffer.emoticons[i].getTextureId() == -1) {
+		for (int i = buffer.count - 1; i >= 0; i--) {
+			if (buffer.emoticons[i].getTextureId() == -1) {
 				buffer.emoticons[i].requestTexture();
 				continue;
 			}
@@ -75,113 +70,120 @@ public class EmoticonRenderer {
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
 			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
 			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
-			GL11.glPushMatrix();
-			GL11.glTranslatef(renderX, renderY, 0);
-			GL11.glScalef(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer.emoticons[i].getTextureId());
-			GL11.glColor4f(1f, 1f, 1f, buffer.alpha[i]);
-			if(buffer.emoticons[i].isAnimated()) {
+			renderY -= 12; // lol why
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(renderX, renderY, 0);
+			GlStateManager.scale(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
+			GlStateManager.bindTexture(buffer.emoticons[i].getTextureId());
+			GlStateManager.color(1f, 1f, 1f, buffer.alpha[i]);
+			if (buffer.emoticons[i].isAnimated()) {
 				buffer.emoticons[i].updateAnimation();
 				drawTexturedRect(0, 0, buffer.emoticons[i].getCurrentFrameTexCoordX(), buffer.emoticons[i].getCurrentFrameTexCoordY(), buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight(), buffer.emoticons[i].getSheetWidth(), buffer.emoticons[i].getSheetHeight());
 			} else {
 				drawTexturedRect(0, 0, buffer.emoticons[i].getWidth(), buffer.emoticons[i].getHeight());
 			}
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 
-			if(hoverEmoticon == null) {
-				float offsetX = chatContainer.getOffsetX(event.resolution);
-				float offsetY = chatContainer.getOffsetY(event.resolution);
-				if(mouseX > offsetX + renderX && mouseX <= offsetX + renderX + renderWidth * chatScale) {
-					if(mouseY > offsetY + renderY && mouseY <= offsetY + renderY + renderHeight * chatScale) {
+			if (hoverEmoticon == null) {
+				float offsetX = chatContainer.getOffsetX(event.getResolution());
+				float offsetY = chatContainer.getOffsetY(event.getResolution());
+				if (mouseX > offsetX + renderX && mouseX <= offsetX + renderX + renderWidth * chatScale) {
+					if (mouseY > offsetY + renderY && mouseY <= offsetY + renderY + renderHeight * chatScale) {
 						hoverEmoticon = buffer.emoticons[i];
 					}
 				}
 			}
 		}
 
-		GL11.glDisable(GL11.GL_BLEND);
+		GlStateManager.disableBlend();
 
-		if(chatContainer.isCustomTransform()) {
-			chatContainer.popTransform(event.resolution);
+		if (chatContainer.isCustomTransform()) {
+			chatContainer.popTransform(event.getResolution());
 		} else {
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 		}
 
-		if(hoverEmoticon != null && mc.currentScreen instanceof GuiChat) {
-			drawHoveringText(hoverEmoticon.getTooltip(), event.mouseX, event.mouseY, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
+		if (hoverEmoticon != null && mc.currentScreen instanceof GuiChat) {
+			drawHoveringText(hoverEmoticon.getTooltip(), mouseX, mouseY, event.getResolution().getScaledWidth(), event.getResolution().getScaledHeight());
 		}
 
 		// Clear buffer
 		buffer.freeMemory();
 	}
 
-	public void setChatContainer(ChatContainer chatContainer) {
-		this.chatContainer = chatContainer;
-	}
-
 	private static void drawTexturedRect(float x, float y, float textureX, float textureY, float width, float height, float sheetWidth, float sheetHeight) {
 		GL11.glBegin(GL11.GL_TRIANGLES);
-		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x, y + height);
-		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x + width, y);
-		GL11.glTexCoord2f(textureX / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x, y);
-		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x, y + height);
-		GL11.glTexCoord2f((textureX + width) / sheetWidth, (textureY + height) / sheetHeight); GL11.glVertex2f(x + width, y + height);
-		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight); GL11.glVertex2f(x + width, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight);
+		GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight);
+		GL11.glVertex2f(x + width, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, textureY / sheetHeight);
+		GL11.glVertex2f(x, y);
+		GL11.glTexCoord2f(textureX / sheetWidth, (textureY + height) / sheetHeight);
+		GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, (textureY + height) / sheetHeight);
+		GL11.glVertex2f(x + width, y + height);
+		GL11.glTexCoord2f((textureX + width) / sheetWidth, textureY / sheetHeight);
+		GL11.glVertex2f(x + width, y);
 		GL11.glEnd();
 	}
 
 	private static void drawTexturedRect(float x, float y, float width, float height) {
 		GL11.glBegin(GL11.GL_TRIANGLES);
-		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, y + height);
-		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + width, y);
-		GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, y);
-		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, y + height);
-		GL11.glTexCoord2f(1, 1); GL11.glVertex2f(x + width, y + height);
-		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + width, y);
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f(x + width, y);
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(x, y);
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f(x + width, y + height);
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f(x + width, y);
 		GL11.glEnd();
 	}
 
-	private static void drawGradientRect(int p_73733_1_, int p_73733_2_, int p_73733_3_, int p_73733_4_, int p_73733_5_, int p_73733_6_, float zLevel) {
-		float f = (float)(p_73733_5_ >> 24 & 255) / 255.0F;
-		float f1 = (float)(p_73733_5_ >> 16 & 255) / 255.0F;
-		float f2 = (float)(p_73733_5_ >> 8 & 255) / 255.0F;
-		float f3 = (float)(p_73733_5_ & 255) / 255.0F;
-		float f4 = (float)(p_73733_6_ >> 24 & 255) / 255.0F;
-		float f5 = (float)(p_73733_6_ >> 16 & 255) / 255.0F;
-		float f6 = (float)(p_73733_6_ >> 8 & 255) / 255.0F;
-		float f7 = (float)(p_73733_6_ & 255) / 255.0F;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA_F(f1, f2, f3, f);
-		tessellator.addVertex((double)p_73733_3_, (double)p_73733_2_, (double) zLevel);
-		tessellator.addVertex((double)p_73733_1_, (double)p_73733_2_, (double) zLevel);
-		tessellator.setColorRGBA_F(f5, f6, f7, f4);
-		tessellator.addVertex((double)p_73733_1_, (double)p_73733_4_, (double) zLevel);
-		tessellator.addVertex((double)p_73733_3_, (double)p_73733_4_, (double) zLevel);
+	protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor, int zLevel) {
+		float f = (float) (startColor >> 24 & 255) / 255.0F;
+		float f1 = (float) (startColor >> 16 & 255) / 255.0F;
+		float f2 = (float) (startColor >> 8 & 255) / 255.0F;
+		float f3 = (float) (startColor & 255) / 255.0F;
+		float f4 = (float) (endColor >> 24 & 255) / 255.0F;
+		float f5 = (float) (endColor >> 16 & 255) / 255.0F;
+		float f6 = (float) (endColor >> 8 & 255) / 255.0F;
+		float f7 = (float) (endColor & 255) / 255.0F;
+		GlStateManager.disableTexture2D();
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
+		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.shadeModel(7425);
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		vertexBuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+		vertexBuffer.pos((double) right, (double) top, (double) zLevel).color(f1, f2, f3, f).endVertex();
+		vertexBuffer.pos((double) left, (double) top, (double) zLevel).color(f1, f2, f3, f).endVertex();
+		vertexBuffer.pos((double) left, (double) bottom, (double) zLevel).color(f5, f6, f7, f4).endVertex();
+		vertexBuffer.pos((double) right, (double) bottom, (double) zLevel).color(f5, f6, f7, f4).endVertex();
 		tessellator.draw();
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GlStateManager.shadeModel(7424);
+		GlStateManager.disableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.enableTexture2D();
 	}
 
 	protected void drawHoveringText(String[] lines, int mouseX, int mouseY, int width, int height) {
-		if(lines != null && lines.length > 0) {
+		if (lines != null && lines.length > 0) {
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 			int maxLineWidth = 0;
-			for(String s : lines) {
+			for (String s : lines) {
 				int lineWidth = mc.fontRendererObj.getStringWidth(s);
-				if (lineWidth > maxLineWidth)
-				{
+				if (lineWidth > maxLineWidth) {
 					maxLineWidth = lineWidth;
 				}
 			}
@@ -190,33 +192,33 @@ public class EmoticonRenderer {
 			int y = mouseY - 10;
 			int tooltipHeight = 8;
 
-			if(lines.length > 1) {
+			if (lines.length > 1) {
 				tooltipHeight += 2 + (lines.length - 1) * 10;
 			}
 
-			if(x + maxLineWidth > width) {
+			if (x + maxLineWidth > width) {
 				x -= 28 + maxLineWidth;
 			}
 
-			if(y + tooltipHeight + 6 > height) {
+			if (y + tooltipHeight + 6 > height) {
 				y = height - tooltipHeight - 6;
 			}
 
 			int bgColor = -267386864;
-			drawGradientRect(x - 3, y - 4, x + maxLineWidth + 3, y - 3, bgColor, bgColor, 300f);
-			drawGradientRect(x - 3, y + tooltipHeight + 3, x + maxLineWidth + 3, y + tooltipHeight + 4, bgColor, bgColor, 300f);
-			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y + tooltipHeight + 3, bgColor, bgColor, 300f);
-			drawGradientRect(x - 4, y - 3, x - 3, y + tooltipHeight + 3, bgColor, bgColor, 300f);
-			drawGradientRect(x + maxLineWidth + 3, y - 3, x + maxLineWidth + 4, y + tooltipHeight + 3, bgColor, bgColor, 300f);
+			drawGradientRect(x - 3, y - 4, x + maxLineWidth + 3, y - 3, bgColor, bgColor, 300);
+			drawGradientRect(x - 3, y + tooltipHeight + 3, x + maxLineWidth + 3, y + tooltipHeight + 4, bgColor, bgColor, 300);
+			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y + tooltipHeight + 3, bgColor, bgColor, 300);
+			drawGradientRect(x - 4, y - 3, x - 3, y + tooltipHeight + 3, bgColor, bgColor, 300);
+			drawGradientRect(x + maxLineWidth + 3, y - 3, x + maxLineWidth + 4, y + tooltipHeight + 3, bgColor, bgColor, 300);
 			int fgColor1 = 1347420415;
 			int fgColor2 = (fgColor1 & 16711422) >> 1 | fgColor1 & -16777216;
-			drawGradientRect(x - 3, y - 3 + 1, x - 3 + 1, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300f);
-			drawGradientRect(x + maxLineWidth + 2, y - 3 + 1, x + maxLineWidth + 3, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300f);
-			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y - 3 + 1, fgColor1, fgColor1, 300f);
-			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300f);
+			drawGradientRect(x - 3, y - 3 + 1, x - 3 + 1, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300);
+			drawGradientRect(x + maxLineWidth + 2, y - 3 + 1, x + maxLineWidth + 3, y + tooltipHeight + 3 - 1, fgColor1, fgColor2, 300);
+			drawGradientRect(x - 3, y - 3, x + maxLineWidth + 3, y - 3 + 1, fgColor1, fgColor1, 300);
+			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300);
 
-			for(String line : lines) {
-				mc.fontRendererObj.drawStringWithShadow(line, x, y, -1);
+			for (String line : lines) {
+				mc.fontRendererObj.drawString(line, x, y, -1, true);
 				y += 10;
 			}
 
@@ -229,5 +231,9 @@ public class EmoticonRenderer {
 
 	public EmoticonBuffer getBuffer() {
 		return buffer;
+	}
+
+	public void setChatContainer(ChatContainer chatContainer) {
+		this.chatContainer = chatContainer;
 	}
 }

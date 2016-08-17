@@ -1,6 +1,3 @@
-// Copyright (c) 2015, Christopher "blay09" Baker
-// Some rights reserved.
-
 package net.blay09.mods.eiramoticons.render;
 
 import net.blay09.mods.eiramoticons.emoticon.Emoticon;
@@ -27,7 +24,7 @@ public class FontRendererExt extends FontRenderer {
 	}
 
 	@Override
-	public int drawString(String s, int x, int y, int color, boolean shadow) {
+	public int drawString(String s, float x, float y, int color, boolean shadow) {
 		return super.drawString(enableEmoticons ? extractEmotesToBuffer(s, x, y, color) : s, x, y, color, shadow);
 	}
 
@@ -55,7 +52,7 @@ public class FontRendererExt extends FontRenderer {
 		return sb.toString();
 	}
 
-	public String extractEmotesToBuffer(String s, int x, int y, int color) {
+	public String extractEmotesToBuffer(String s, float x, float y, int color) {
 		if(s == null) {
 			return null;
 		}

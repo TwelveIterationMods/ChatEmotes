@@ -1,13 +1,10 @@
-// Copyright (c) 2015, Christopher "blay09" Baker
-// Some rights reserved.
-
 package net.blay09.mods.eiramoticons.emoticon;
 
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.blay09.mods.eiramoticons.api.ReloadEmoticons;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IntHashMap;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.*;
@@ -16,9 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EmoticonRegistry {
 
 	private static final AtomicInteger idCounter = new AtomicInteger();
-	private static final IntHashMap emoticonMap = new IntHashMap();
-	private static final Map<String, Emoticon> namedMap = new HashMap<String, Emoticon>();
-	private static final Map<String, EmoticonGroup> groupMap = new HashMap<String, EmoticonGroup>();
+	private static final IntHashMap<Emoticon> emoticonMap = new IntHashMap<>();
+	private static final Map<String, Emoticon> namedMap = new HashMap<>();
+	private static final Map<String, EmoticonGroup> groupMap = new HashMap<>();
 	private static final List<Emoticon> disposalList = new ArrayList<>();
 
 	public static IEmoticon registerEmoticon(String name, IEmoticonLoader loader) {
@@ -32,7 +29,7 @@ public class EmoticonRegistry {
 		return groupMap.values();
 	}
 
-	public static EmoticonGroup registerEmoticonGroup(String groupName, IChatComponent listComponent) {
+	public static EmoticonGroup registerEmoticonGroup(String groupName, ITextComponent listComponent) {
 		EmoticonGroup group = new EmoticonGroup(groupName, listComponent);
 		groupMap.put(groupName, group);
 		return group;
@@ -43,7 +40,7 @@ public class EmoticonRegistry {
 	}
 
 	public static Emoticon fromId(int id) {
-		return (Emoticon) emoticonMap.lookup(id);
+		return emoticonMap.lookup(id);
 	}
 
 	public static void reloadEmoticons() {

@@ -1,6 +1,3 @@
-// Copyright (c) 2015, Christopher "blay09" Baker
-// Some rights reserved.
-
 package net.blay09.mods.eiramoticons;
 
 import net.blay09.mods.eiramoticons.api.ChatContainer;
@@ -9,7 +6,7 @@ import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.blay09.mods.eiramoticons.api.IInternalMethods;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import org.w3c.dom.NodeList;
 
 import javax.imageio.ImageIO;
@@ -32,7 +29,7 @@ public class InternalMethods implements IInternalMethods {
 	}
 
 	@Override
-	public void registerEmoticonGroup(String groupName, IChatComponent listComponent) {
+	public void registerEmoticonGroup(String groupName, ITextComponent listComponent) {
 		EmoticonRegistry.registerEmoticonGroup(groupName, listComponent);
 	}
 
@@ -42,7 +39,7 @@ public class InternalMethods implements IInternalMethods {
 	}
 
 	@Override
-	public IChatComponent replaceEmoticons(IChatComponent component) {
+	public ITextComponent replaceEmoticons(ITextComponent component) {
 		return EmoticonHandler.adjustChatComponent(component);
 	}
 

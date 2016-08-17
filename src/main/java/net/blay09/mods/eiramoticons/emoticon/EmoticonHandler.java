@@ -3,9 +3,9 @@
 
 package net.blay09.mods.eiramoticons.emoticon;
 
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,20 +37,20 @@ public class EmoticonHandler {
 		return sb.toString();
 	}
 
-	public static IChatComponent adjustChatComponent(IChatComponent chatComponent) {
-		if(chatComponent instanceof ChatComponentText) {
-			return adjustTextComponent((ChatComponentText) chatComponent);
-		} else if(chatComponent instanceof ChatComponentTranslation) {
-			return adjustTranslationComponent((ChatComponentTranslation) chatComponent);
+	public static ITextComponent adjustChatComponent(ITextComponent chatComponent) {
+		if(chatComponent instanceof TextComponentString) {
+			return adjustTextComponent((TextComponentString) chatComponent);
+		} else if(chatComponent instanceof TextComponentTranslation) {
+			return adjustTranslationComponent((TextComponentTranslation) chatComponent);
 		}
 		return null;
 	}
 
-	public static IChatComponent adjustTextComponent(ChatComponentText chatComponent) {
-		ChatComponentText copyComponent = new ChatComponentText(replaceEmoticons(chatComponent.getChatComponentText_TextValue()));
-		copyComponent.setChatStyle(chatComponent.getChatStyle());
+	public static ITextComponent adjustTextComponent(TextComponentString chatComponent) {
+		TextComponentString copyComponent = new TextComponentString(replaceEmoticons(chatComponent.getText()));
+		copyComponent.setStyle(chatComponent.getStyle());
 		for(Object object : chatComponent.getSiblings()) {
-			IChatComponent adjustedComponent = adjustChatComponent((IChatComponent) object);
+			ITextComponent adjustedComponent = adjustChatComponent((ITextComponent) object);
 			if(adjustedComponent != null) {
 				copyComponent.appendSibling(adjustedComponent);
 			}
@@ -58,22 +58,22 @@ public class EmoticonHandler {
 		return copyComponent;
 	}
 
-	public static IChatComponent adjustTranslationComponent(ChatComponentTranslation chatComponent) {
+	public static ITextComponent adjustTranslationComponent(TextComponentTranslation chatComponent) {
 		Object[] formatArgs = chatComponent.getFormatArgs();
 		Object[] copyFormatArgs = new Object[formatArgs.length];
 		for(int i = 0; i < formatArgs.length; i++) {
-			if(formatArgs[i] instanceof IChatComponent) {
-				copyFormatArgs[i] = adjustChatComponent((IChatComponent) formatArgs[i]);
+			if(formatArgs[i] instanceof ITextComponent) {
+				copyFormatArgs[i] = adjustChatComponent((ITextComponent) formatArgs[i]);
 			} else {
-				ChatComponentText textComponent = new ChatComponentText(formatArgs[i] == null ? "null" : replaceEmoticons(formatArgs[i].toString()));
-				textComponent.getChatStyle().setParentStyle(chatComponent.getChatStyle());
+				TextComponentString textComponent = new TextComponentString(formatArgs[i] == null ? "null" : replaceEmoticons(formatArgs[i].toString()));
+				textComponent.getStyle().setParentStyle(chatComponent.getStyle());
 				copyFormatArgs[i] = textComponent;
 			}
 		}
-		ChatComponentTranslation copyComponent = new ChatComponentTranslation(chatComponent.getKey(), copyFormatArgs);
-		copyComponent.setChatStyle(chatComponent.getChatStyle());
+		TextComponentTranslation copyComponent = new TextComponentTranslation(chatComponent.getKey(), copyFormatArgs);
+		copyComponent.setStyle(chatComponent.getStyle());
 		for(Object object : chatComponent.getSiblings()) {
-			IChatComponent adjustedComponent = adjustChatComponent((IChatComponent) object);
+			ITextComponent adjustedComponent = adjustChatComponent((ITextComponent) object);
 			if(adjustedComponent != null) {
 				copyComponent.appendSibling(adjustedComponent);
 			}
