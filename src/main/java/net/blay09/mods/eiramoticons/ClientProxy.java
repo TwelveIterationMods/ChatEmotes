@@ -10,6 +10,7 @@ import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.blay09.mods.eiramoticons.render.EmoticonRenderer;
 import net.blay09.mods.eiramoticons.render.FontRendererExt;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -38,6 +39,9 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void init(FMLInitializationEvent event) {
+		if(EiraMoticons.hasSuperiorModInstalled) {
+			return;
+		}
 		Minecraft mc = Minecraft.getMinecraft();
 		FontRendererExt fontRenderer = new FontRendererExt(mc.gameSettings, new ResourceLocation(FONT_TEXTURE), mc.renderEngine, false);
 		fontRenderer.setUnicodeFlag(mc.isUnicode());
