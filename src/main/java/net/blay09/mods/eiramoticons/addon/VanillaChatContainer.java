@@ -13,7 +13,7 @@ public class VanillaChatContainer implements ChatContainer {
 
     @Override
     public float getOffsetY(ScaledResolution resolution) {
-        return (float) (resolution.getScaledHeight() - 48) + 20f;
+        return 8f + resolution.getScaledHeight() - 48f;
     }
 
     @Override

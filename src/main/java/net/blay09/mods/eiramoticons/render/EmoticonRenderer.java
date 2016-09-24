@@ -70,7 +70,6 @@ public class EmoticonRenderer {
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
 			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
 			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
-			renderY -= 12; // lol why
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(renderX, renderY, 0);
 			GlStateManager.scale(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
