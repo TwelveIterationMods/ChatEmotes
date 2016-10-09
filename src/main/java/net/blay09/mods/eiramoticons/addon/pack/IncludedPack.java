@@ -1,6 +1,7 @@
 package net.blay09.mods.eiramoticons.addon.pack;
 
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
+import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.Minecraft;
@@ -28,11 +29,9 @@ public class IncludedPack implements IEmoticonLoader {
 	public void loadEmoticonImage(IEmoticon emoticon) {
 		try {
 			IResource resource = Minecraft.getMinecraft().getResourceManager().getResource((ResourceLocation) emoticon.getLoadData());
-			if(resource != null) {
-				EiraMoticonsAPI.loadImage(emoticon, resource.getInputStream());
-			}
+			EiraMoticonsAPI.loadImage(emoticon, resource.getInputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new EmoteLoaderException(e);
 		}
 	}
 }

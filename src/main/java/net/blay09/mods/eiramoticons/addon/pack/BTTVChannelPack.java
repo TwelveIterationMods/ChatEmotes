@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
+import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
@@ -21,7 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class BTTVChannelPack implements IEmoticonLoader {
+public class BTTVChannelPack extends AbstractEmotePack {
 
 	private String urlTemplate;
 
@@ -41,21 +42,20 @@ public class BTTVChannelPack implements IEmoticonLoader {
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
-			if(!root.has("status") && root.get("status").getAsInt() != 200) {
-				System.out.println("Failed to grab BTTV emotes.");
-				return;
+			if(root == null || (!root.has("status") && root.get("status").getAsInt() != 200)) {
+				throw new EmoteLoaderException("Failed to grab BTTV channel emotes (unexpected status)");
 			}
-			urlTemplate = root.get("urlTemplate").getAsString();
-			JsonArray emotes = root.getAsJsonArray("emotes");
+			urlTemplate = getJsonString(root, "urlTemplate");
+			JsonArray emotes = getJsonArray(root, "emotes");
 			for(int i = 0; i < emotes.size(); i++) {
 				JsonObject entry = emotes.get(i).getAsJsonObject();
-				String code = entry.get("code").getAsString();
+				String code = getJsonString(entry, "code");
 				IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-				emoticon.setLoadData(new String[] { entry.get("id").getAsString(), entry.get("imageType").getAsString() });
-				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttvChannels", entry.get("channel").getAsString()));
+				emoticon.setLoadData(new String[] { getJsonString(entry, "id"), getJsonString(entry, "imageType") });
+				emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.bttvChannels", getJsonString(entry, "channel")));
 			}
-		} catch (IOException | JsonParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new EmoteLoaderException("Unhandled exception", e);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class BTTVChannelPack implements IEmoticonLoader {
 			String[] data = (String[]) emoticon.getLoadData();
 			EiraMoticonsAPI.loadImage(emoticon, new URI("https:" + urlTemplate.replace("{{id}}", data[0]).replace("{{image}}", "1x")));
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			throw new EmoteLoaderException(e);
 		}
 	}
 

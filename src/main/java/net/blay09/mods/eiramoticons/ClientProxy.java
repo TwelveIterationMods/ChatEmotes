@@ -3,6 +3,7 @@ package net.blay09.mods.eiramoticons;
 import net.blay09.mods.eiramoticons.addon.*;
 import net.blay09.mods.eiramoticons.addon.pack.*;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
+import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.ReloadEmoticons;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonHandler;
@@ -22,11 +23,14 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
+	private static final Logger LOGGER = LogManager.getLogger();
 	private static final String FONT_TEXTURE = "textures/font/ascii.png";
 	public static int MAX_TEXTURE_SIZE;
 	public static EmoticonRenderer renderer;
@@ -39,7 +43,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void init(FMLInitializationEvent event) {
-		if(EiraMoticons.hasSuperiorModInstalled) {
+		if (EiraMoticons.hasSuperiorModInstalled) {
 			return;
 		}
 		Minecraft mc = Minecraft.getMinecraft();
@@ -71,7 +75,7 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void clientChatReceived(ClientChatReceivedEvent event) {
-		if(EmoticonConfig.enableMCEmotes) {
+		if (EmoticonConfig.enableMCEmotes) {
 			event.setMessage(EmoticonHandler.adjustChatComponent(event.getMessage()));
 		}
 	}
@@ -80,51 +84,89 @@ public class ClientProxy extends CommonProxy {
 	@SuppressWarnings("unused")
 	public void reloadEmoticons(ReloadEmoticons event) {
 		// Twitch Emotes
-		if(EmoticonConfig.twitchSmileys) {
-			new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
+		if (EmoticonConfig.twitchSmileys) {
+			try {
+				new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load Twitch smiley emotes: {}", e);
+			}
 		}
-		if(EmoticonConfig.twitchGlobalEmotes) {
-			new TwitchGlobalPack();
+		if (EmoticonConfig.twitchGlobalEmotes) {
+			try {
+				new TwitchGlobalPack();
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load Twitch global emotes: {}", e);
+			}
 		}
-		if(EmoticonConfig.twitchTurboEmotes) {
-			new TwitchTurboPack();
+		if (EmoticonConfig.twitchTurboEmotes) {
+			try {
+				new TwitchTurboPack();
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load Twitch turbo emotes: {}", e);
+			}
 		}
-		if(EmoticonConfig.twitchSubscriberEmotes) {
-			new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+		if (EmoticonConfig.twitchSubscriberEmotes) {
+			try {
+				new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load Twitch subscriber emotes: {}", e);
+			}
 		}
-		if(EmoticonConfig.bttvEmotes) {
-			new BTTVPack();
+		if (EmoticonConfig.bttvEmotes) {
+			try {
+				new BTTVPack();
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load BTTV emotes: {}", e);
+			}
 		}
-		if(EmoticonConfig.bttvChannelEmotes) {
-			BTTVChannelPack.createGroup();
-			for(String channel : EmoticonConfig.bttvEmoteChannels) {
-				new BTTVChannelPack(channel);
+		if (EmoticonConfig.bttvChannelEmotes) {
+			try {
+				BTTVChannelPack.createGroup();
+				for (String channel : EmoticonConfig.bttvEmoteChannels) {
+					new BTTVChannelPack(channel);
+				}
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load BTTV channel emotes: {}", e);
 			}
 		}
 
-		if(EmoticonConfig.eiranetPack) {
-			new EiraNetPack();
+		if (EmoticonConfig.eiranetPack) {
+			try {
+				new EiraNetPack();
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load patron emotes: {}", e.getMessage());
+			}
 		}
 
-		if(EmoticonConfig.defaultPack) {
-			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
+		if (EmoticonConfig.defaultPack) {
+			try {
+				new IncludedPack("default", new String[]{"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load default emotes: {}", e.getMessage());
+			}
 		}
 
 		// Custom Emotes
-		new FileAddon();
+		try {
+			new FileAddon();
+		} catch (EmoteLoaderException e) {
+			LOGGER.error("Failed to load file emotes: {}", e.getMessage());
+		}
 
 		// Tweaks
-		if(EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
+		if (EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
 			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
-			IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
-			kappa.setLoadData(kappaHD.getLoadData());
-			kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
+			if (kappaHD != null) {
+				IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
+				kappa.setLoadData(kappaHD.getLoadData());
+				kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
+			}
 		}
 	}
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.getModID().equals(EiraMoticons.MOD_ID)) {
+		if (event.getModID().equals(EiraMoticons.MOD_ID)) {
 			EmoticonConfig.lightReload();
 			EmoticonRegistry.reloadEmoticons();
 		}

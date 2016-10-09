@@ -30,7 +30,11 @@ public class AsyncEmoticonLoader implements Runnable {
 				synchronized (loadQueue) {
 					while (!loadQueue.isEmpty()) {
 						IEmoticon emoticon = loadQueue.pop();
-						emoticon.getLoader().loadEmoticonImage(emoticon);
+						try {
+							emoticon.getLoader().loadEmoticonImage(emoticon);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}
 				Thread.sleep(100);

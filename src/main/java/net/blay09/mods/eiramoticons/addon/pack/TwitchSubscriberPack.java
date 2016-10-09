@@ -3,8 +3,8 @@ package net.blay09.mods.eiramoticons.addon.pack;
 import com.google.gson.*;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
+import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
-import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -14,13 +14,12 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TwitchSubscriberPack implements IEmoticonLoader {
+public class TwitchSubscriberPack extends AbstractEmotePack {
 
 	private String template;
 
@@ -30,43 +29,42 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 			Matcher matcher = pattern.matcher("");
 			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root = null;
+			JsonObject root;
 			try {
 				root = gson.fromJson(reader, JsonObject.class);
-			} catch (JsonParseException e) {
+			} catch (Exception e) {
 				reader = TwitchEmotesAPI.newSubscriberEmotesReader(true);
 				try {
 					root = gson.fromJson(reader, JsonObject.class);
-				} catch (JsonParseException e2) {
-					System.out.println("Failed to load subscriber emoticon pack: " + e2.getMessage());
-					e2.printStackTrace();
+				} catch (Exception e2) {
+					throw new EmoteLoaderException(e2);
 				}
 			}
 			if(root != null) {
-				template = root.getAsJsonObject("template").get("small").getAsString();
-				JsonObject channels = root.getAsJsonObject("channels");
+				template = getJsonString(getJsonObject(root, "template"), "small");
+				JsonObject channels = getJsonObject(root, "channels");
 				for (Map.Entry<String, JsonElement> channelEntry : channels.entrySet()) {
 					if (channelEntry.getKey().equals("turbo")) {
 						continue;
 					}
 					JsonObject channel = channelEntry.getValue().getAsJsonObject();
-					String title = channel.get("title").getAsString();
-					JsonArray emotes = channel.getAsJsonArray("emotes");
+					String title = getJsonString(channel, "title");
+					JsonArray emotes = getJsonArray(channel, "emotes");
 					for (int i = 0; i < emotes.size(); i++) {
 						JsonObject emote = emotes.get(i).getAsJsonObject();
-						String code = emote.get("code").getAsString();
+						String code = getJsonString(emote, "code");
 						matcher.reset(code);
 						if (matcher.matches()) {
 							IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-							emoticon.setLoadData(emote.get("image_id").getAsInt());
+							emoticon.setLoadData(getJsonInt(emote, "image_id"));
 							emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.subscriber", title.toLowerCase()));
 						}
 					}
 				}
 			}
 			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new EmoteLoaderException("Unhandled exception", e);
 		}
 		ITextComponent linkComponent = new TextComponentTranslation("eiramoticons:command.list.clickHere");
 		linkComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://twitchemotes.com/"));

@@ -3,7 +3,6 @@ package net.blay09.mods.eiramoticons.addon.pack;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
-import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -14,7 +13,7 @@ import net.minecraft.util.text.event.HoverEvent;
 
 import java.awt.image.BufferedImage;
 
-public class TwitchSmileyPack implements IEmoticonLoader {
+public class TwitchSmileyPack extends AbstractEmotePack {
 
 	private static final String TEMPLATE = "http://static-cdn.jtvnw.net/emoticons/v1/{image_id}/1.0";
 

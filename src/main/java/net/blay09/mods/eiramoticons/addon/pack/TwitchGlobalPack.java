@@ -3,11 +3,10 @@ package net.blay09.mods.eiramoticons.addon.pack;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
+import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
-import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -17,11 +16,10 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 
-public class TwitchGlobalPack implements IEmoticonLoader {
+public class TwitchGlobalPack extends AbstractEmotePack {
 
 	private String template;
 
@@ -29,30 +27,29 @@ public class TwitchGlobalPack implements IEmoticonLoader {
 		try {
 			Reader reader = TwitchEmotesAPI.newGlobalEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root = null;
+			JsonObject root;
 			try {
 				root = gson.fromJson(reader, JsonObject.class);
-			} catch (JsonParseException e) {
+			} catch (Exception e) {
 				reader = TwitchEmotesAPI.newGlobalEmotesReader(true);
 				try {
 					root = gson.fromJson(reader, JsonObject.class);
-				} catch (JsonParseException e2) {
-					System.out.println("Failed to load global emoticon pack: " + e2.getMessage());
-					e2.printStackTrace();
+				} catch (Exception e2) {
+					throw new EmoteLoaderException(e2);
 				}
 			}
 			if(root != null) {
-				template = root.getAsJsonObject("template").get("small").getAsString();
-				JsonObject emotes = root.getAsJsonObject("emotes");
+				template = getJsonString(getJsonObject(root, "template"), "small");
+				JsonObject emotes = getJsonObject(root, "emotes");
 				for(Map.Entry<String, JsonElement> entry : emotes.entrySet()) {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(entry.getKey(), this);
-					emoticon.setLoadData(entry.getValue().getAsJsonObject().get("image_id").getAsInt());
+					emoticon.setLoadData(getJsonInt(entry.getValue().getAsJsonObject(), "image_id"));
 					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch"));
 				}
 			}
 			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new EmoteLoaderException("Unhandled exception", e);
 		}
 		ITextComponent linkComponent = new TextComponentTranslation("eiramoticons:command.list.clickHere");
 		linkComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://twitchemotes.com/"));

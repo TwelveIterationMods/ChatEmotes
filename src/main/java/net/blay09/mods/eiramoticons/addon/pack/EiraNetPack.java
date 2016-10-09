@@ -2,6 +2,7 @@ package net.blay09.mods.eiramoticons.addon.pack;
 
 import com.google.gson.*;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
+import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
 import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 import net.minecraft.client.resources.I18n;
@@ -45,7 +46,7 @@ public class EiraNetPack implements IEmoticonLoader {
 			}
 			reader.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new EmoteLoaderException(e);
 		}
 		ITextComponent linkComponent = new TextComponentTranslation("eiramoticons:command.list.clickHere");
 		linkComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://blay09.net/eiranet/"));

@@ -22,7 +22,7 @@ public class EiraMoticons {
 	@Mod.EventHandler
 	@SuppressWarnings("unused")
 	public void preInit(FMLPreInitializationEvent event) {
-		hasSuperiorModInstalled = Loader.isModLoaded("betterminecraftchat");
+		hasSuperiorModInstalled = Loader.isModLoaded("betterminecraftchat") || Loader.isModLoaded("chattweaks");
 
 		proxy.preInit(event);
 	}
