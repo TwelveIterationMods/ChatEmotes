@@ -65,13 +65,13 @@ public class ClientProxy extends CommonProxy {
 	public void postInit(FMLPostInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.post(new ReloadEmoticons());
 
-		if(EmoticonConfig.enableIRCEmotes) {
+		if (EmoticonConfig.enableIRCEmotes) {
 			event.buildSoftDependProxy("eirairc", "net.blay09.mods.eiramoticons.addon.EiraIRCAddon");
 		}
 		MAX_TEXTURE_SIZE = GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
 
 		ChatContainer customContainer = (ChatContainer) event.buildSoftDependProxy("tabbychat", "net.blay09.mods.eiramoticons.addon.TabbyChatContainer");
-		if(customContainer != null) {
+		if (customContainer != null) {
 			renderer.setChatContainer(customContainer);
 		}
 	}
@@ -79,7 +79,7 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void clientChatReceived(ClientChatReceivedEvent event) {
-		if(EmoticonConfig.enableMCEmotes) {
+		if (EmoticonConfig.enableMCEmotes) {
 			event.message = EmoticonHandler.adjustChatComponent(event.message);
 		}
 	}
@@ -88,51 +88,89 @@ public class ClientProxy extends CommonProxy {
 	@SuppressWarnings("unused")
 	public void reloadEmoticons(ReloadEmoticons event) {
 		// Twitch Emotes
-		if(EmoticonConfig.twitchSmileys) {
-			new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
+
+		if (EmoticonConfig.twitchSmileys) {
+			try {
+				new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
+			} catch (Exception e) {
+				// I don't care.
+				e.printStackTrace();
+			}
 		}
-		if(EmoticonConfig.twitchGlobalEmotes) {
-			new TwitchGlobalPack();
+		if (EmoticonConfig.twitchGlobalEmotes) {
+			try {
+				new TwitchGlobalPack();
+			} catch (Exception e) {
+				// Stop using 1.7.10
+				e.printStackTrace();
+			}
 		}
-		if(EmoticonConfig.twitchTurboEmotes) {
-			new TwitchTurboPack();
+		if (EmoticonConfig.twitchTurboEmotes) {
+			try {
+				new TwitchTurboPack();
+			} catch (Exception e) {
+				// Because this mod
+				e.printStackTrace();
+			}
 		}
-		if(EmoticonConfig.twitchSubscriberEmotes) {
-			new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+		if (EmoticonConfig.twitchSubscriberEmotes) {
+			try {
+				new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+			} catch (Exception e) {
+				// is
+				e.printStackTrace();
+			}
 		}
-		if(EmoticonConfig.bttvEmotes) {
-			new BTTVPack();
+		if (EmoticonConfig.bttvEmotes) {
+			try {
+				new BTTVPack();
+			} catch (Exception e) {
+				// no
+				e.printStackTrace();
+			}
 		}
-		if(EmoticonConfig.bttvChannelEmotes) {
-			BTTVChannelPack.createGroup();
-			for(String channel : EmoticonConfig.bttvEmoteChannels) {
-				new BTTVChannelPack(channel);
+		if (EmoticonConfig.bttvChannelEmotes) {
+			try {
+				BTTVChannelPack.createGroup();
+				for (String channel : EmoticonConfig.bttvEmoteChannels) {
+					new BTTVChannelPack(channel);
+				}
+			} catch (Exception e) {
+				// longer
+				e.printStackTrace();
 			}
 		}
 
-		if(EmoticonConfig.eiranetPack) {
-			new EiraNetPack();
+		if (EmoticonConfig.eiranetPack) {
+			try {
+				new EiraNetPack();
+			} catch (Exception e) {
+				// supported
+				// on 1.7.10.
+			}
 		}
 
-		if(EmoticonConfig.defaultPack) {
-			new IncludedPack("default", new String[] {"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
+		if (EmoticonConfig.defaultPack) {
+			new IncludedPack("default", new String[]{"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
 		}
 
 		// Custom Emotes
 		new FileAddon();
 
 		// Tweaks
-		if(EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
+		if (EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
 			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
-			IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
-			kappa.setLoadData(kappaHD.getLoadData());
-			kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
+			if(kappaHD != null) {
+				IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
+				kappa.setLoadData(kappaHD.getLoadData());
+				kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
+			}
 		}
 	}
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.modID.equals(EiraMoticons.MOD_ID)) {
+		if (event.modID.equals(EiraMoticons.MOD_ID)) {
 			EmoticonConfig.lightReload();
 			EmoticonRegistry.reloadEmoticons();
 		}
