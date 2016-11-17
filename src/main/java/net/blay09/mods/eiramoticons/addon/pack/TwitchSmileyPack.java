@@ -17,32 +17,22 @@ public class TwitchSmileyPack extends AbstractEmotePack {
 
 	private static final String TEMPLATE = "http://static-cdn.jtvnw.net/emoticons/v1/{image_id}/1.0";
 
-	private final int smileySet;
+	public TwitchSmileyPack() {
+		registerSmiley(":)", 1); registerSmiley(":-)", 1);
+		registerSmiley(":(", 2); registerSmiley(":-(", 2); registerSmiley(":'(", 2);
+		registerSmiley(":D", 3); registerSmiley(":-D", 3);
+		registerSmiley(">(", 4);
+		registerSmiley(":z", 5); registerSmiley(":Z", 5); registerSmiley(":-z", 5); registerSmiley(":-Z", 5); registerSmiley(":|", 5); registerSmiley(":-|", 5);
+		registerSmiley("o_o", 6); registerSmiley("O_O", 6); registerSmiley("o_O", 6); registerSmiley("O_o", 6); registerSmiley("o.o", 6); registerSmiley("O.O", 6); registerSmiley("o.O", 6); registerSmiley("O.o", 6);
+		registerSmiley("B)", 7); registerSmiley("B-)", 7);
+		registerSmiley(":o", 8); registerSmiley(":O", 8); registerSmiley(":-o", 8); registerSmiley(":-O", 8);
+		registerSmiley("<3", 9);
+		registerSmiley(":\\", 10); registerSmiley(":-\\", 10); registerSmiley(":/", 10); registerSmiley(":-/", 10);
+		registerSmiley(";)", 11); registerSmiley(";-)", 11);
+		registerSmiley(":p", 12); registerSmiley(":P", 12); registerSmiley(":-p", 12); registerSmiley(":-P", 12);
+		registerSmiley(";p", 13); registerSmiley(";P", 13); registerSmiley(";-p", 13); registerSmiley(";-P", 13);
+		registerSmiley("R)", 14); registerSmiley("R-)", 14);
 
-	public TwitchSmileyPack(int smileySet) {
-		this.smileySet = smileySet;
-		switch(smileySet) {
-			case 0:
-				registerSmiley(":)", 1); registerSmiley(":-)", 1);
-				registerSmiley(":(", 2); registerSmiley(":-(", 2); registerSmiley(":'(", 2);
-				registerSmiley(":D", 3); registerSmiley(":-D", 3);
-				registerSmiley(">(", 4);
-				registerSmiley(":z", 5); registerSmiley(":Z", 5); registerSmiley(":-z", 5); registerSmiley(":-Z", 5); registerSmiley(":|", 5); registerSmiley(":-|", 5);
-				registerSmiley("o_o", 6); registerSmiley("O_O", 6); registerSmiley("o_O", 6); registerSmiley("O_o", 6); registerSmiley("o.o", 6); registerSmiley("O.O", 6); registerSmiley("o.O", 6); registerSmiley("O.o", 6);
-				registerSmiley("B)", 7); registerSmiley("B-)", 7);
-				registerSmiley(":o", 8); registerSmiley(":O", 8); registerSmiley(":-o", 8); registerSmiley(":-O", 8);
-				registerSmiley("<3", 9);
-				registerSmiley(":\\", 10); registerSmiley(":-\\", 10); registerSmiley(":/", 10); registerSmiley(":-/", 10);
-				registerSmiley(";)", 11); registerSmiley(";-)", 11);
-				registerSmiley(":p", 12); registerSmiley(":P", 12); registerSmiley(":-p", 12); registerSmiley(":-P", 12);
-				registerSmiley(";p", 13); registerSmiley(";P", 13); registerSmiley(";-p", 13); registerSmiley(";-P", 13);
-				registerSmiley("R)", 14); registerSmiley("R-)", 14);
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-		}
 		ITextComponent linkComponent = new TextComponentTranslation("eiramoticons:command.list.clickHere");
 		linkComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://twitchemotes.com/"));
 		linkComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("https://twitchemotes.com/")));

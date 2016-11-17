@@ -18,7 +18,6 @@ public class EmoticonConfig {
 	public static boolean enableIRCEmotes;
 	public static String twitchSubscriberRegex;
 	public static String[] bttvEmoteChannels;
-	public static int twitchSmileySet;
 
 	public static boolean defaultPack;
 	public static boolean eiranetPack;
@@ -41,7 +40,6 @@ public class EmoticonConfig {
 		enableMCEmotes = config.getBoolean("enableMCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableMCEmotes.tooltip"), "eiramoticons:config.enableMCEmotes");
 		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", GENERAL, "[a-z0-9][a-z0-9]+[A-Z0-9].*", I18n.format("eiramoticons:config.twitchSubscriberRegex.tooltip"), "eiramoticons:config.twitchSubscriberRegex");
 		bttvEmoteChannels = config.getStringList("bttvEmoteChannels", GENERAL, new String[0], I18n.format("eiramoticons:config.bttvEmoteChannels.tooltip"), null, "eiramoticons:config.bttvEmoteChannels");
-		twitchSmileySet = config.getInt("twitchSmileySet", GENERAL, 0, 0, 2, I18n.format("eiramoticons:config.twitchSmileySet.tooltip"), "eiramoticons:config.twitchSmileySet");
 		enableIRCEmotes = config.getBoolean("enableIRCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableIRCEmotes.tooltip"), "eiramoticons:config.enableIRCEmotes");
 
 		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", PACKS, true, I18n.format("eiramoticons:config.twitchGlobalEmotes.tooltip"), "eiramoticons:config.twitchGlobalEmotes");

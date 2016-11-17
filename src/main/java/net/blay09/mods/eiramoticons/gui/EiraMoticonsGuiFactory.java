@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.client.IModGuiFactory;
 
+import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -19,10 +21,11 @@ public class EiraMoticonsGuiFactory implements IModGuiFactory {
 
 	@Override
 	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-		return null;
+		return Collections.emptySet();
 	}
 
 	@Override
+	@Nullable
 	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
 		return null;
 	}

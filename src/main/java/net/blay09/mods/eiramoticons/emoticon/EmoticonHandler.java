@@ -43,7 +43,7 @@ public class EmoticonHandler {
 		} else if(chatComponent instanceof TextComponentTranslation) {
 			return adjustTranslationComponent((TextComponentTranslation) chatComponent);
 		}
-		return null;
+		return chatComponent;
 	}
 
 	public static ITextComponent adjustTextComponent(TextComponentString chatComponent) {
@@ -51,9 +51,7 @@ public class EmoticonHandler {
 		copyComponent.setStyle(chatComponent.getStyle());
 		for(Object object : chatComponent.getSiblings()) {
 			ITextComponent adjustedComponent = adjustChatComponent((ITextComponent) object);
-			if(adjustedComponent != null) {
-				copyComponent.appendSibling(adjustedComponent);
-			}
+			copyComponent.appendSibling(adjustedComponent);
 		}
 		return copyComponent;
 	}
@@ -74,9 +72,7 @@ public class EmoticonHandler {
 		copyComponent.setStyle(chatComponent.getStyle());
 		for(Object object : chatComponent.getSiblings()) {
 			ITextComponent adjustedComponent = adjustChatComponent((ITextComponent) object);
-			if(adjustedComponent != null) {
-				copyComponent.appendSibling(adjustedComponent);
-			}
+			copyComponent.appendSibling(adjustedComponent);
 		}
 		return copyComponent;
 	}

@@ -25,7 +25,7 @@ public class EiraNetPack implements IEmoticonLoader {
 
 	public EiraNetPack() {
 		try {
-			URL apiURL = new URL("http://balyware.com/control-panel/api/emotes.php");
+			URL apiURL = new URL("http://blay09.net/mods/control-panel/api/emotes.php");
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = null;
@@ -49,12 +49,12 @@ public class EiraNetPack implements IEmoticonLoader {
 			throw new EmoteLoaderException(e);
 		}
 		ITextComponent linkComponent = new TextComponentTranslation("eiramoticons:command.list.clickHere");
-		linkComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://blay09.net/eiranet/"));
+		linkComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.patreon.com/blay09"));
 		linkComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("https://www.patreon.com/blay09")));
 		linkComponent.getStyle().setColor(TextFormatting.GOLD);
 		linkComponent.getStyle().setBold(true);
 		linkComponent.getStyle().setUnderlined(true);
-		EiraMoticonsAPI.registerEmoticonGroup("EiraNet User Emotes", new TextComponentTranslation("eiramoticons:command.list.eiranet", linkComponent));
+		EiraMoticonsAPI.registerEmoticonGroup("Patreon Emotes", new TextComponentTranslation("eiramoticons:command.list.eiranet", linkComponent));
 	}
 
 	@Override

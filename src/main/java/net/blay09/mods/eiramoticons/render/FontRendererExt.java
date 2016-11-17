@@ -6,7 +6,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.ArrayUtils;
+
+import javax.annotation.Nullable;
 
 public class FontRendererExt extends FontRenderer {
 
@@ -32,7 +33,8 @@ public class FontRendererExt extends FontRenderer {
 		this.emoticonBuffer = emoticonBuffer;
 	}
 
-	public String killEmotes(String s) {
+	@Nullable
+	public String killEmotes(@Nullable String s) {
 		if(s == null) {
 			return null;
 		}
@@ -52,7 +54,8 @@ public class FontRendererExt extends FontRenderer {
 		return sb.toString();
 	}
 
-	public String extractEmotesToBuffer(String s, float x, float y, int color) {
+	@Nullable
+	public String extractEmotesToBuffer(@Nullable String s, float x, float y, int color) {
 		if(s == null) {
 			return null;
 		}

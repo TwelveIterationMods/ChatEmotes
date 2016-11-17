@@ -11,7 +11,6 @@ import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.blay09.mods.eiramoticons.render.EmoticonRenderer;
 import net.blay09.mods.eiramoticons.render.FontRendererExt;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -86,7 +85,7 @@ public class ClientProxy extends CommonProxy {
 		// Twitch Emotes
 		if (EmoticonConfig.twitchSmileys) {
 			try {
-				new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
+				new TwitchSmileyPack();
 			} catch (EmoteLoaderException e) {
 				LOGGER.error("Failed to load Twitch smiley emotes: {}", e);
 			}

@@ -7,6 +7,7 @@ import net.minecraft.util.IntHashMap;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -35,10 +36,12 @@ public class EmoticonRegistry {
 		return group;
 	}
 
+	@Nullable
 	public static Emoticon fromName(String name) {
 		return namedMap.get(name);
 	}
 
+	@Nullable
 	public static Emoticon fromId(int id) {
 		return emoticonMap.lookup(id);
 	}

@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = EiraMoticons.MOD_ID, acceptedMinecraftVersions = "[1.10]", acceptableRemoteVersions="*", guiFactory = "net.blay09.mods.eiramoticons.gui.EiraMoticonsGuiFactory", clientSideOnly = true)
+@Mod(modid = EiraMoticons.MOD_ID, acceptedMinecraftVersions = "[1.11]", acceptableRemoteVersions="*", guiFactory = "net.blay09.mods.eiramoticons.gui.EiraMoticonsGuiFactory", clientSideOnly = true)
 public class EiraMoticons {
 
     public static final String MOD_ID = "eiramoticons";

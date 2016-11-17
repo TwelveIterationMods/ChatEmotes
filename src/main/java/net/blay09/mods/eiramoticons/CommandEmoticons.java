@@ -9,13 +9,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.event.ClickEvent;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommandEmoticons extends CommandBase {
@@ -27,7 +23,7 @@ public class CommandEmoticons extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/emoticons reload|help|list|config|clearcache";
+		return "/emoticons reload|list|config|clearcache";
 	}
 
 	@Override
@@ -40,25 +36,22 @@ public class CommandEmoticons extends CommandBase {
 		if(args.length != 1) {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}
-		if(args[0].equals("reload")) {
-			EmoticonConfig.hardReload();
-			EmoticonRegistry.reloadEmoticons();
-		} else if(args[0].equals("help")) {
-			ITextComponent linkComponent = new TextComponentTranslation("eiramoticons:command.help.clickHere");
-			linkComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://blay09.net/?page_id=347"));
-			linkComponent.getStyle().setColor(TextFormatting.GOLD);
-			linkComponent.getStyle().setBold(true);
-			linkComponent.getStyle().setUnderlined(true);
-			sender.addChatMessage(new TextComponentTranslation("eiramoticons:command.help", linkComponent));
-		} else if(args[0].equals("list")) {
-			for (EmoticonGroup group : EmoticonRegistry.getGroups()) {
-				sender.addChatMessage(group.listComponent);
-			}
-		} else if(args[0].equals("clearcache")) {
-			TwitchEmotesAPI.clearCache();
-			sender.addChatMessage(new TextComponentTranslation("eiramoticons:command.clearcache"));
-		} else {
-			throw new WrongUsageException(getCommandUsage(sender));
+		switch (args[0]) {
+			case "reload":
+				EmoticonConfig.hardReload();
+				EmoticonRegistry.reloadEmoticons();
+				break;
+			case "list":
+				for (EmoticonGroup group : EmoticonRegistry.getGroups()) {
+					sender.addChatMessage(group.listComponent);
+				}
+				break;
+			case "clearcache":
+				TwitchEmotesAPI.clearCache();
+				sender.addChatMessage(new TextComponentTranslation("eiramoticons:command.clearcache"));
+				break;
+			default:
+				throw new WrongUsageException(getCommandUsage(sender));
 		}
 	}
 
@@ -67,7 +60,7 @@ public class CommandEmoticons extends CommandBase {
 		if(args.length == 0) {
 			return getListOfStringsMatchingLastWord(args, "reload", "help", "list", "clearcache");
 		}
-		return null;
+		return super.getTabCompletionOptions(server, sender, args, pos);
 	}
 
 }
