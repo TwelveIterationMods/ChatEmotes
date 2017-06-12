@@ -14,6 +14,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import javax.annotation.Nullable;
+
 public class EmoticonRenderer {
 
 	public static final float EMOTICON_WIDTH = 16;
@@ -26,7 +28,7 @@ public class EmoticonRenderer {
 
 	public EmoticonRenderer(Minecraft mc) {
 		this.mc = mc;
-		spaceWidth = mc.fontRendererObj.getStringWidth("   ");
+		spaceWidth = mc.fontRenderer.getStringWidth("   ");
 	}
 
 	@SubscribeEvent
@@ -69,7 +71,7 @@ public class EmoticonRenderer {
 			float renderWidth = (buffer.emoticons[i].getWidth() * buffer.emoticons[i].getScaleX());
 			float renderHeight = (buffer.emoticons[i].getHeight() * buffer.emoticons[i].getScaleY());
 			float renderX = buffer.positionX[i] + (spaceWidth / 2 - renderWidth / 2);
-			float renderY = buffer.positionY[i] + (mc.fontRendererObj.FONT_HEIGHT / 2 - renderHeight / 2);
+			float renderY = buffer.positionY[i] + (mc.fontRenderer.FONT_HEIGHT / 2 - renderHeight / 2);
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(renderX, renderY, 0);
 			GlStateManager.scale(buffer.emoticons[i].getScaleX(), buffer.emoticons[i].getScaleY(), 1);
@@ -159,7 +161,7 @@ public class EmoticonRenderer {
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.shadeModel(7425);
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		BufferBuilder vertexBuffer = tessellator.getBuffer();
 		vertexBuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		vertexBuffer.pos((double) right, (double) top, (double) zLevel).color(f1, f2, f3, f).endVertex();
 		vertexBuffer.pos((double) left, (double) top, (double) zLevel).color(f1, f2, f3, f).endVertex();
@@ -172,7 +174,7 @@ public class EmoticonRenderer {
 		GlStateManager.enableTexture2D();
 	}
 
-	protected void drawHoveringText(String[] lines, int mouseX, int mouseY, int width, int height) {
+	protected void drawHoveringText(@Nullable String[] lines, int mouseX, int mouseY, int width, int height) {
 		if (lines != null && lines.length > 0) {
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			RenderHelper.disableStandardItemLighting();
@@ -181,7 +183,7 @@ public class EmoticonRenderer {
 
 			int maxLineWidth = 0;
 			for (String s : lines) {
-				int lineWidth = mc.fontRendererObj.getStringWidth(s);
+				int lineWidth = mc.fontRenderer.getStringWidth(s);
 				if (lineWidth > maxLineWidth) {
 					maxLineWidth = lineWidth;
 				}
@@ -217,7 +219,7 @@ public class EmoticonRenderer {
 			drawGradientRect(x - 3, y + tooltipHeight + 2, x + maxLineWidth + 3, y + tooltipHeight + 3, fgColor2, fgColor2, 300);
 
 			for (String line : lines) {
-				mc.fontRendererObj.drawString(line, x, y, -1, true);
+				mc.fontRenderer.drawString(line, x, y, -1, true);
 				y += 10;
 			}
 

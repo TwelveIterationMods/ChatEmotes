@@ -50,7 +50,7 @@ public class ClientProxy extends CommonProxy {
 		fontRenderer.setUnicodeFlag(mc.isUnicode());
 		fontRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
 		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
-		mc.fontRendererObj = fontRenderer;
+		mc.fontRenderer = fontRenderer;
 
 		ClientCommandHandler.instance.registerCommand(new CommandEmoticons());
 
@@ -82,85 +82,82 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void reloadEmoticons(ReloadEmoticons event) {
-		// Twitch Emotes
-		if (EmoticonConfig.twitchSmileys) {
-			try {
-				new TwitchSmileyPack();
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load Twitch smiley emotes: {}", e);
-			}
-		}
-		if (EmoticonConfig.twitchGlobalEmotes) {
-			try {
-				new TwitchGlobalPack();
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load Twitch global emotes: {}", e);
-			}
-		}
-		if (EmoticonConfig.twitchTurboEmotes) {
-			try {
-				new TwitchTurboPack();
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load Twitch turbo emotes: {}", e);
-			}
-		}
-		if (EmoticonConfig.twitchSubscriberEmotes) {
-			try {
-				new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load Twitch subscriber emotes: {}", e);
-			}
-		}
-		if (EmoticonConfig.bttvEmotes) {
-			try {
-				new BTTVPack();
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load BTTV emotes: {}", e);
-			}
-		}
-		if (EmoticonConfig.bttvChannelEmotes) {
-			try {
-				BTTVChannelPack.createGroup();
-				for (String channel : EmoticonConfig.bttvEmoteChannels) {
-					new BTTVChannelPack(channel);
+		new Thread(() -> {
+			EmoticonRegistry.isLoading = true;
+			// Twitch Emotes
+			if (EmoticonConfig.twitchSmileys) {
+				try {
+					new TwitchSmileyPack();
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load Twitch smiley emotes: {}", e);
 				}
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load BTTV channel emotes: {}", e);
 			}
-		}
+			if (EmoticonConfig.twitchGlobalEmotes) {
+				try {
+					new TwitchGlobalPack();
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load Twitch global emotes: {}", e);
+				}
+			}
+			if (EmoticonConfig.twitchTurboEmotes) {
+				try {
+					new TwitchTurboPack();
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load Twitch turbo emotes: {}", e);
+				}
+			}
+			if (EmoticonConfig.twitchSubscriberEmotes) {
+				try {
+					new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load Twitch subscriber emotes: {}", e);
+				}
+			}
+			if (EmoticonConfig.bttvEmotes) {
+				try {
+					new BTTVPack();
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load BTTV emotes: {}", e);
+				}
+			}
+			if (EmoticonConfig.bttvChannelEmotes) {
+				try {
+					BTTVChannelPack.createGroup();
+					for (String channel : EmoticonConfig.bttvEmoteChannels) {
+						new BTTVChannelPack(channel);
+					}
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load BTTV channel emotes: {}", e);
+				}
+			}
 
-		if (EmoticonConfig.eiranetPack) {
+			if (EmoticonConfig.defaultPack) {
+				try {
+					new DefaultPack();
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load default emotes: {}", e.getMessage());
+				}
+			}
+
+			// Custom Emotes
 			try {
-				new EiraNetPack();
+				new FileAddon();
 			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load patron emotes: {}", e.getMessage());
+				LOGGER.error("Failed to load file emotes: {}", e.getMessage());
 			}
-		}
 
-		if (EmoticonConfig.defaultPack) {
-			try {
-				new IncludedPack("default", new String[]{"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load default emotes: {}", e.getMessage());
+			// Tweaks
+			if (EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
+				IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
+				if (kappaHD != null) {
+					IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
+					kappa.setLoadData(kappaHD.getLoadData());
+					kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
+				}
 			}
-		}
 
-		// Custom Emotes
-		try {
-			new FileAddon();
-		} catch (EmoteLoaderException e) {
-			LOGGER.error("Failed to load file emotes: {}", e.getMessage());
-		}
-
-		// Tweaks
-		if (EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
-			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
-			if (kappaHD != null) {
-				IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
-				kappa.setLoadData(kappaHD.getLoadData());
-				kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
-			}
-		}
+			EmoticonRegistry.isLoading = false;
+		}).start();
 	}
 
 	@SubscribeEvent

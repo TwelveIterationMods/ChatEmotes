@@ -18,45 +18,58 @@ public class EmoticonRegistry {
 	private static final Map<String, Emoticon> namedMap = new HashMap<>();
 	private static final Map<String, EmoticonGroup> groupMap = new HashMap<>();
 	private static final List<Emoticon> disposalList = new ArrayList<>();
+	public static boolean isLoading;
+
+	private static final Object loadingLock = new Object();
 
 	public static IEmoticon registerEmoticon(String name, IEmoticonLoader loader) {
-		Emoticon emoticon = new Emoticon(idCounter.incrementAndGet(), name, loader);
-		emoticonMap.addKey(emoticon.id, emoticon);
-		namedMap.put(emoticon.name, emoticon);
-		return emoticon;
+		synchronized (loadingLock) {
+			Emoticon emoticon = new Emoticon(idCounter.incrementAndGet(), name, loader);
+			emoticonMap.addKey(emoticon.id, emoticon);
+			namedMap.put(emoticon.name, emoticon);
+			return emoticon;
+		}
 	}
 
 	public static Collection<EmoticonGroup> getGroups() {
-		return groupMap.values();
+		synchronized (loadingLock) {
+			return groupMap.values();
+		}
 	}
 
 	public static EmoticonGroup registerEmoticonGroup(String groupName, ITextComponent listComponent) {
-		EmoticonGroup group = new EmoticonGroup(groupName, listComponent);
-		groupMap.put(groupName, group);
-		return group;
+		synchronized (loadingLock) {
+			EmoticonGroup group = new EmoticonGroup(groupName, listComponent);
+			groupMap.put(groupName, group);
+			return group;
+		}
 	}
 
 	@Nullable
 	public static Emoticon fromName(String name) {
-		return namedMap.get(name);
+		synchronized (loadingLock) {
+			return namedMap.get(name);
+		}
 	}
 
 	@Nullable
 	public static Emoticon fromId(int id) {
-		return emoticonMap.lookup(id);
+		synchronized (loadingLock) {
+			return emoticonMap.lookup(id);
+		}
 	}
 
 	public static void reloadEmoticons() {
-		synchronized (disposalList) {
-			for (Emoticon emoticon : namedMap.values()) {
-				disposalList.add(emoticon);
+		synchronized (loadingLock) {
+			synchronized (disposalList) {
+				disposalList.addAll(namedMap.values());
 			}
+			idCounter.set(0);
+			emoticonMap.clearMap();
+			groupMap.clear();
+			namedMap.clear();
+			MinecraftForge.EVENT_BUS.post(new ReloadEmoticons());
 		}
-		idCounter.set(0);
-		emoticonMap.clearMap();
-		groupMap.clear();
-		namedMap.clear();
-		MinecraftForge.EVENT_BUS.post(new ReloadEmoticons());
 	}
 
 	public static void runDisposal() {

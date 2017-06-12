@@ -40,7 +40,7 @@ public class TwitchTurboPack extends AbstractEmotePack {
 			if(root != null) {
 				template = getJsonString(getJsonObject(root, "template"), "small");
 				JsonObject channels = getJsonObject(root, "channels");
-				JsonObject turbo = getJsonObject(channels, "turbo");
+				JsonObject turbo = getJsonObject(channels, "--twitch-turbo--");
 				JsonArray emotes = getJsonArray(turbo, "emotes");
 				for (int i = 0; i < emotes.size(); i++) {
 					JsonObject emote = emotes.get(i).getAsJsonObject();

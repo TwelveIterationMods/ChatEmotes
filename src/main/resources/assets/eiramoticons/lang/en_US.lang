@@ -58,3 +58,4 @@ eiramoticons:command.list.twitch.subscriber=Twitch Subscriber Pack: click %s
 eiramoticons:command.list.twitch.smiley=Twitch Smiley Pack: click %s
 eiramoticons:command.list.clickHere=here
 eiramoticons:command.clearcache=The cache has been cleared.
+eiramoticons:command.still_reloading=Emotes are still being loaded ...

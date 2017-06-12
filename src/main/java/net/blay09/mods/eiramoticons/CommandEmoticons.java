@@ -17,12 +17,12 @@ import java.util.List;
 public class CommandEmoticons extends CommandBase {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "emoticons";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getUsage(ICommandSender sender) {
 		return "/emoticons reload|list|config|clearcache";
 	}
 
@@ -34,7 +34,11 @@ public class CommandEmoticons extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length != 1) {
-			throw new WrongUsageException(getCommandUsage(sender));
+			throw new WrongUsageException(getUsage(sender));
+		}
+		if(EmoticonRegistry.isLoading) {
+			sender.sendMessage(new TextComponentTranslation("eiramoticons:command.still_reloading"));
+			return;
 		}
 		switch (args[0]) {
 			case "reload":
@@ -43,24 +47,24 @@ public class CommandEmoticons extends CommandBase {
 				break;
 			case "list":
 				for (EmoticonGroup group : EmoticonRegistry.getGroups()) {
-					sender.addChatMessage(group.listComponent);
+					sender.sendMessage(group.listComponent);
 				}
 				break;
 			case "clearcache":
 				TwitchEmotesAPI.clearCache();
-				sender.addChatMessage(new TextComponentTranslation("eiramoticons:command.clearcache"));
+				sender.sendMessage(new TextComponentTranslation("eiramoticons:command.clearcache"));
 				break;
 			default:
-				throw new WrongUsageException(getCommandUsage(sender));
+				throw new WrongUsageException(getUsage(sender));
 		}
 	}
 
 	@Override
-	public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
 		if(args.length == 0) {
 			return getListOfStringsMatchingLastWord(args, "reload", "help", "list", "clearcache");
 		}
-		return super.getTabCompletionOptions(server, sender, args, pos);
+		return super.getTabCompletions(server, sender, args, pos);
 	}
 
 }

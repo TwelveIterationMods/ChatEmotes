@@ -11,18 +11,20 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import java.io.IOException;
+import java.util.Locale;
 
-public class IncludedPack implements IEmoticonLoader {
+public class DefaultPack implements IEmoticonLoader {
 
-	public IncludedPack(String group, String[] emotes) {
+	public DefaultPack() {
+		String[] emotes = new String[]{"rage", "lewd", "scared", "cri", "meow", "yawn", "fufu", "praise", "arr"};
 		StringBuilder sb = new StringBuilder();
-		for(String emote : emotes) {
-			IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(emote, this);
-			emoticon.setTooltip(I18n.format("eiramoticons:group." + group));
-			emoticon.setLoadData(new ResourceLocation("eiramoticons", "packs/" + group + "/" + emote + ".png"));
+		for (String emote : emotes) {
+			IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon("eira" + emote.substring(0, 1).toUpperCase(Locale.ENGLISH) + emote.substring(1), this);
+			emoticon.setTooltip(I18n.format("eiramoticons:group.default"));
+			emoticon.setLoadData(new ResourceLocation("eiramoticons", "packs/default/" + emote + ".png"));
 			sb.append("  ").append(emote);
 		}
-		EiraMoticonsAPI.registerEmoticonGroup(group, EiraMoticonsAPI.replaceEmoticons(new TextComponentTranslation("eiramoticons:command.list." + group, sb.toString())));
+		EiraMoticonsAPI.registerEmoticonGroup("default", EiraMoticonsAPI.replaceEmoticons(new TextComponentTranslation("eiramoticons:command.list.default", sb.toString())));
 	}
 
 	@Override

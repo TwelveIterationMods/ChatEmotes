@@ -2,6 +2,7 @@ package net.blay09.mods.eiramoticons.addon;
 
 import org.apache.commons.io.FileUtils;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -51,6 +52,7 @@ public class TwitchEmotesAPI {
 		return new FileReader(cachedSubscriber);
 	}
 
+	@Nullable
 	public static BufferedImage readTwitchEmoteImage(String template, int imageId, String cachePrefix) {
 		File cachedImageFile = new File(cachedEmotes, cachePrefix + "-" + imageId + ".png");
 		if(shouldUseCacheFileImage(cachedImageFile)) {
