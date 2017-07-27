@@ -11,7 +11,6 @@ import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
 import net.blay09.mods.eiramoticons.render.EmoticonRenderer;
 import net.blay09.mods.eiramoticons.render.FontRendererExt;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -98,13 +97,13 @@ public class ClientProxy extends CommonProxy {
 				LOGGER.error("Failed to load Twitch global emotes: {}", e);
 			}
 		}
-		if (EmoticonConfig.twitchTurboEmotes) {
-			try {
-				new TwitchTurboPack();
-			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load Twitch turbo emotes: {}", e);
-			}
-		}
+//		if (EmoticonConfig.twitchTurboEmotes) {
+//			try {
+//				new TwitchTurboPack();
+//			} catch (EmoteLoaderException e) {
+//				LOGGER.error("Failed to load Twitch turbo emotes: {}", e);
+//			}
+//		}
 		if (EmoticonConfig.twitchSubscriberEmotes) {
 			try {
 				new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
@@ -130,11 +129,22 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 
-		if (EmoticonConfig.eiranetPack) {
+		if(EmoticonConfig.ffzEmotes) {
 			try {
-				new EiraNetPack();
+				new FFZPack();
 			} catch (EmoteLoaderException e) {
-				LOGGER.error("Failed to load patron emotes: {}", e.getMessage());
+				LOGGER.error("Failed to load FrankerFaceZ emotes: {}", e);
+			}
+		}
+
+		if(EmoticonConfig.ffzChannelEmotes) {
+			try {
+				FFZChannelPack.createGroup();
+				for (String channel : EmoticonConfig.ffzEmoteChannels) {
+					new FFZChannelPack(channel);
+				}
+			} catch (EmoteLoaderException e) {
+				LOGGER.error("Failed to load FrankerFaceZ channel emotes: {}", e);
 			}
 		}
 
