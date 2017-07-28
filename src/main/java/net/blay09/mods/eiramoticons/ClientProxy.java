@@ -131,6 +131,25 @@ public class ClientProxy extends CommonProxy {
 				}
 			}
 
+			if(EmoticonConfig.ffzEmotes) {
+				try {
+					new FFZPack();
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load FrankerFaceZ emotes: {}", e);
+				}
+			}
+
+			if(EmoticonConfig.ffzChannelEmotes) {
+				try {
+					FFZChannelPack.createGroup();
+					for (String channel : EmoticonConfig.ffzEmoteChannels) {
+						new FFZChannelPack(channel);
+					}
+				} catch (EmoteLoaderException e) {
+					LOGGER.error("Failed to load FrankerFaceZ channel emotes: {}", e);
+				}
+			}
+
 			if (EmoticonConfig.defaultPack) {
 				try {
 					new DefaultPack();
