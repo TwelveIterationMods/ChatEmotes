@@ -15,8 +15,8 @@ public class TwitchEmotesAPI {
 	private static final int CACHE_LIFETIME_JSON = 86400000;
 	private static final int CACHE_LIFETIME_IMAGE = 604800000;
 	private static final int TIMEOUT_TIME = 10000;
-	private static final String URL_GLOBAL = "https://twitchemotes.com/api_cache/v2/global.json";
-	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v2/subscriber.json";
+	private static final String URL_GLOBAL = "https://twitchemotes.com/api_cache/v3/global.json";
+	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v3/subscriber.json";
 
 	private static File cacheDir;
 	private static File cachedEmotes;
