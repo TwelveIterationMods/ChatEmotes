@@ -20,8 +20,6 @@ import java.io.Reader;
 
 public class TwitchTurboPack extends AbstractEmotePack {
 
-	private String template;
-
 	public TwitchTurboPack() {
 		try {
 			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader(false);
@@ -38,7 +36,6 @@ public class TwitchTurboPack extends AbstractEmotePack {
 				}
 			}
 			if(root != null) {
-				template = getJsonString(getJsonObject(root, "template"), "small");
 				JsonObject channels = getJsonObject(root, "channels");
 				JsonObject turbo = getJsonObject(channels, "--twitch-turbo--");
 				JsonArray emotes = getJsonArray(turbo, "emotes");
@@ -46,7 +43,7 @@ public class TwitchTurboPack extends AbstractEmotePack {
 					JsonObject emote = emotes.get(i).getAsJsonObject();
 					String code = getJsonString(emote, "code");
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-					emoticon.setLoadData(getJsonInt(emote, "image_id"));
+					emoticon.setLoadData(getJsonInt(emote, "id"));
 					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.turbo"));
 				}
 			}
@@ -65,13 +62,11 @@ public class TwitchTurboPack extends AbstractEmotePack {
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
-		if(template != null) {
-			BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(template, (Integer) emoticon.getLoadData(), "turbo");
-			if (image != null) {
-				emoticon.setImage(image);
-				if(image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
-					emoticon.setScale(0.5f, 0.5f);
-				}
+		BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(TwitchEmotesAPI.URL_SMALL, (Integer) emoticon.getLoadData(), "turbo");
+		if (image != null) {
+			emoticon.setImage(image);
+			if (image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
+				emoticon.setScale(0.5f, 0.5f);
 			}
 		}
 	}

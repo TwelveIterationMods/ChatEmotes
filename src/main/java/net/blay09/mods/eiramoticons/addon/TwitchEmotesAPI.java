@@ -11,6 +11,7 @@ import java.net.URL;
 public class TwitchEmotesAPI {
 
 	public static final int TWITCH_BASE_SIZE = 28;
+	public static final String URL_SMALL = "https://static-cdn.jtvnw.net/emoticons/v1/{image_id}/1.0";
 
 	private static final int CACHE_LIFETIME_JSON = 86400000;
 	private static final int CACHE_LIFETIME_IMAGE = 604800000;

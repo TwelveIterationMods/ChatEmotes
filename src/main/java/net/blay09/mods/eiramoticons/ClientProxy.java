@@ -101,7 +101,8 @@ public class ClientProxy extends CommonProxy {
 			}
 			if (EmoticonConfig.twitchTurboEmotes) {
 				try {
-					new TwitchTurboPack();
+					//new TwitchTurboPack();
+					LOGGER.info("Twitch Turbo Emotes are unavailable.");
 				} catch (EmoteLoaderException e) {
 					LOGGER.error("Failed to load Twitch turbo emotes: {}", e);
 				}
