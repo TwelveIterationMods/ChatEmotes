@@ -18,33 +18,32 @@ import net.minecraft.util.text.event.HoverEvent;
 import java.awt.image.BufferedImage;
 import java.io.Reader;
 
-public class TwitchTurboPack extends AbstractEmotePack {
+public class TwitchPrimePack extends AbstractEmotePack {
 
-	public TwitchTurboPack() {
+	public TwitchPrimePack() {
 		try {
-			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader(false);
+			Reader reader = TwitchEmotesAPI.newPrimeEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root;
+			JsonObject emoteList;
 			try {
-				root = gson.fromJson(reader, JsonObject.class);
+				emoteList = gson.fromJson(reader, JsonObject.class);
 			} catch (Exception e) {
-				reader = TwitchEmotesAPI.newSubscriberEmotesReader(true);
+				reader = TwitchEmotesAPI.newPrimeEmotesReader(true);
 				try {
-					root = gson.fromJson(reader, JsonObject.class);
+					emoteList = gson.fromJson(reader, JsonObject.class);
 				} catch (Exception e2) {
 					throw new EmoteLoaderException(e2);
 				}
 			}
-			if(root != null) {
-				JsonObject channels = getJsonObject(root, "channels");
-				JsonObject turbo = getJsonObject(channels, "--twitch-turbo--");
-				JsonArray emotes = getJsonArray(turbo, "emotes");
+			if (emoteList != null) {
+				JsonObject emoticon_sets = getJsonObject(emoteList, "emoticon_sets");
+				JsonArray emotes = getJsonArray(emoticon_sets, "19194");
 				for (int i = 0; i < emotes.size(); i++) {
 					JsonObject emote = emotes.get(i).getAsJsonObject();
 					String code = getJsonString(emote, "code");
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
 					emoticon.setLoadData(getJsonInt(emote, "id"));
-					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.turbo"));
+					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.prime"));
 				}
 			}
 			reader.close();
@@ -57,12 +56,12 @@ public class TwitchTurboPack extends AbstractEmotePack {
 		linkComponent.getStyle().setColor(TextFormatting.GOLD);
 		linkComponent.getStyle().setBold(true);
 		linkComponent.getStyle().setUnderlined(true);
-		EiraMoticonsAPI.registerEmoticonGroup("Twitch Turbo", new TextComponentTranslation("eiramoticons:command.list.twitch.turbo", linkComponent));
+		EiraMoticonsAPI.registerEmoticonGroup("Twitch Prime", new TextComponentTranslation("eiramoticons:command.list.twitch.prime", linkComponent));
 	}
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
-		BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(TwitchEmotesAPI.URL_SMALL, (Integer) emoticon.getLoadData(), "turbo");
+		BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(TwitchEmotesAPI.URL_SMALL, (Integer) emoticon.getLoadData(), "prime");
 		if (image != null) {
 			emoticon.setImage(image);
 			if (image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {

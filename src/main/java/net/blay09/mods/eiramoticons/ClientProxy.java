@@ -99,12 +99,11 @@ public class ClientProxy extends CommonProxy {
 					LOGGER.error("Failed to load Twitch global emotes: {}", e);
 				}
 			}
-			if (EmoticonConfig.twitchTurboEmotes) {
+			if (EmoticonConfig.twitchPrimeEmotes) {
 				try {
-					//new TwitchTurboPack();
-					LOGGER.info("Twitch Turbo Emotes are unavailable.");
+					new TwitchPrimePack();
 				} catch (EmoteLoaderException e) {
-					LOGGER.error("Failed to load Twitch turbo emotes: {}", e);
+					LOGGER.error("Failed to load Twitch prime emotes: {}", e);
 				}
 			}
 			if (EmoticonConfig.twitchSubscriberEmotes) {
@@ -167,7 +166,7 @@ public class ClientProxy extends CommonProxy {
 			}
 
 			// Tweaks
-			if (EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
+			if (EmoticonConfig.betterKappas && EmoticonConfig.twitchPrimeEmotes) {
 				IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
 				if (kappaHD != null) {
 					IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());

@@ -84,7 +84,7 @@ public class Emoticon implements IEmoticon {
 	}
 
 	@Override
-	public String getCode() {
+	public String getName() {
 		return code;
 	}
 

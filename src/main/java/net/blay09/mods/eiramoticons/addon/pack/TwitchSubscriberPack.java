@@ -42,8 +42,8 @@ public class TwitchSubscriberPack extends AbstractEmotePack {
 			if (emoteList != null) {
 				for (Map.Entry<String, JsonElement> channelEntry : emoteList.entrySet()) {
 					JsonObject channel = channelEntry.getValue().getAsJsonObject();
-					String channelName = getJsonString(channel, "channel_name");
-					JsonArray channelEmotes = getJsonArray(channel, "emotes");
+                    String channelName = getJsonString(channel, "display_name");
+                    JsonArray channelEmotes = getJsonArray(channel, "emotes");
 					for (int i = 0; i < channelEmotes.size(); i++) {
 						JsonObject emote = channelEmotes.get(i).getAsJsonObject();
 						String code = getJsonString(emote, "code");

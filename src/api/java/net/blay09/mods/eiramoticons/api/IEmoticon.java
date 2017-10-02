@@ -19,7 +19,7 @@ public interface IEmoticon {
 	/**
 	 * @return the code to use this emoticon in chat
 	 */
-    String getCode();
+	String getName();
 
 	/**
 	 * Sets the BufferedImage for this emote and will trigger a texture upload on the next frame it's rendered.
