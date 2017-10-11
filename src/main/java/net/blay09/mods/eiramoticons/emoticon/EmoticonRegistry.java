@@ -26,7 +26,7 @@ public class EmoticonRegistry {
 		synchronized (loadingLock) {
 			Emoticon emoticon = new Emoticon(idCounter.incrementAndGet(), name, loader);
 			emoticonMap.addKey(emoticon.id, emoticon);
-			namedMap.put(emoticon.name, emoticon);
+			namedMap.put(emoticon.code, emoticon);
 			return emoticon;
 		}
 	}
