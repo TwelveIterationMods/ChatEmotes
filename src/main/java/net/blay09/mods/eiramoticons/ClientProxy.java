@@ -176,7 +176,7 @@ public class ClientProxy extends CommonProxy {
 			}
 
 			EmoticonRegistry.isLoading = false;
-		}).start();
+		}, "Emote Loader").start();
 	}
 
 	@SubscribeEvent
