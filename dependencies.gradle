@@ -1,0 +1,5 @@
+dependencies {
+    provided files('lib/TabbyChat-1.7.10-1.11.2.2-dev.jar')
+    compile files('lib/jazzy0-2-1.jar')
+    provided files('lib/eirairc-mc1.7.10-2.9.402-api.jar')
+}

@@ -27,37 +27,33 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TwitchTurboPack implements IEmoticonLoader {
+public class TwitchPrimePack implements IEmoticonLoader {
 
-	private String template;
-
-	public TwitchTurboPack() {
+	public TwitchPrimePack() {
 		try {
-			Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader(false);
+			Reader reader = TwitchEmotesAPI.newPrimeEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root = null;
+			JsonObject emoteList = null;
 			try {
-				root = gson.fromJson(reader, JsonObject.class);
+				emoteList = gson.fromJson(reader, JsonObject.class);
 			} catch (JsonParseException e) {
-				reader = TwitchEmotesAPI.newSubscriberEmotesReader(true);
+				reader = TwitchEmotesAPI.newPrimeEmotesReader(true);
 				try {
-					root = gson.fromJson(reader, JsonObject.class);
+					emoteList = gson.fromJson(reader, JsonObject.class);
 				} catch (JsonParseException e2) {
 					System.out.println("Failed to load turbo emoticon pack: " + e2.getMessage());
 					e2.printStackTrace();
 				}
 			}
-			if(root != null) {
-				template = root.getAsJsonObject("template").get("small").getAsString();
-				JsonObject channels = root.getAsJsonObject("channels");
-				JsonObject turbo = channels.getAsJsonObject("turbo");
-				JsonArray emotes = turbo.getAsJsonArray("emotes");
+			if(emoteList != null) {
+				JsonObject emoticon_sets = emoteList.getAsJsonObject("emoticon_sets");
+				JsonArray emotes = emoticon_sets.getAsJsonArray("19194");
 				for (int i = 0; i < emotes.size(); i++) {
 					JsonObject emote = emotes.get(i).getAsJsonObject();
 					String code = emote.get("code").getAsString();
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-					emoticon.setLoadData(emote.get("image_id").getAsInt());
-					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.turbo"));
+					emoticon.setLoadData(emote.get("id").getAsInt());
+					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.prime"));
 				}
 			}
 			reader.close();
@@ -72,18 +68,16 @@ public class TwitchTurboPack implements IEmoticonLoader {
 		linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
 		linkComponent.getChatStyle().setBold(true);
 		linkComponent.getChatStyle().setUnderlined(true);
-		EiraMoticonsAPI.registerEmoticonGroup("Twitch Turbo", new ChatComponentTranslation("eiramoticons:command.list.twitch.turbo", linkComponent));
+		EiraMoticonsAPI.registerEmoticonGroup("Twitch Prime", new ChatComponentTranslation("eiramoticons:command.list.twitch.prime", linkComponent));
 	}
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
-		if(template != null) {
-			BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(template, (Integer) emoticon.getLoadData(), "turbo");
-			if (image != null) {
-				emoticon.setImage(image);
-				if(image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
-					emoticon.setScale(0.5f, 0.5f);
-				}
+		BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(TwitchEmotesAPI.URL_SMALL, (Integer) emoticon.getLoadData(), "prime");
+		if (image != null) {
+			emoticon.setImage(image);
+			if(image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
+				emoticon.setScale(0.5f, 0.5f);
 			}
 		}
 	}

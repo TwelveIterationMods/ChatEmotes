@@ -105,9 +105,9 @@ public class ClientProxy extends CommonProxy {
 				e.printStackTrace();
 			}
 		}
-		if (EmoticonConfig.twitchTurboEmotes) {
+		if (EmoticonConfig.twitchPrimeEmotes) {
 			try {
-				new TwitchTurboPack();
+				new TwitchPrimePack();
 			} catch (Exception e) {
 				// Because this mod
 				e.printStackTrace();
@@ -147,6 +147,9 @@ public class ClientProxy extends CommonProxy {
 			} catch (Exception e) {
 				// supported
 				// on 1.7.10.
+				//Don't tell me what to do BabyRage.
+				//Nah, srsly tho, I would, I hate 1.7.10, but not all mods have moved on yet FeelsBadMan.
+				//So I'll try and backport this 'cause I still have a 1.7.10 server and other admins have been asking me what's up with this mod. <3
 			}
 		}
 
@@ -158,7 +161,7 @@ public class ClientProxy extends CommonProxy {
 		new FileAddon();
 
 		// Tweaks
-		if (EmoticonConfig.betterKappas && EmoticonConfig.twitchTurboEmotes) {
+		if (EmoticonConfig.betterKappas && EmoticonConfig.twitchPrimeEmotes) {
 			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
 			if(kappaHD != null) {
 				IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
