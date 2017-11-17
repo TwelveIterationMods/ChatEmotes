@@ -38,7 +38,7 @@ public class Emoticon implements IEmoticon {
 
 	public final IEmoticonLoader loader;
 	public final int id;
-	public final String name;
+	public final String code;
 
 	private Object identifier;
 	private String[] tooltipLines;
@@ -65,12 +65,12 @@ public class Emoticon implements IEmoticon {
 	private int currentFrameTexCoordY;
 	private long lastRenderTime;
 
-	public Emoticon(int id, String name, IEmoticonLoader loader) {
+	public Emoticon(int id, String code, IEmoticonLoader loader) {
 		this.id = id;
-		this.name = name;
+		this.code = code;
 		this.loader = loader;
 
-		tooltipLines = new String[] {I18n.format("eiramoticons:tooltip.name", name)};
+		tooltipLines = new String[] {I18n.format("eiramoticons:tooltip.name", code)};
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class Emoticon implements IEmoticon {
 
 	@Override
 	public String getName() {
-		return name;
+		return code;
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class Emoticon implements IEmoticon {
 
 	@Override
 	public void setTooltip(String emoticonGroup) {
-		tooltipLines = new String[] {I18n.format("eiramoticons:tooltip.name", name), I18n.format("eiramoticons:tooltip.group", emoticonGroup)};
+		tooltipLines = new String[] {I18n.format("eiramoticons:tooltip.name", code), I18n.format("eiramoticons:tooltip.group", emoticonGroup)};
 	}
 
 	@Override

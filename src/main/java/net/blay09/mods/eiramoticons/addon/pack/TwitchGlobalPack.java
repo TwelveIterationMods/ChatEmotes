@@ -21,29 +21,25 @@ import java.util.Map;
 
 public class TwitchGlobalPack extends AbstractEmotePack {
 
-	private String template;
-
 	public TwitchGlobalPack() {
 		try {
 			Reader reader = TwitchEmotesAPI.newGlobalEmotesReader(false);
 			Gson gson = new Gson();
-			JsonObject root;
+			JsonObject emoteList;
 			try {
-				root = gson.fromJson(reader, JsonObject.class);
+				emoteList = gson.fromJson(reader, JsonObject.class);
 			} catch (Exception e) {
 				reader = TwitchEmotesAPI.newGlobalEmotesReader(true);
 				try {
-					root = gson.fromJson(reader, JsonObject.class);
+					emoteList = gson.fromJson(reader, JsonObject.class);
 				} catch (Exception e2) {
 					throw new EmoteLoaderException(e2);
 				}
 			}
-			if(root != null) {
-				template = getJsonString(getJsonObject(root, "template"), "small");
-				JsonObject emotes = getJsonObject(root, "emotes");
-				for(Map.Entry<String, JsonElement> entry : emotes.entrySet()) {
+			if (emoteList != null) {
+				for (Map.Entry<String, JsonElement> entry : emoteList.entrySet()) {
 					IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(entry.getKey(), this);
-					emoticon.setLoadData(getJsonInt(entry.getValue().getAsJsonObject(), "image_id"));
+					emoticon.setLoadData(getJsonInt(entry.getValue().getAsJsonObject(), "id"));
 					emoticon.setTooltip(I18n.format("eiramoticons:group.twitch"));
 				}
 			}
@@ -62,13 +58,11 @@ public class TwitchGlobalPack extends AbstractEmotePack {
 
 	@Override
 	public void loadEmoticonImage(IEmoticon emoticon) {
-		if(template != null) {
-			BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(template, (Integer) emoticon.getLoadData(), "global");
-			if (image != null) {
-				emoticon.setImage(image);
-				if(image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
-					emoticon.setScale(0.5f, 0.5f);
-				}
+		BufferedImage image = TwitchEmotesAPI.readTwitchEmoteImage(TwitchEmotesAPI.URL_SMALL, (Integer) emoticon.getLoadData(), "global");
+		if (image != null) {
+			emoticon.setImage(image);
+			if (image.getWidth() <= TwitchEmotesAPI.TWITCH_BASE_SIZE || image.getHeight() <= TwitchEmotesAPI.TWITCH_BASE_SIZE) {
+				emoticon.setScale(0.5f, 0.5f);
 			}
 		}
 	}

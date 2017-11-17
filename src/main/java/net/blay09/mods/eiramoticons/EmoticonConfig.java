@@ -23,7 +23,7 @@ public class EmoticonConfig {
 
 	public static boolean defaultPack;
 	public static boolean twitchGlobalEmotes;
-	public static boolean twitchTurboEmotes;
+	public static boolean twitchPrimeEmotes;
 	public static boolean twitchSubscriberEmotes;
 	public static boolean bttvEmotes;
 	public static boolean bttvChannelEmotes;
@@ -48,7 +48,7 @@ public class EmoticonConfig {
 		enableIRCEmotes = config.getBoolean("enableIRCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableIRCEmotes.tooltip"), "eiramoticons:config.enableIRCEmotes");
 
 		twitchGlobalEmotes = config.getBoolean("twitchGlobalEmotes", PACKS, true, I18n.format("eiramoticons:config.twitchGlobalEmotes.tooltip"), "eiramoticons:config.twitchGlobalEmotes");
-//		twitchTurboEmotes = config.getBoolean("twitchTurboEmotes", PACKS, false, I18n.format("eiramoticons:config.twitchTurboEmotes.tooltip"), "eiramoticons:config.twitchTurboEmotes");
+		twitchPrimeEmotes = config.getBoolean("twitchPrimeEmotes", PACKS, true, I18n.format("eiramoticons:config.twitchPrimeEmotes.tooltip"), "eiramoticons:config.twitchPrimeEmotes");
 		twitchSubscriberEmotes = config.getBoolean("twitchSubscriberEmotes", PACKS, true, I18n.format("eiramoticons:config.twitchSubscriberEmotes.tooltip"), "eiramoticons:config.twitchSubscriberEmotes");
 		bttvEmotes = config.getBoolean("bttvEmotes", PACKS, false, I18n.format("eiramoticons:config.bttvEmotes.tooltip"), "eiramoticons:config.bttvEmotes");
 		bttvChannelEmotes = config.getBoolean("bttvChannelEmotes", PACKS, true, I18n.format("eiramoticons:config.bttvChannelEmotes.tooltip"), "eiramoticons:config.bttvChannelEmotes");

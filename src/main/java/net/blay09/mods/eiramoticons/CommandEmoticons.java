@@ -40,6 +40,12 @@ public class CommandEmoticons extends CommandBase {
 		if(args.length != 1) {
 			throw new WrongUsageException(getCommandUsage(sender));
 		}
+
+		if(EmoticonRegistry.isLoading) {
+			sender.addChatMessage(new TextComponentTranslation("eiramoticons:command.still_reloading"));
+			return;
+		}
+
 		if(args[0].equals("reload")) {
 			EmoticonConfig.hardReload();
 			EmoticonRegistry.reloadEmoticons();
