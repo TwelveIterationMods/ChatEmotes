@@ -87,88 +87,96 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	@SuppressWarnings("unused")
 	public void reloadEmoticons(ReloadEmoticons event) {
-		// Twitch Emotes
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				EmoticonRegistry.isLoading = true;
+				// Twitch Emotes
 
-		if (EmoticonConfig.twitchSmileys) {
-			try {
-				new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
-			} catch (Exception e) {
-				// I don't care.
-				e.printStackTrace();
-			}
-		}
-		if (EmoticonConfig.twitchGlobalEmotes) {
-			try {
-				new TwitchGlobalPack();
-			} catch (Exception e) {
-				// Stop using 1.7.10
-				e.printStackTrace();
-			}
-		}
-		if (EmoticonConfig.twitchPrimeEmotes) {
-			try {
-				new TwitchPrimePack();
-			} catch (Exception e) {
-				// Because this mod
-				e.printStackTrace();
-			}
-		}
-		if (EmoticonConfig.twitchSubscriberEmotes) {
-			try {
-				new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
-			} catch (Exception e) {
-				// is
-				e.printStackTrace();
-			}
-		}
-		if (EmoticonConfig.bttvEmotes) {
-			try {
-				new BTTVPack();
-			} catch (Exception e) {
-				// no
-				e.printStackTrace();
-			}
-		}
-		if (EmoticonConfig.bttvChannelEmotes) {
-			try {
-				BTTVChannelPack.createGroup();
-				for (String channel : EmoticonConfig.bttvEmoteChannels) {
-					new BTTVChannelPack(channel);
+				if (EmoticonConfig.twitchSmileys) {
+					try {
+						new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
+					} catch (Exception e) {
+						// I don't care.
+						e.printStackTrace();
+					}
 				}
-			} catch (Exception e) {
-				// longer
-				e.printStackTrace();
+				if (EmoticonConfig.twitchGlobalEmotes) {
+					try {
+						new TwitchGlobalPack();
+					} catch (Exception e) {
+						// Stop using 1.7.10
+						e.printStackTrace();
+					}
+				}
+				if (EmoticonConfig.twitchPrimeEmotes) {
+					try {
+						new TwitchPrimePack();
+					} catch (Exception e) {
+						// Because this mod
+						e.printStackTrace();
+					}
+				}
+				if (EmoticonConfig.twitchSubscriberEmotes) {
+					try {
+						new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+					} catch (Exception e) {
+						// is
+						e.printStackTrace();
+					}
+				}
+				if (EmoticonConfig.bttvEmotes) {
+					try {
+						new BTTVPack();
+					} catch (Exception e) {
+						// no
+						e.printStackTrace();
+					}
+				}
+				if (EmoticonConfig.bttvChannelEmotes) {
+					try {
+						BTTVChannelPack.createGroup();
+						for (String channel : EmoticonConfig.bttvEmoteChannels) {
+							new BTTVChannelPack(channel);
+						}
+					} catch (Exception e) {
+						// longer
+						e.printStackTrace();
+					}
+				}
+
+				if (EmoticonConfig.eiranetPack) {
+					try {
+						new EiraNetPack();
+					} catch (Exception e) {
+						// supported
+						// on 1.7.10.
+						//Don't tell me what to do BabyRage.
+						//Nah, srsly tho, I would, I hate 1.7.10, but not all mods have moved on yet FeelsBadMan.
+						//So I'll try and backport this 'cause I still have a 1.7.10 server and other admins have been asking me what's up with this mod. <3
+					}
+				}
+
+				if (EmoticonConfig.defaultPack) {
+					new IncludedPack("default", new String[]{"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
+				}
+
+				// Custom Emotes
+				new FileAddon();
+
+				// Tweaks
+				if (EmoticonConfig.betterKappas && EmoticonConfig.twitchPrimeEmotes) {
+					IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
+					if (kappaHD != null) {
+						IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
+						kappa.setLoadData(kappaHD.getLoadData());
+						kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
+					}
+				}
+
+				EmoticonRegistry.isLoading = false;
 			}
-		}
-
-		if (EmoticonConfig.eiranetPack) {
-			try {
-				new EiraNetPack();
-			} catch (Exception e) {
-				// supported
-				// on 1.7.10.
-				//Don't tell me what to do BabyRage.
-				//Nah, srsly tho, I would, I hate 1.7.10, but not all mods have moved on yet FeelsBadMan.
-				//So I'll try and backport this 'cause I still have a 1.7.10 server and other admins have been asking me what's up with this mod. <3
-			}
-		}
-
-		if (EmoticonConfig.defaultPack) {
-			new IncludedPack("default", new String[]{"eiraRage", "eiraLewd", "eiraScared", "eiraCri", "eiraMeow", "eiraYawn", "eiraFufu", "eiraPraise", "eiraArr", "eiraCute"});
-		}
-
-		// Custom Emotes
-		new FileAddon();
-
-		// Tweaks
-		if (EmoticonConfig.betterKappas && EmoticonConfig.twitchPrimeEmotes) {
-			IEmoticon kappaHD = EmoticonRegistry.fromName("KappaHD");
-			if(kappaHD != null) {
-				IEmoticon kappa = EmoticonRegistry.registerEmoticon("Kappa", kappaHD.getLoader());
-				kappa.setLoadData(kappaHD.getLoadData());
-				kappa.setTooltip(I18n.format("eiramoticons:group.betterkappas"));
-			}
-		}
+		}, "Emote Loader").start();
 	}
 
 	@SubscribeEvent
