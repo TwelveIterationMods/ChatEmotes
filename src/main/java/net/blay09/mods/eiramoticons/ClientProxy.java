@@ -119,7 +119,10 @@ public class ClientProxy extends CommonProxy {
 				}
 				if (EmoticonConfig.twitchSubscriberEmotes) {
 					try {
-						new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+						if (!EmoticonConfig.alternateSubscriberEmotes)
+							new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+						else
+							new TwitchImagesPack();
 					} catch (Exception e) {
 						// is
 						e.printStackTrace();

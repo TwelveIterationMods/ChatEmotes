@@ -28,6 +28,8 @@ eiramoticons:config.enableIRCEmotes=Enable Emotes in EiraIRC
 eiramoticons:config.enableIRCEmotes.tooltip=Should emotes be enabled for IRC chat, if EiraIRC is installed?
 eiramoticons:config.betterKappas=Enable Better Kappas
 eiramoticons:config.betterKappas.tooltip=Should all Kappas be turned into the more beautiful KappaHDs? (requires twitchPrimeEmotes to be enabled)
+eiramoticons:config.alternateTwitchSubscriberEmotes=Enable alternate subscriber emotes source
+eiramoticons:config.alternateTwitchSubscriberEmotes.tooltip=Forces loading subscriber emotes from different source, enable if you don't see any subscriber emotes.
 
 eiramoticons:tooltip.name=§eEmote: §r%s
 eiramoticons:tooltip.group=§e%s

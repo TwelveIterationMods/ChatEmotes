@@ -18,6 +18,7 @@ public class TwitchEmotesAPI {
 	private static final int TIMEOUT_TIME = 10000;
 	private static final String URL_GLOBAL = "https://twitchemotes.com/api_cache/v3/global.json";
 	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v3/subscriber.json";
+	private static final String URL_IMAGES = "https://twitchemotes.com/api_cache/v3/images.json";
 	private static final String URL_PRIME = "https://api.twitch.tv/kraken/chat/emoticon_images?client_id=gdhi94otnk7c7746syjv7gkr6bizq4w&emotesets=19194";
 
 	private static File cacheDir;
@@ -25,6 +26,7 @@ public class TwitchEmotesAPI {
 	private static File cachedGlobal;
 	private static File cachedSubscriber;
 	private static File cachedPrime;
+	private static File cachedImages;
 
 	public static void initialize(File mcDataDir) {
 		cacheDir = new File(mcDataDir, "emoticons/cache");
@@ -32,6 +34,7 @@ public class TwitchEmotesAPI {
 		cachedGlobal = new File(cacheDir, "global.json");
 		cachedSubscriber = new File(cacheDir, "subscriber.json");
 		cachedPrime = new File(cacheDir, "prime.json");
+		cachedImages = new File(cacheDir, "images.json");
 	}
 
 	private static boolean shouldUseCacheFileJson(File file) {
@@ -54,6 +57,13 @@ public class TwitchEmotesAPI {
 			FileUtils.copyURLToFile(new URL(URL_SUBSCRIBER), cachedSubscriber, TIMEOUT_TIME, TIMEOUT_TIME);
 		}
 		return new FileReader(cachedSubscriber);
+	}
+	
+	public static Reader newImagesEmotesReader(boolean forceRemote) throws IOException {
+		if(forceRemote || !shouldUseCacheFileJson(cachedImages)) {
+			FileUtils.copyURLToFile(new URL(URL_IMAGES), cachedImages, TIMEOUT_TIME, TIMEOUT_TIME);
+		}
+		return new FileReader(cachedImages);
 	}
 
 	public static Reader newPrimeEmotesReader(boolean forceRemote) throws IOException {
