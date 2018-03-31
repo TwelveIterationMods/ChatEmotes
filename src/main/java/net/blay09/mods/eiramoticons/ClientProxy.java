@@ -92,7 +92,6 @@ public class ClientProxy extends CommonProxy {
 			public void run() {
 				EmoticonRegistry.isLoading = true;
 				// Twitch Emotes
-
 				if (EmoticonConfig.twitchSmileys) {
 					try {
 						new TwitchSmileyPack(EmoticonConfig.twitchSmileySet);
@@ -119,10 +118,7 @@ public class ClientProxy extends CommonProxy {
 				}
 				if (EmoticonConfig.twitchSubscriberEmotes) {
 					try {
-						if (!EmoticonConfig.alternateSubscriberEmotes)
-							new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
-						else
-							new TwitchImagesPack();
+						new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
 					} catch (Exception e) {
 						// is
 						e.printStackTrace();

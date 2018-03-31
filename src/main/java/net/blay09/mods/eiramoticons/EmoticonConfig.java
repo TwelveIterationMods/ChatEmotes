@@ -33,7 +33,6 @@ public class EmoticonConfig {
 
 	public static boolean twitchSmileys;
 	public static boolean betterKappas;
-	public static boolean alternateSubscriberEmotes;
 
 	public static void loadFromFile(File configFile) {
 		EmoticonConfig.configFile = configFile;
@@ -58,7 +57,6 @@ public class EmoticonConfig {
 		eiranetPack = config.getBoolean("eiranetPack", PACKS, true, I18n.format("eiramoticons:config.eiranetPack.tooltip"), "eiramoticons:config.eiranetPack");
 
 		betterKappas = config.getBoolean("betterKappas", TWEAKS, false, I18n.format("eiramoticons:config.betterKappas.tooltip"), "eiramoticons:config.betterKappas");
-		alternateSubscriberEmotes = config.getBoolean("alternateSubscriberEmotes", TWEAKS, false, I18n.format("eiramoticons:config.alternateTwitchSubscriberEmotes.tooltip"), "eiramoticons:config.alternateTwitchSubscriberEmotes");
 
 		config.save();
 	}
