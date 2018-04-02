@@ -17,7 +17,7 @@ public class TwitchEmotesAPI {
 	private static final int CACHE_LIFETIME_IMAGE = 604800000;
 	private static final int TIMEOUT_TIME = 10000;
 	private static final String URL_GLOBAL = "https://twitchemotes.com/api_cache/v3/global.json";
-	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v3/subscriber.json";
+	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v3/images.json";
 	private static final String URL_PRIME = "https://api.twitch.tv/kraken/chat/emoticon_images?client_id=gdhi94otnk7c7746syjv7gkr6bizq4w&emotesets=19194";
 
 	private static File cacheDir;
@@ -30,7 +30,7 @@ public class TwitchEmotesAPI {
 		cacheDir = new File(mcDataDir, "emoticons/cache");
 		cachedEmotes = new File(cacheDir, "images/");
 		cachedGlobal = new File(cacheDir, "global.json");
-		cachedSubscriber = new File(cacheDir, "subscriber.json");
+		cachedSubscriber = new File(cacheDir, "images.json");
 		cachedPrime = new File(cacheDir, "prime.json");
 	}
 

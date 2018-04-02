@@ -49,23 +49,19 @@ public class TwitchSubscriberPack implements IEmoticonLoader {
 					e2.printStackTrace();
 				}
 			}
-			if(emoteList != null) {
-				for (Map.Entry<String, JsonElement> channelEntry : emoteList.entrySet()) {
-					JsonObject channel = channelEntry.getValue().getAsJsonObject();
-					String channelName = channel.get("display_name").getAsString();
-					JsonArray channelEmotes = channel.getAsJsonArray("emotes");
-					for (int i = 0; i < channelEmotes.size(); i++) {
-						JsonObject emote = channelEmotes.get(i).getAsJsonObject();
-						String code = emote.get("code").getAsString();
-						matcher.reset(code);
-						if (matcher.matches()) {
-							IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
-							emoticon.setLoadData(emote.get("id").getAsInt());
-							emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.subscriber", channelName.toLowerCase()));
-						}
-					}
-				}
-			}
+			if (emoteList != null) {
+                for (Map.Entry<String, JsonElement> entry : emoteList.entrySet()) {
+                    String code = entry.getValue().getAsJsonObject().get("code").getAsString();
+                    matcher.reset(code);
+                    if (matcher.matches()) {
+                    	IEmoticon emoticon = EiraMoticonsAPI.registerEmoticon(code, this);
+                    	JsonObject emoticonEntry = entry.getValue().getAsJsonObject();
+                    	emoticon.setLoadData(entry.getValue().getAsJsonObject().get("id").getAsInt());
+                    	String channelName = emoticonEntry.get("channel_name").getAsString();
+                    	emoticon.setTooltip(I18n.format("eiramoticons:group.twitch.subscriber", channelName));
+                    }
+                }
+            }
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();

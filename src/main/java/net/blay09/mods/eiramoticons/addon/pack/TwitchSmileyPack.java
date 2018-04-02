@@ -56,7 +56,7 @@ public class TwitchSmileyPack implements IEmoticonLoader {
 		linkComponent.getChatStyle().setColor(EnumChatFormatting.GOLD);
 		linkComponent.getChatStyle().setBold(true);
 		linkComponent.getChatStyle().setUnderlined(true);
-		EiraMoticonsAPI.registerEmoticonGroup("Twitch Smileys", new ChatComponentTranslation("eiramoticons:command.list.twitch.smileys", linkComponent));
+		EiraMoticonsAPI.registerEmoticonGroup("Twitch Smileys", new ChatComponentTranslation("eiramoticons:command.list.twitch.smiley", linkComponent));
 	}
 
 	private void registerSmiley(String code, int id) {
