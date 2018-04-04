@@ -39,7 +39,7 @@ public class TwitchSmileyPack extends AbstractEmotePack {
 		linkComponent.getStyle().setColor(TextFormatting.GOLD);
 		linkComponent.getStyle().setBold(true);
 		linkComponent.getStyle().setUnderlined(true);
-		EiraMoticonsAPI.registerEmoticonGroup("Twitch Smileys", new TextComponentTranslation("eiramoticons:command.list.twitch.smileys", linkComponent));
+		EiraMoticonsAPI.registerEmoticonGroup("Twitch Smileys", new TextComponentTranslation("eiramoticons:command.list.twitch.smiley", linkComponent));
 	}
 
 	private void registerSmiley(String code, int id) {
