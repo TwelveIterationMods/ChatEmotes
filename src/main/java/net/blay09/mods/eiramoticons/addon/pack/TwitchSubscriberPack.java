@@ -1,6 +1,5 @@
 package net.blay09.mods.eiramoticons.addon.pack;
 
-import net.blay09.mods.eiramoticons.EiraMoticons;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
@@ -18,9 +17,6 @@ import net.minecraft.util.text.event.HoverEvent;
 
 import java.awt.image.BufferedImage;
 import java.io.Reader;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TwitchSubscriberPack extends AbstractEmotePack {
 

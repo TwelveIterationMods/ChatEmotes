@@ -29,7 +29,7 @@ public class BTTVPack extends AbstractEmotePack {
 			InputStreamReader reader = new InputStreamReader(apiURL.openStream());
 			Gson gson = new Gson();
 			JsonObject root = gson.fromJson(reader, JsonObject.class);
-			if(root == null || (!root.has("status") && root.get("status").getAsInt() != 200)) {
+			if(root == null) {
 				throw new EmoteLoaderException("Failed to grab BTTV emotes (unexpected status)");
 			}
 			urlTemplate = getJsonString(root, "urlTemplate");

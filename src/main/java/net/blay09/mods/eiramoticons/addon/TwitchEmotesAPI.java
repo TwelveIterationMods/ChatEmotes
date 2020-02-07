@@ -62,9 +62,10 @@ public class TwitchEmotesAPI {
 		return new FileReader(cachedFile);
 	}
 
-	private static Reader getUsers(String name) throws IOException {
-		FileUtils.copyURLToFile(new URL(String.format(URL_T_CHANNEL, CLIENT_ID, name)), tmpUser, TIMEOUT_TIME, TIMEOUT_TIME);
-		return new FileReader(tmpUser);
+	private static InputStreamReader getUsers(String name) throws IOException {
+		URL apiURL = new URL(String.format(URL_T_CHANNEL, CLIENT_ID, name));
+		InputStreamReader reader = new InputStreamReader(apiURL.openStream());
+		return reader;
 	}
 
 	private static Reader getChannel(String channelId, boolean forceRemote) throws IOException {

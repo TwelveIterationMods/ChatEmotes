@@ -108,7 +108,7 @@ public class CommandEmoticons implements ICommand {
 	public List<String> getTabCompletions(final MinecraftServer server, final ICommandSender sender, final String[] args, @Nullable final BlockPos pos) {
 		
 		final List<String> auto = new ArrayList<String>();
-		if(args.length == 0 || (args.length == 1 && (StringUtils.isBlank(args[0]) || args[0] == null))) {
+		if (args.length <= 1){
 			auto.add("reload");
 			auto.add("load");
 			auto.add("help");
