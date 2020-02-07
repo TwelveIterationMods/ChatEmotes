@@ -108,7 +108,10 @@ public class ClientProxy extends CommonProxy {
 			}
 			if (EmoticonConfig.twitchSubscriberEmotes) {
 				try {
-					new TwitchSubscriberPack(EmoticonConfig.twitchSubscriberRegex);
+					TwitchSubscriberPack.createGroup();
+					for (String channel : EmoticonConfig.subEmoteChannels) {
+						new TwitchSubscriberPack(channel);
+					}
 				} catch (EmoteLoaderException e) {
 					LOGGER.error("Failed to load Twitch subscriber emotes: {}", e);
 				}

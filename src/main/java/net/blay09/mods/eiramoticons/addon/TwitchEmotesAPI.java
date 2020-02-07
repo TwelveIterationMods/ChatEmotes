@@ -24,10 +24,14 @@ public class TwitchEmotesAPI {
 	private static final int CACHE_LIFETIME_IMAGE = 604800000;
 	private static final int TIMEOUT_TIME = 10000;
 
-	private static final String URL_SETS = "https://api.twitchemotes.com/api/v4/sets?id=";
-	private static final String URL_CHANNEL = "https://api.twitchemotes.com/api/v4/channels/";
+	private static final String URL_TE_SETS = "https://api.twitchemotes.com/api/v4/sets?id=";
+	private static final String URL_TE_CHANNEL = "https://api.twitchemotes.com/api/v4/channels/";
+	private static final String URL_T_CHANNEL = "https://api.twitch.tv/kraken/users?api_version=5&client_id=%s&login=%s";
+
 	private static final int SETID_PRIME = 19194;
 	private static final int SETID_GLOBAL = 0;
+
+	private static final String CLIENT_ID = "weroekoaytgqb4wrdbtkrui8xga1vs";
 	
 	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v3/images.json";
 
@@ -37,6 +41,7 @@ public class TwitchEmotesAPI {
 	private static File cachedEmotes;
 	private static File cachedGlobal;
 	private static File cachedSubscriber;
+	private static File tmpUser;
 
 	public static void initialize(File mcDataDir) {
 		cacheDir = new File(mcDataDir, "emoticons/cache");
@@ -45,25 +50,32 @@ public class TwitchEmotesAPI {
 		cachedEmotes = new File(cacheDir, "images/");
 		cachedGlobal = new File(cacheDir, "global.json");
 		cachedSubscriber = new File(cacheDir, "images.json");
+
+		tmpUser = new File(cacheDir, "tmpUser.json");
 	}
 	
 	private static Reader getSet(int setId, boolean forceRemote) throws IOException {
 		File cachedFile = new File(cacheSets, setId + ".json");
 		if(forceRemote || !shouldUseCacheFileJson(cachedFile)) {
-			FileUtils.copyURLToFile(new URL(URL_SETS + setId), cachedFile, TIMEOUT_TIME, TIMEOUT_TIME);
+			FileUtils.copyURLToFile(new URL(URL_TE_SETS + setId), cachedFile, TIMEOUT_TIME, TIMEOUT_TIME);
 		}
 		return new FileReader(cachedFile);
 	}
 
-	private static Reader getChannel(int channelId, boolean forceRemote) throws IOException {
+	private static Reader getUser(String name) throws IOException {
+		FileUtils.copyURLToFile(new URL(String.format(URL_T_CHANNEL, CLIENT_ID, name)), tmpUser, TIMEOUT_TIME, TIMEOUT_TIME);
+		return new FileReader(tmpUser);
+	}
+
+	private static Reader getChannel(String channelId, boolean forceRemote) throws IOException {
 		File cachedFile = new File (cacheChannel, channelId + ".json");
 		if (forceRemote || !shouldUseCacheFileJson(cachedFile)) {
-			FileUtils.copyURLToFile(new URL(URL_CHANNEL + channelId), cachedFile, TIMEOUT_TIME, TIMEOUT_TIME);
+			FileUtils.copyURLToFile(new URL(URL_TE_CHANNEL + channelId), cachedFile, TIMEOUT_TIME, TIMEOUT_TIME);
 		}
 		return new FileReader(cachedFile);
 	}
 
-	private static Reader getChannelFromSetId(int setId, boolean forceRemote) throws IOException {
+	private static Reader getChannelBySetId(int setId, boolean forceRemote) throws IOException {
 		Reader reader = TwitchEmotesAPI.getSet(setId, false);
 		Gson gson = new Gson();
 
@@ -81,9 +93,28 @@ public class TwitchEmotesAPI {
 		
 		if (setInfos != null && setInfos.size() > 0) {
 			JsonObject setInfo = setInfos.get(0).getAsJsonObject();
-			String channelIdStr = AbstractEmotePack.getJsonString(setInfo, "channel_id");
+			String channelId = AbstractEmotePack.getJsonString(setInfo, "channel_id");
+			
+			reader.close();
+			return TwitchEmotesAPI.getChannel(channelId, forceRemote);
+		}
+		reader.close();
+		return null;
+	}
 
-			int channelId = Integer.parseInt(channelIdStr);	
+	private static Reader getChannelByName(String name, boolean forceRemote) throws IOException {
+		Reader reader = TwitchEmotesAPI.getUser(name);
+		Gson gson = new Gson();
+
+		JsonObject userInfo;
+		try {
+			userInfo = gson.fromJson(reader, JsonObject.class);
+		} catch (Exception e) {
+			throw new EmoteLoaderException(e);
+		}
+		
+		if (userInfo != null) {
+			String channelId = AbstractEmotePack.getJsonString(userInfo, "_id");
 			
 			reader.close();
 			return TwitchEmotesAPI.getChannel(channelId, forceRemote);
@@ -101,18 +132,15 @@ public class TwitchEmotesAPI {
 	}
 
 	public static Reader newGlobalEmotesReader(boolean forceRemote) throws IOException {
-		return TwitchEmotesAPI.getChannelFromSetId(SETID_GLOBAL, forceRemote);
+		return TwitchEmotesAPI.getChannelBySetId(SETID_GLOBAL, forceRemote);
 	}
 
-	public static Reader newSubscriberEmotesReader(boolean forceRemote) throws IOException {
-		if(forceRemote || !shouldUseCacheFileJson(cachedSubscriber)) {
-			FileUtils.copyURLToFile(new URL(URL_SUBSCRIBER), cachedSubscriber, TIMEOUT_TIME, TIMEOUT_TIME);
-		}
-		return new FileReader(cachedSubscriber);
+	public static Reader newSubscriberEmotesReader(String channel, boolean forceRemote) throws IOException {
+		return TwitchEmotesAPI.getChannelByName(channel, forceRemote);
 	}
 
     public static Reader newPrimeEmotesReader(boolean forceRemote) throws IOException {
-		return TwitchEmotesAPI.getChannelFromSetId(SETID_PRIME, forceRemote);
+		return TwitchEmotesAPI.getChannelBySetId(SETID_PRIME, forceRemote);
     }
 
 	@Nullable

@@ -3,6 +3,7 @@ package net.blay09.mods.eiramoticons;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonGroup;
 import net.blay09.mods.eiramoticons.emoticon.EmoticonRegistry;
+import net.blay09.mods.eiramoticons.addon.pack.TwitchSubscriberPack;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -23,7 +24,7 @@ public class CommandEmoticons extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "/emoticons reload|list|config|clearcache";
+		return "/emoticons reload | list | config | clearcache | subscribe <channel>";
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class CommandEmoticons extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if(args.length != 1) {
+		if(args.length == 0 || (args.length > 1 && args[0] != "subscribe") || (args[0] == "subscribe" && args.length != 2)) {
 			throw new WrongUsageException(getUsage(sender));
 		}
 		if(EmoticonRegistry.isLoading) {
@@ -54,6 +55,10 @@ public class CommandEmoticons extends CommandBase {
 				TwitchEmotesAPI.clearCache();
 				sender.sendMessage(new TextComponentTranslation("eiramoticons:command.clearcache"));
 				break;
+			case "subscribe":
+				String channel = args[1];
+				EmoticonConfig.subscribe(channel);
+				new TwitchSubscriberPack(channel);
 			default:
 				throw new WrongUsageException(getUsage(sender));
 		}
@@ -62,7 +67,7 @@ public class CommandEmoticons extends CommandBase {
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
 		if(args.length == 0) {
-			return getListOfStringsMatchingLastWord(args, "reload", "help", "list", "clearcache");
+			return getListOfStringsMatchingLastWord(args, "reload", "help", "list", "clearcache", "subscribe");
 		}
 		return super.getTabCompletions(server, sender, args, pos);
 	}
