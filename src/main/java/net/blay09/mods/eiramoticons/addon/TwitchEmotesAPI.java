@@ -62,7 +62,7 @@ public class TwitchEmotesAPI {
 		return new FileReader(cachedFile);
 	}
 
-	private static Reader getUser(String name) throws IOException {
+	private static Reader getUsers(String name) throws IOException {
 		FileUtils.copyURLToFile(new URL(String.format(URL_T_CHANNEL, CLIENT_ID, name)), tmpUser, TIMEOUT_TIME, TIMEOUT_TIME);
 		return new FileReader(tmpUser);
 	}
@@ -103,12 +103,19 @@ public class TwitchEmotesAPI {
 	}
 
 	private static Reader getChannelByName(String name, boolean forceRemote) throws IOException {
-		Reader reader = TwitchEmotesAPI.getUser(name);
+		Reader reader = TwitchEmotesAPI.getUsers(name);
 		Gson gson = new Gson();
 
-		JsonObject userInfo;
+		JsonObject userInfoList;
+		JsonObject userInfo = null;
 		try {
-			userInfo = gson.fromJson(reader, JsonObject.class);
+			userInfoList = gson.fromJson(reader, JsonObject.class);
+
+			if (userInfoList != null){
+				JsonArray users = AbstractEmotePack.getJsonArray(userInfoList, "users");
+				userInfo = users.get(0).getAsJsonObject();
+			}
+			
 		} catch (Exception e) {
 			throw new EmoteLoaderException(e);
 		}
@@ -120,6 +127,28 @@ public class TwitchEmotesAPI {
 			return TwitchEmotesAPI.getChannel(channelId, forceRemote);
 		}
 		reader.close();
+		return null;
+	}
+
+	public static String getChannelName(String channel) throws IOException{
+		Reader reader = TwitchEmotesAPI.newSubscriberEmotesReader(channel, false);
+		Gson gson = new Gson();
+		JsonObject emoteList;
+		try {
+			emoteList = gson.fromJson(reader, JsonObject.class);
+		} catch (Exception e) {
+			reader = TwitchEmotesAPI.newSubscriberEmotesReader(channel, true);
+			try {
+				emoteList = gson.fromJson(reader, JsonObject.class);
+			} catch (Exception e2) {
+				throw new EmoteLoaderException(e2);
+			}
+		}
+
+		if (emoteList != null) {
+			String channelName = AbstractEmotePack.getJsonString(emoteList, "display_name");
+			return channelName;
+		}
 		return null;
 	}
 

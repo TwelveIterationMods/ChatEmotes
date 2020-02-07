@@ -68,4 +68,7 @@ eiramoticons:command.list.twitch.subscriber=Twitch Subscriber Pack: click %s
 eiramoticons:command.list.twitch.smiley=Twitch Smiley Pack: click %s
 eiramoticons:command.list.clickHere=here
 eiramoticons:command.clearcache=The cache has been cleared.
+eiramoticons:command.reload=The config has been reloaded and the emoticons registered.
+eiramoticons:command.subscribe=Subscribed to '%s'
+eiramoticons:command.channelnotfound=Channel '%s' not found...
 eiramoticons:command.still_reloading=Emotes are still being loaded ...

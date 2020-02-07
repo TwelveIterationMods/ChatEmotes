@@ -74,7 +74,8 @@ public class EmoticonConfig {
 	public static void subscribe(String channel) {
 		subEmoteChannels = Arrays.copyOf(subEmoteChannels, subEmoteChannels.length + 1);
 		subEmoteChannels[subEmoteChannels.length - 1] = channel;
-
+		
+		config.get(GENERAL, "subEmoteChannels", new String[0]).set(subEmoteChannels);
 		config.save();
 	}
 }
