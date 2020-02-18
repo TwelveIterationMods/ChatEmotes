@@ -31,7 +31,7 @@ public class TwitchEmotesAPI {
 	private static final int SETID_PRIME = 19194;
 	private static final int SETID_GLOBAL = 0;
 
-	private static final String CLIENT_ID = "weroekoaytgqb4wrdbtkrui8xga1vs";
+	private static final String CLIENT_ID = "8omghebaaykzal7t6h0fbv6eekppqf";
 	
 	private static final String URL_SUBSCRIBER = "https://twitchemotes.com/api_cache/v3/images.json";
 
