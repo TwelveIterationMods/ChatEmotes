@@ -4,6 +4,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class EmoticonConfig {
 
@@ -19,6 +20,7 @@ public class EmoticonConfig {
 	public static String twitchSubscriberRegex;
 	public static String[] bttvEmoteChannels;
 	public static String[] ffzEmoteChannels;
+	public static String[] subEmoteChannels;
 
 	public static boolean defaultPack;
 	public static boolean twitchGlobalEmotes;
@@ -42,6 +44,7 @@ public class EmoticonConfig {
 		enableMCEmotes = config.getBoolean("enableMCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableMCEmotes.tooltip"), "eiramoticons:config.enableMCEmotes");
 		twitchSubscriberRegex = config.getString("twitchSubscriberRegex", GENERAL, "[a-z0-9][a-z0-9]+[A-Z0-9].*", I18n.format("eiramoticons:config.twitchSubscriberRegex.tooltip"), "eiramoticons:config.twitchSubscriberRegex");
 		bttvEmoteChannels = config.getStringList("bttvEmoteChannels", GENERAL, new String[0], I18n.format("eiramoticons:config.bttvEmoteChannels.tooltip"), null, "eiramoticons:config.bttvEmoteChannels");
+		subEmoteChannels = config.getStringList("subEmoteChannels", GENERAL, new String[0], I18n.format("eiramoticons:config.twitchSubscriberChannels.tooltip"), null, "eiramoticons:config.twitchSubscriberChannels");
 		ffzEmoteChannels = config.getStringList("ffzEmoteChannels", GENERAL, new String[] { "tehbasshunter" }, I18n.format("eiramoticons:config.ffzEmoteChannels.tooltip"), null, "eiramoticons:config.ffzEmoteChannels");
 		enableIRCEmotes = config.getBoolean("enableIRCEmotes", GENERAL, true, I18n.format("eiramoticons:config.enableIRCEmotes.tooltip"), "eiramoticons:config.enableIRCEmotes");
 
@@ -66,5 +69,13 @@ public class EmoticonConfig {
 
 	public static void hardReload() {
 		loadFromFile(configFile);
+	}
+
+	public static void subscribe(String channel) {
+		subEmoteChannels = Arrays.copyOf(subEmoteChannels, subEmoteChannels.length + 1);
+		subEmoteChannels[subEmoteChannels.length - 1] = channel;
+		
+		config.get(GENERAL, "subEmoteChannels", new String[0]).set(subEmoteChannels);
+		config.save();
 	}
 }

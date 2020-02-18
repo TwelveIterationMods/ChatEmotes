@@ -1,12 +1,14 @@
 package net.blay09.mods.eiramoticons.addon.pack;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.blay09.mods.eiramoticons.addon.TwitchEmotesAPI;
 import net.blay09.mods.eiramoticons.api.EiraMoticonsAPI;
 import net.blay09.mods.eiramoticons.api.EmoteLoaderException;
 import net.blay09.mods.eiramoticons.api.IEmoticon;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -36,8 +38,7 @@ public class TwitchPrimePack extends AbstractEmotePack {
 				}
 			}
 			if (emoteList != null) {
-				JsonObject emoticon_sets = getJsonObject(emoteList, "emoticon_sets");
-				JsonArray emotes = getJsonArray(emoticon_sets, "19194");
+				JsonArray emotes = getJsonArray(emoteList, "emotes");
 				for (int i = 0; i < emotes.size(); i++) {
 					JsonObject emote = emotes.get(i).getAsJsonObject();
 					String code = getJsonString(emote, "code");

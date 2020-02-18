@@ -8,7 +8,7 @@ import net.blay09.mods.eiramoticons.api.IEmoticonLoader;
 
 public abstract class AbstractEmotePack implements IEmoticonLoader {
 
-	public String getJsonString(JsonObject object, String name) {
+	public static String getJsonString(JsonObject object, String name) {
 		JsonElement element = object.get(name);
 		if(element == null) {
 			throw new EmoteLoaderException("'" + name + "' is null");
@@ -20,7 +20,7 @@ public abstract class AbstractEmotePack implements IEmoticonLoader {
 		}
 	}
 
-	public int getJsonInt(JsonObject object, String name) {
+	public static int getJsonInt(JsonObject object, String name) {
 		JsonElement element = object.get(name);
 		if(element == null) {
 			throw new EmoteLoaderException("'" + name + "' is null");
@@ -33,7 +33,7 @@ public abstract class AbstractEmotePack implements IEmoticonLoader {
 	}
 
 
-	public JsonObject getJsonObject(JsonObject object, String name) {
+	public static JsonObject getJsonObject(JsonObject object, String name) {
 		try {
 			JsonObject result = object.getAsJsonObject(name);
 			if(result == null) {
@@ -45,7 +45,7 @@ public abstract class AbstractEmotePack implements IEmoticonLoader {
 		}
 	}
 
-	public JsonArray getJsonArray(JsonObject object, String name) {
+	public static JsonArray getJsonArray(JsonObject object, String name) {
 		try {
 			JsonArray result = object.getAsJsonArray(name);
 			if(result == null) {
